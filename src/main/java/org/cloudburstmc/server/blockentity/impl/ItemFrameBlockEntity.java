@@ -6,8 +6,8 @@ import com.nukkitx.nbt.NbtMapBuilder;
 import org.cloudburstmc.server.block.BlockIds;
 import org.cloudburstmc.server.blockentity.BlockEntityType;
 import org.cloudburstmc.server.blockentity.ItemFrame;
+import org.cloudburstmc.server.item.ItemStack;
 import org.cloudburstmc.server.item.ItemUtils;
-import org.cloudburstmc.server.item.behavior.Item;
 import org.cloudburstmc.server.level.chunk.Chunk;
 
 import java.util.Objects;
@@ -19,8 +19,8 @@ import static org.cloudburstmc.server.block.BlockIds.AIR;
  */
 public class ItemFrameBlockEntity extends BaseBlockEntity implements ItemFrame {
 
-    private Item item;
-    private float itemRotation;
+    private ItemStack item;
+    private byte itemRotation;
     private float itemDropChance = 1.0f;
 
     public ItemFrameBlockEntity(BlockEntityType<?> type, Chunk chunk, Vector3i position) {
@@ -34,7 +34,7 @@ public class ItemFrameBlockEntity extends BaseBlockEntity implements ItemFrame {
         tag.listenForCompound("Item", itemTag -> {
             this.item = ItemUtils.deserializeItem(itemTag);
         });
-        tag.listenForFloat("ItemRotation", value -> this.itemRotation = value);
+        tag.listenForByte("ItemRotation", value -> this.itemRotation = value);
         tag.listenForFloat("ItemDropChance", value -> this.itemDropChance = value);
     }
 
@@ -44,7 +44,7 @@ public class ItemFrameBlockEntity extends BaseBlockEntity implements ItemFrame {
 
         if (this.item != null && !this.item.isNull()) {
             tag.putCompound("Item", ItemUtils.serializeItem(this.item));
-            tag.putFloat("ItemRotation", this.itemRotation);
+            tag.putByte("ItemRotation", this.itemRotation);
             tag.putFloat("ItemDropChance", this.itemDropChance);
         }
     }
@@ -56,7 +56,7 @@ public class ItemFrameBlockEntity extends BaseBlockEntity implements ItemFrame {
 
     @Override
     public int getItemRotation() {
-        return (int) this.itemRotation;
+        return this.itemRotation;
     }
 
     @Override
@@ -69,12 +69,12 @@ public class ItemFrameBlockEntity extends BaseBlockEntity implements ItemFrame {
     }
 
     @Override
-    public Item getItem() {
+    public ItemStack getItem() {
         return this.item.clone();
     }
 
     @Override
-    public void setItem(Item item) {
+    public void setItem(ItemStack item) {
         if (!Objects.equals(this.item, item)) {
             this.item = item.clone();
             this.setDirty();
