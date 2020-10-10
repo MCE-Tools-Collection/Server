@@ -2,24 +2,24 @@ package org.cloudburstmc.server.block.behavior;
 
 import com.nukkitx.math.vector.Vector3f;
 import lombok.val;
-import org.cloudburstmc.server.Server;
+import org.cloudburstmc.server.CloudServer;
 import org.cloudburstmc.server.block.*;
 import org.cloudburstmc.server.event.block.BlockGrowEvent;
-import org.cloudburstmc.server.item.ItemStack;
-import org.cloudburstmc.server.item.ItemTypes;
+import org.cloudburstmc.server.item.behavior.Item;
+import org.cloudburstmc.server.item.behavior.ItemIds;
 import org.cloudburstmc.server.level.Level;
 import org.cloudburstmc.server.level.particle.BoneMealParticle;
 import org.cloudburstmc.server.math.Direction;
 import org.cloudburstmc.server.math.Direction.Plane;
 import org.cloudburstmc.server.player.Player;
 import org.cloudburstmc.server.utils.BlockColor;
-import org.cloudburstmc.server.utils.data.DyeColor;
+import org.cloudburstmc.server.utils.Identifier;
 
 public class ReedsBlockBehavior extends FloodableBlockBehavior {
 
     @Override
-    public ItemStack toItem(Block block) {
-        return ItemStack.get(ItemTypes.REEDS);
+    public Item toItem(Block block) {
+        return Item.get(ItemIds.REEDS);
     }
 
     @Override
@@ -28,15 +28,15 @@ public class ReedsBlockBehavior extends FloodableBlockBehavior {
     }
 
     @Override
-    public boolean onActivate(Block block, ItemStack item, Player player) {
-        if (item.getType() == ItemTypes.DYE && item.getMetadata(DyeColor.class) == DyeColor.WHITE) { //Bonemeal
+    public boolean onActivate(Block block, Item item, Player player) {
+        if (item.getId() == ItemIds.DYE && item.getMeta() == 0x0F) { //Bonemeal
             int count = 1;
             val level = block.getLevel();
 
             for (int i = 1; i <= 2; i++) {
-                val id = level.getBlockAt(block.getX(), block.getY() - i, block.getZ()).getType();
+                Identifier id = level.getBlockAt(block.getX(), block.getY() - i, block.getZ()).getType();
 
-                if (id == BlockTypes.REEDS) {
+                if (id == BlockIds.REEDS) {
                     count++;
                 }
             }
@@ -48,21 +48,21 @@ public class ReedsBlockBehavior extends FloodableBlockBehavior {
                 for (int i = 1; i <= toGrow; i++) {
                     Block b = block.up(i);
                     if (b.getState() == BlockStates.AIR) {
-                        BlockGrowEvent ev = new BlockGrowEvent(b, BlockState.get(BlockTypes.REEDS));
-                        Server.getInstance().getEventManager().fire(ev);
+                        BlockGrowEvent ev = new BlockGrowEvent(b, BlockState.get(BlockIds.REEDS));
+                        CloudServer.getInstance().getEventManager().fire(ev);
 
                         if (!ev.isCancelled()) {
                             b.set(ev.getNewState(), true);
                             success = true;
                         }
-                    } else if (b.getState().getType() != BlockTypes.REEDS) {
+                    } else if (b.getState().getType() != BlockIds.REEDS) {
                         break;
                     }
                 }
 
                 if (success) {
                     if (player != null && player.getGamemode().isSurvival()) {
-                        player.getInventory().decrementHandCount();
+                        item.decrementCount();
                     }
 
                     level.addParticle(new BoneMealParticle(block.getPosition()));
@@ -78,19 +78,19 @@ public class ReedsBlockBehavior extends FloodableBlockBehavior {
     public int onUpdate(Block block, int type) {
         if (type == Level.BLOCK_UPDATE_NORMAL) {
             BlockState down = block.downState();
-            if (down.inCategory(BlockCategory.TRANSPARENT) && down.getType() != BlockTypes.REEDS) {
+            if (down.inCategory(BlockCategory.TRANSPARENT) && down.getType() != BlockIds.REEDS) {
                 block.getLevel().useBreakOn(block.getPosition());
                 return Level.BLOCK_UPDATE_NORMAL;
             }
         } else if (type == Level.BLOCK_UPDATE_RANDOM) {
-            if (block.downState().getType() != BlockTypes.REEDS) {
+            if (block.downState().getType() != BlockIds.REEDS) {
                 val state = block.getState();
 
                 if (state.ensureTrait(BlockTraits.AGE) == 15) {
                     for (int y = 1; y < 3; ++y) {
                         Block b = block.up(y);
                         if (b.getState() == BlockStates.AIR) {
-                            b.set(BlockState.get(BlockTypes.REEDS));
+                            b.set(BlockState.get(BlockIds.REEDS));
                             break;
                         }
                     }
@@ -106,21 +106,21 @@ public class ReedsBlockBehavior extends FloodableBlockBehavior {
     }
 
     @Override
-    public boolean place(ItemStack item, Block block, Block target, Direction face, Vector3f clickPos, Player player) {
+    public boolean place(Item item, Block block, Block target, Direction face, Vector3f clickPos, Player player) {
         if (block.getState() != BlockStates.AIR) {
             return false;
         }
         Block down = block.down();
         val downType = down.getState().getType();
 
-        if (downType == BlockTypes.REEDS) {
-            return placeBlock(block, BlockState.get(BlockTypes.REEDS));
-        } else if (downType == BlockTypes.GRASS || downType == BlockTypes.DIRT || downType == BlockTypes.SAND) {
+        if (downType == BlockIds.REEDS) {
+            return placeBlock(block, BlockState.get(BlockIds.REEDS));
+        } else if (downType == BlockIds.GRASS || downType == BlockIds.DIRT || downType == BlockIds.SAND) {
             for (Direction direction : Plane.HORIZONTAL) {
                 val sideType = down.getSideState(direction).getType();
 
-                if (sideType == BlockTypes.WATER || sideType == BlockTypes.FLOWING_WATER) {
-                    return placeBlock(block, BlockState.get(BlockTypes.REEDS));
+                if (sideType == BlockIds.WATER || sideType == BlockIds.FLOWING_WATER) {
+                    return placeBlock(block, BlockState.get(BlockIds.REEDS));
                 }
             }
         }

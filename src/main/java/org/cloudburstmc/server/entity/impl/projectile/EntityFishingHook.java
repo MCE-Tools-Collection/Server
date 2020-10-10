@@ -3,9 +3,7 @@ package org.cloudburstmc.server.entity.impl.projectile;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
 import com.nukkitx.protocol.bedrock.packet.EntityEventPacket;
-import lombok.val;
-import org.cloudburstmc.server.Server;
-import org.cloudburstmc.server.block.BlockTypes;
+import org.cloudburstmc.server.CloudServer;
 import org.cloudburstmc.server.entity.Entity;
 import org.cloudburstmc.server.entity.EntityType;
 import org.cloudburstmc.server.entity.EntityTypes;
@@ -15,7 +13,7 @@ import org.cloudburstmc.server.event.entity.EntityDamageByChildEntityEvent;
 import org.cloudburstmc.server.event.entity.EntityDamageByEntityEvent;
 import org.cloudburstmc.server.event.entity.EntityDamageEvent;
 import org.cloudburstmc.server.event.entity.ProjectileHitEvent;
-import org.cloudburstmc.server.item.ItemStack;
+import org.cloudburstmc.server.item.behavior.Item;
 import org.cloudburstmc.server.item.randomitem.Fishing;
 import org.cloudburstmc.server.level.Location;
 import org.cloudburstmc.server.level.MovingObjectPosition;
@@ -23,10 +21,13 @@ import org.cloudburstmc.server.level.particle.BubbleParticle;
 import org.cloudburstmc.server.level.particle.WaterParticle;
 import org.cloudburstmc.server.player.Player;
 import org.cloudburstmc.server.registry.EntityRegistry;
+import org.cloudburstmc.server.utils.Identifier;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static org.cloudburstmc.server.block.BlockIds.AIR;
 
 
 /**
@@ -46,7 +47,7 @@ public class EntityFishingHook extends EntityProjectile implements FishingHook {
 
     public Vector3f fish = null;
 
-    private ItemStack rod;
+    private Item rod;
 
     public EntityFishingHook(EntityType<FishingHook> type, Location location) {
         super(type, location);
@@ -78,11 +79,11 @@ public class EntityFishingHook extends EntityProjectile implements FishingHook {
     }
 
     @Nullable
-    public ItemStack getRod() {
+    public Item getRod() {
         return rod;
     }
 
-    public void setRod(@Nullable ItemStack rod) {
+    public void setRod(@Nullable Item rod) {
         this.rod = rod;
     }
 
@@ -142,8 +143,8 @@ public class EntityFishingHook extends EntityProjectile implements FishingHook {
 
     public int getWaterHeight() {
         for (int y = this.getPosition().getFloorY(); y < 256; y++) {
-            val id = this.getLevel().getBlockAt(getPosition().getFloorX(), y, getPosition().getFloorZ()).getType();
-            if (id == BlockTypes.AIR) {
+            Identifier id = this.getLevel().getBlockAt(getPosition().getFloorX(), y, getPosition().getFloorZ()).getType();
+            if (id == AIR) {
                 return y;
             }
         }
@@ -154,17 +155,17 @@ public class EntityFishingHook extends EntityProjectile implements FishingHook {
         EntityEventPacket hookPacket = new EntityEventPacket();
         hookPacket.setRuntimeEntityId(this.getRuntimeId());
         hookPacket.setType(EntityEventType.FISH_HOOK_TIME);
-        Server.broadcastPacket(this.getViewers(), hookPacket);
+        CloudServer.broadcastPacket(this.getViewers(), hookPacket);
 
         EntityEventPacket bubblePacket = new EntityEventPacket();
         bubblePacket.setRuntimeEntityId(this.getRuntimeId());
         bubblePacket.setType(EntityEventType.FISH_HOOK_BUBBLE);
-        Server.broadcastPacket(this.getViewers(), bubblePacket);
+        CloudServer.broadcastPacket(this.getViewers(), bubblePacket);
 
         EntityEventPacket teasePacket = new EntityEventPacket();
         teasePacket.setRuntimeEntityId(this.getRuntimeId());
         teasePacket.setType(EntityEventType.FISH_HOOK_TEASE);
-        Server.broadcastPacket(this.getViewers(), teasePacket);
+        CloudServer.broadcastPacket(this.getViewers(), teasePacket);
 
         Random random = ThreadLocalRandom.current();
         for (int i = 0; i < 5; i++) {
@@ -202,7 +203,7 @@ public class EntityFishingHook extends EntityProjectile implements FishingHook {
     public void reelLine() {
         Entity owner = this.getOwner();
         if (owner instanceof Player && this.caught) {
-            ItemStack item = Fishing.getFishingResult(this.rod);
+            Item item = Fishing.getFishingResult(this.rod);
             int experience = new Random().nextInt((3 - 1) + 1) + 1;
             Vector3f motion;
 
@@ -226,7 +227,7 @@ public class EntityFishingHook extends EntityProjectile implements FishingHook {
             EntityEventPacket packet = new EntityEventPacket();
             packet.setRuntimeEntityId(this.getRuntimeId());
             packet.setType(EntityEventType.FISH_HOOK_TEASE);
-            Server.broadcastPacket(this.getViewers(), packet);
+            CloudServer.broadcastPacket(this.getViewers(), packet);
         }
         if (!this.closed) {
             this.kill();

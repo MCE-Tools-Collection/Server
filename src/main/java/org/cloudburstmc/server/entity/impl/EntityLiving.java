@@ -12,11 +12,10 @@ import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
 import com.nukkitx.protocol.bedrock.packet.AnimatePacket;
 import com.nukkitx.protocol.bedrock.packet.EntityEventPacket;
-import lombok.val;
-import org.cloudburstmc.server.Server;
+import org.cloudburstmc.api.level.gamerule.GameRules;
+import org.cloudburstmc.server.CloudServer;
 import org.cloudburstmc.server.block.Block;
-import org.cloudburstmc.server.block.BlockType;
-import org.cloudburstmc.server.block.BlockTypes;
+import org.cloudburstmc.server.block.BlockIds;
 import org.cloudburstmc.server.entity.Entity;
 import org.cloudburstmc.server.entity.EntityDamageable;
 import org.cloudburstmc.server.entity.EntityType;
@@ -26,21 +25,21 @@ import org.cloudburstmc.server.event.entity.EntityDamageByChildEntityEvent;
 import org.cloudburstmc.server.event.entity.EntityDamageByEntityEvent;
 import org.cloudburstmc.server.event.entity.EntityDamageEvent;
 import org.cloudburstmc.server.event.entity.EntityDeathEvent;
-import org.cloudburstmc.server.item.ItemStack;
-import org.cloudburstmc.server.item.ItemTypes;
+import org.cloudburstmc.server.item.behavior.Item;
+import org.cloudburstmc.server.item.behavior.ItemTurtleShell;
 import org.cloudburstmc.server.level.Location;
-import org.cloudburstmc.server.level.gamerule.GameRules;
 import org.cloudburstmc.server.math.BlockRayTrace;
 import org.cloudburstmc.server.player.Player;
 import org.cloudburstmc.server.potion.Effect;
+import org.cloudburstmc.server.utils.Identifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static com.nukkitx.protocol.bedrock.data.entity.EntityFlag.BREATHING;
-import static org.cloudburstmc.server.block.BlockTypes.AIR;
-import static org.cloudburstmc.server.block.BlockTypes.MAGMA;
+import static org.cloudburstmc.server.block.BlockIds.AIR;
+import static org.cloudburstmc.server.block.BlockIds.MAGMA;
 
 /**
  * author: MagicDroidX
@@ -92,7 +91,7 @@ public abstract class EntityLiving extends BaseEntity implements EntityDamageabl
             EntityEventPacket pk = new EntityEventPacket();
             pk.setRuntimeEntityId(this.getRuntimeId());
             pk.setType(EntityEventType.RESPAWN);
-            Server.broadcastPacket(this.hasSpawned, pk);
+            CloudServer.broadcastPacket(this.hasSpawned, pk);
         }
     }
 
@@ -145,7 +144,7 @@ public abstract class EntityLiving extends BaseEntity implements EntityDamageabl
             EntityEventPacket pk = new EntityEventPacket();
             pk.setRuntimeEntityId(this.getRuntimeId());
             pk.setType(this.getHealth() <= 0 ? EntityEventType.DEATH : EntityEventType.HURT);
-            Server.broadcastPacket(this.hasSpawned, pk);
+            CloudServer.broadcastPacket(this.hasSpawned, pk);
 
             this.attackTime = source.getAttackCooldown();
 
@@ -181,7 +180,7 @@ public abstract class EntityLiving extends BaseEntity implements EntityDamageabl
         this.server.getEventManager().fire(ev);
 
         if (this.getLevel().getGameRules().get(GameRules.DO_ENTITY_DROPS)) {
-            for (ItemStack item : ev.getDrops()) {
+            for (Item item : ev.getDrops()) {
                 this.getLevel().dropItem(this.getPosition(), item);
             }
         }
@@ -201,7 +200,7 @@ public abstract class EntityLiving extends BaseEntity implements EntityDamageabl
             }
 
             if (this instanceof Player) {
-                if (!isBreathing && ((Player) this).getInventory().getHelmet().getType() == ItemTypes.TURTLE_HELMET) {
+                if (!isBreathing && ((Player) this).getInventory().getHelmet() instanceof ItemTurtleShell) {
                     if (turtleTicks > 0) {
                         isBreathing = true;
                         turtleTicks--;
@@ -222,8 +221,8 @@ public abstract class EntityLiving extends BaseEntity implements EntityDamageabl
                     this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.SUFFOCATION, 1));
                 }
 
-                val block = this.getLevel().getBlockAt(this.getPosition().toInt()).getType();
-                boolean ignore = block == BlockTypes.LADDER || block == BlockTypes.VINE || block == BlockTypes.WEB;
+                Identifier block = this.getLevel().getBlockAt(this.getPosition().toInt()).getType();
+                boolean ignore = block == BlockIds.LADDER || block == BlockIds.VINE || block == BlockIds.WEB;
                 if (ignore || this.hasEffect(Effect.LEVITATION)) {
                     this.resetFallDistance();
                 }
@@ -284,8 +283,8 @@ public abstract class EntityLiving extends BaseEntity implements EntityDamageabl
         }
     }
 
-    public ItemStack[] getDrops() {
-        return new ItemStack[0];
+    public Item[] getDrops() {
+        return new Item[0];
     }
 
     public Block[] getLineOfSight(int maxDistance) {
@@ -293,10 +292,10 @@ public abstract class EntityLiving extends BaseEntity implements EntityDamageabl
     }
 
     public Block[] getLineOfSight(int maxDistance, int maxLength) {
-        return this.getLineOfSight(maxDistance, maxLength, new BlockType[0]);
+        return this.getLineOfSight(maxDistance, maxLength, new Identifier[0]);
     }
 
-    public Block[] getLineOfSight(int maxDistance, int maxLength, BlockType[] transparent) {
+    public Block[] getLineOfSight(int maxDistance, int maxLength, Identifier[] transparent) {
         if (maxDistance > 120) {
             maxDistance = 120;
         }
@@ -319,7 +318,7 @@ public abstract class EntityLiving extends BaseEntity implements EntityDamageabl
                 blocks.remove(0);
             }
 
-            val id = block.getState().getType();
+            Identifier id = block.getState().getType();
 
             if (transparent == null) {
                 if (id != AIR) {
@@ -336,10 +335,10 @@ public abstract class EntityLiving extends BaseEntity implements EntityDamageabl
     }
 
     public Block getTargetBlock(int maxDistance) {
-        return getTargetBlock(maxDistance, new BlockType[0]);
+        return getTargetBlock(maxDistance, new Identifier[0]);
     }
 
-    public Block getTargetBlock(int maxDistance, BlockType[] transparent) {
+    public Block getTargetBlock(int maxDistance, Identifier[] transparent) {
         try {
             Block[] blocks = this.getLineOfSight(maxDistance, 1, transparent);
             Block block = blocks[0];

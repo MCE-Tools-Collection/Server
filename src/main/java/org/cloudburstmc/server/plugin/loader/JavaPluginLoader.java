@@ -3,9 +3,10 @@ package org.cloudburstmc.server.plugin.loader;
 import com.google.inject.Injector;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.val;
+import org.cloudburstmc.api.plugin.*;
 import org.cloudburstmc.server.inject.PluginModule;
-import org.cloudburstmc.server.plugin.*;
+import org.cloudburstmc.server.plugin.CloudPluginContainer;
+import org.cloudburstmc.server.plugin.CloudPluginDependency;
 import org.cloudburstmc.server.plugin.loader.java.JavaPluginClassLoader;
 import org.cloudburstmc.server.plugin.loader.java.JavaPluginDescription;
 import org.cloudburstmc.server.plugin.loader.java.PluginClassVisitor;
@@ -86,10 +87,10 @@ public class JavaPluginLoader implements PluginLoader {
         Path dataDirectory = path.getParent().resolve(description.getId());
         Logger logger = LoggerFactory.getLogger(description.getId());
 
-        val pluginClass = getPluginClass(path, (JavaPluginDescription) description);
-        Injector inj = injector.createChildInjector(new PluginModule(description, logger, dataDirectory, pluginClass));
+        Object plugin = injector.createChildInjector(new PluginModule(description, logger, dataDirectory,
+                getPluginClass(path, (JavaPluginDescription) description)));
 
-        return new CloudPluginContainer(inj.getInstance(pluginClass), description, logger, dataDirectory);
+        return new CloudPluginContainer(plugin, description, logger, dataDirectory);
     }
 
     @Nonnull
