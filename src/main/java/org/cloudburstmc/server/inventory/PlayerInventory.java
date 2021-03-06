@@ -13,6 +13,7 @@ import org.cloudburstmc.server.event.player.PlayerItemHeldEvent;
 import org.cloudburstmc.server.item.behavior.Item;
 import org.cloudburstmc.server.player.Player;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import static org.cloudburstmc.server.block.BlockIds.AIR;
@@ -370,7 +371,7 @@ public class PlayerInventory extends BaseInventory {
             if (player.equals(this.getHolder())) {
                 InventoryContentPacket invPacket = new InventoryContentPacket();
                 invPacket.setContainerId(ContainerId.OFFHAND);
-                invPacket.setContents(Item.toNetwork(new Item[]{offHand}));
+                invPacket.setContents(Item.toNetwork(Arrays.asList(new Item[]{offHand})));
                 player.sendPacket(invPacket);
             } else {
                 player.sendPacket(packet);
@@ -514,9 +515,9 @@ public class PlayerInventory extends BaseInventory {
             }
 
             InventoryContentPacket pk = new InventoryContentPacket();
-            pk.setContents(new ItemData[itemData.length]);
+            pk.setContents(Arrays.asList(new ItemData[itemData.length]));
             for (int i = 0; i < this.getSize(); ++i) {
-                pk.getContents()[i] = itemData[i];
+                pk.getContents().set(i, itemData[i]);
             }
             pk.setContainerId(id);
 
@@ -567,7 +568,7 @@ public class PlayerInventory extends BaseInventory {
         CreativeContentPacket pk = new CreativeContentPacket();
 
         if (!p.isSpectator()) {
-            ItemData[] contents = Item.toNetwork(Item.getCreativeItems());
+            ItemData[] contents = Item.toNetwork(Item.getCreativeItems()).toArray(new ItemData[0]);
 
             for (int i = 0; i < contents.length; i++) {
                 contents[i].setNetId(i + 1);
@@ -578,7 +579,7 @@ public class PlayerInventory extends BaseInventory {
             pk.setContents(new ItemData[0]);
         }
 
-        p.sendPacket(pk);
+        //p.sendPacket(pk);
     }
 
     @Override

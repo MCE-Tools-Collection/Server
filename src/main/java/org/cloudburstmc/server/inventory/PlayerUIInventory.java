@@ -6,6 +6,7 @@ import com.nukkitx.protocol.bedrock.packet.InventoryContentPacket;
 import com.nukkitx.protocol.bedrock.packet.InventorySlotPacket;
 import org.cloudburstmc.server.player.Player;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class PlayerUIInventory extends BaseInventory {
@@ -67,9 +68,9 @@ public class PlayerUIInventory extends BaseInventory {
     @Override
     public void sendContents(Player... target) {
         InventoryContentPacket packet = new InventoryContentPacket();
-        packet.setContents(new ItemData[this.getSize()]);
+        packet.setContents(Arrays.asList(new ItemData[this.getSize()]));
         for (int i = 0; i < this.getSize(); ++i) {
-            packet.getContents()[i] = this.getItem(i).toNetwork();
+            packet.getContents().set(i, this.getItem(i).toNetwork());
         }
 
         for (Player p : target) {

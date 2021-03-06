@@ -495,9 +495,9 @@ public abstract class BaseInventory implements Inventory {
     @Override
     public void sendContents(Player... players) {
         InventoryContentPacket packet = new InventoryContentPacket();
-        packet.setContents(new ItemData[this.getSize()]);
+        packet.setContents(Arrays.asList(new ItemData[this.getSize()]));
         for (int i = 0; i < this.getSize(); ++i) {
-            packet.getContents()[i] = this.getItem(i).toNetwork();
+            packet.getContents().set(i, this.getItem(i).toNetwork());
         }
 
         for (Player player : players) {

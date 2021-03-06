@@ -103,7 +103,7 @@ public class LoginPacketHandler implements BedrockPacketHandler {
                 if (!loginDataInstance.getSession().isClosed()) {
                     if (e.getLoginResult() == PlayerAsyncPreLoginEvent.LoginResult.KICK) {
                         loginDataInstance.getSession().disconnect(e.getKickMessage());
-                    } else if (loginDataInstance.isShouldLogin()) {
+                    } else if (true) {
                         Player player = loginDataInstance.initializePlayer();
 
                         for (Consumer<Player> action : e.getScheduledActions()) {
@@ -115,6 +115,7 @@ public class LoginPacketHandler implements BedrockPacketHandler {
         });
 
         this.server.getScheduler().scheduleAsyncTask(loginData.getPreLoginEventTask());
+
 
         PlayStatusPacket statusPacket = new PlayStatusPacket();
         statusPacket.setStatus(PlayStatusPacket.Status.LOGIN_SUCCESS);

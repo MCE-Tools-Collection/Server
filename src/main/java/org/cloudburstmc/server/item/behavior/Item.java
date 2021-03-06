@@ -235,16 +235,16 @@ public abstract class Item implements Cloneable {
         return items;
     }
 
-    public static ItemData[] toNetwork(List<Item> items) {
+    public static List<ItemData> toNetwork(List<Item> items) {
         return toNetwork(items.toArray(new Item[0]));
     }
 
-    public static ItemData[] toNetwork(Item[] items) {
+    public static List<ItemData> toNetwork(Item[] items) {
         ItemData[] itemData = new ItemData[items.length];
         for (int i = 0; i < items.length; i++) {
             itemData[i] = items[i].toNetwork();
         }
-        return itemData;
+        return Arrays.asList(itemData);
     }
 
     public static Item fromNetwork(ItemData itemData) {
