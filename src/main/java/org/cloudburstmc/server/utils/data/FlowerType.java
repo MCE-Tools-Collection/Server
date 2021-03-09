@@ -12,5 +12,6 @@ public enum FlowerType {
     TULIP_PINK,
     OXEYE,
     CORNFLOWER,
-    LILY_OF_THE_VALLEY
+    LILY_OF_THE_VALLEY,
+    PINK_DAISY
 }

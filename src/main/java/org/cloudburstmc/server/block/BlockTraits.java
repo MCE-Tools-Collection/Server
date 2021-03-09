@@ -31,8 +31,8 @@ public class BlockTraits {
     public static final EnumBlockTrait<BambooStalkThickness> BAMBOO_STALK_THICKNESS = EnumBlockTrait.of("bamboo_stalk_thickness", BambooStalkThickness.class);
     public static final IntegerBlockTrait BITE_COUNTER = IntegerBlockTrait.from("bite_counter", 7);
     public static final EnumBlockTrait<Bucket> CAULDRON_TYPE = EnumBlockTrait.of("cauldron_type", Bucket.class, Bucket.WATER, Bucket.LAVA);
-    public static final IntegerBlockTrait CHORUS_AGE = IntegerBlockTrait.from("chorus_age", "age", 0, 5, 0);
-    public static final IntegerBlockTrait COCOA_AGE = IntegerBlockTrait.from("cocoa_age", "age", 0, 2, 0);
+    public static final IntegerBlockTrait CHORUS_AGE = IntegerBlockTrait.from("chorus_age", "age", 0, 7, 0);
+    public static final IntegerBlockTrait COCOA_AGE = IntegerBlockTrait.from("cocoa_age", "age", 0, 3, 0);
     public static final IntegerBlockTrait CORAL_FAN_DIRECTION = IntegerBlockTrait.from("coral_fan_direction", 2);
     public static final EnumBlockTrait<ChemistryTableType> CHEMISTRY_TABLE_TYPE = EnumBlockTrait.of("chemistry_table_type", ChemistryTableType.class);
     public static final EnumBlockTrait<ChiselType> CHISEL_TYPE = EnumBlockTrait.of("chisel_type", ChiselType.class);
@@ -54,7 +54,8 @@ public class BlockTraits {
     public static final EnumBlockTrait<FlowerType> FLOWER_TYPE = EnumBlockTrait.of("flower_type", FlowerType.class);
     public static final IntegerBlockTrait FLUID_LEVEL = IntegerBlockTrait.from("fluid_level", 8);
     public static final EnumBlockTrait<FluidType> FLUID_TYPE = EnumBlockTrait.of("fluid_type", FluidType.class);
-    public static final IntegerBlockTrait FILL_LEVEL = IntegerBlockTrait.from("fill_level", 7);
+    public static final IntegerBlockTrait FILL_LEVEL = IntegerBlockTrait.from("fill_level", 8);
+    public static final IntegerBlockTrait BEETROOT_GROWTH = IntegerBlockTrait.from("growth", 6);
     public static final IntegerBlockTrait GROWTH = IntegerBlockTrait.from("growth", 8);
     public static final IntegerBlockTrait HEIGHT = IntegerBlockTrait.from("height", 8);
     public static final IntegerBlockTrait HONEY_LEVEL = IntegerBlockTrait.from("honey_level", 6);
@@ -87,22 +88,24 @@ public class BlockTraits {
     public static final EnumBlockTrait<TallGrassType> TALL_GRASS_TYPE = EnumBlockTrait.of("tall_grass_type", TallGrassType.class);
     public static final EnumBlockTrait<TreeSpecies> TREE_SPECIES = EnumBlockTrait.of("tree_species", TreeSpecies.class, TreeSpecies.OAK);
     public static final EnumBlockTrait<TreeSpecies> TREE_SPECIES_OVERWORLD = EnumBlockTrait.of("tree_species", TreeSpecies.class, TreeSpecies.OAK, TreeSpecies.SPRUCE, TreeSpecies.BIRCH, TreeSpecies.JUNGLE, TreeSpecies.ACACIA, TreeSpecies.DARK_OAK);
-    public static final EnumBlockTrait<TreeSpecies> TREE_SPECIES_NETHER = EnumBlockTrait.of("tree_species", TreeSpecies.class, TreeSpecies.CRIMSON, TreeSpecies.WARPED);
+    public static final EnumBlockTrait<TreeSpecies> TREE_SPECIES_NETHER = EnumBlockTrait.of("tree_species", TreeSpecies.class);
     public static final EnumBlockTrait<TurtleEggCount> TURTLE_EGG_COUNT = EnumBlockTrait.of("turtle_egg_count", TurtleEggCount.class);
     public static final IntegerBlockTrait TWISTING_VINES_AGE = IntegerBlockTrait.from("twisting_vines_age", 26);
     public static final IntegerBlockTrait VINE_DIRECTION_BITS = IntegerBlockTrait.from("vine_direction_bits", 16);
     public static final EnumBlockTrait<WallBlockType> WALL_BLOCK_TYPE = EnumBlockTrait.of("wall_block_type", WallBlockType.class);
+
     public static final EnumBlockTrait<WallConnectionType> WALL_CONNECTION_NORTH = EnumBlockTrait.of("wall_connection_north", "wall_connection_type_north", WallConnectionType.class);
     public static final EnumBlockTrait<WallConnectionType> WALL_CONNECTION_EAST = EnumBlockTrait.of("wall_connection_east", "wall_connection_type_east", WallConnectionType.class);
     public static final EnumBlockTrait<WallConnectionType> WALL_CONNECTION_SOUTH = EnumBlockTrait.of("wall_connection_south", "wall_connection_type_south", WallConnectionType.class);
     public static final EnumBlockTrait<WallConnectionType> WALL_CONNECTION_WEST = EnumBlockTrait.of("wall_connection_west", "wall_connection_type_west", WallConnectionType.class);
+
     public static final IntegerBlockTrait WEEPING_VINES_AGE = IntegerBlockTrait.from("weeping_vines_age", 26);
 
     public static final EnumBlockTrait<Axis> AXIS = EnumBlockTrait.of("axis", "pillar_axis", Axis.class, Axis.Y, Axis.X, Axis.Z);
     public static final EnumBlockTrait<Direction.Axis> PORTAL_AXIS = EnumBlockTrait.of("portal_axis", Direction.Axis.class,
             Direction.Axis.Y, //TODO: this was null
             Direction.Axis.X, Direction.Axis.Z);
-    public static final EnumBlockTrait<Direction> FACING_DIRECTION = EnumBlockTrait.of("facing_direction", Direction.class, Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
+    public static final EnumBlockTrait<Direction> FACING_DIRECTION = EnumBlockTrait.of("facing_direction", Direction.class, Direction.UP, Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
     public static final EnumBlockTrait<CardinalDirection> ADVENTURE_DIRECTION = EnumBlockTrait.of("adventure_facing_direction", CardinalDirection.class, CardinalDirection.NORTH, CardinalDirection.NORTHEAST, CardinalDirection.EAST, CardinalDirection.SOUTHEAST, CardinalDirection.SOUTH, CardinalDirection.SOUTHWEST, CardinalDirection.WEST, CardinalDirection.NORTHWEST);
     public static final EnumBlockTrait<Direction> DIRECTION = EnumBlockTrait.of("direction", Direction.class, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
     public static final EnumBlockTrait<RailDirection> RAIL_DIRECTION = EnumBlockTrait.of("rail_direction", RailDirection.class);

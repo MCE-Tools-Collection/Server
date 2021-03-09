@@ -79,12 +79,12 @@ public class BlockBehaviorWall extends BlockBehaviorTransparent {
             boolean transparent = state.inCategory(BlockCategory.TRANSPARENT);
             boolean solid = state.inCategory(BlockCategory.SOLID);
 
-            WallConnectionType connectType = upState.inCategory(BlockCategory.SOLID) ? WallConnectionType.TALL : WallConnectionType.SHORT;
+            WallConnectionType connectType = WallConnectionType.TRUE;
 
             if (wall || solid && !transparent) {
                 connections.put(face, connectType);
             } else {
-                connections.put(face, WallConnectionType.NONE);
+                connections.put(face, WallConnectionType.FALSE);
             }
         }
 

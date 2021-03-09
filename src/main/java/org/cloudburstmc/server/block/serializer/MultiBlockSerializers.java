@@ -79,8 +79,8 @@ public class MultiBlockSerializers {
             .add(BedrockStateTags.TAG_OLD_LOG_TYPE, BlockIds.LOG)
             .add(BedrockStateTags.TAG_NEW_LOG_TYPE, TreeSpecies.ACACIA.name().toLowerCase(), LOG2)
             .add(BedrockStateTags.TAG_NEW_LOG_TYPE, TreeSpecies.DARK_OAK.name().toLowerCase(), LOG2)
-            .add(BedrockStateTags.TAG_NEW_LOG_TYPE, TreeSpecies.WARPED.name().toLowerCase(), WARPED_STEM, true)
-            .add(BedrockStateTags.TAG_NEW_LOG_TYPE, TreeSpecies.CRIMSON.name().toLowerCase(), CRIMSON_STEM, true)
+            //.add(BedrockStateTags.TAG_NEW_LOG_TYPE, TreeSpecies.WARPED.name().toLowerCase(), WARPED_STEM, true)
+            //.add(BedrockStateTags.TAG_NEW_LOG_TYPE, TreeSpecies.CRIMSON.name().toLowerCase(), CRIMSON_STEM, true)
             .add(
                     STRIPPED_OAK_LOG,
                     Builder.combine(BedrockStateTags.TAG_OLD_LOG_TYPE, TreeSpecies.OAK.name().toLowerCase(), true),
@@ -111,16 +111,6 @@ public class MultiBlockSerializers {
                     Builder.combine(BedrockStateTags.TAG_NEW_LOG_TYPE, TreeSpecies.DARK_OAK.name().toLowerCase(), true),
                     Builder.combine(BedrockStateTags.TAG_STRIPPED_BIT, true, true)
             )
-            .add(
-                    STRIPPED_CRIMSON_STEM,
-                    Builder.combine(BedrockStateTags.TAG_NEW_LOG_TYPE, TreeSpecies.CRIMSON.name().toLowerCase(), true),
-                    Builder.combine(BedrockStateTags.TAG_STRIPPED_BIT, true, true)
-            )
-            .add(
-                    STRIPPED_WARPED_STEM,
-                    Builder.combine(BedrockStateTags.TAG_NEW_LOG_TYPE, TreeSpecies.WARPED.name().toLowerCase(), true),
-                    Builder.combine(BedrockStateTags.TAG_STRIPPED_BIT, true, true)
-            )
             .baseSerializer(DeprecatedSerializer.INSTANCE)
             .buildSerializer();
 
@@ -136,8 +126,6 @@ public class MultiBlockSerializers {
 //            .buildSerializer();
 
     public static final MultiBlockSerializer PLANKS = builder()
-            .add(BedrockStateTags.TAG_WOOD_TYPE, TreeSpecies.WARPED.name().toLowerCase(), WARPED_PLANKS, true)
-            .add(BedrockStateTags.TAG_WOOD_TYPE, TreeSpecies.CRIMSON.name().toLowerCase(), CRIMSON_PLANKS, true)
             .defaultId(BlockIds.PLANKS)
             .buildSerializer();
 
@@ -147,9 +135,7 @@ public class MultiBlockSerializers {
             BIRCH_STAIRS,
             JUNGLE_STAIRS,
             ACACIA_STAIRS,
-            DARK_OAK_STAIRS,
-            CRIMSON_STAIRS,
-            WARPED_STAIRS
+            DARK_OAK_STAIRS
     );
 
     public static final MultiBlockSerializer WOOD_BUTTON = buildTreeSpecies(BedrockStateTags.TAG_WOOD_TYPE,
@@ -158,9 +144,7 @@ public class MultiBlockSerializers {
             BIRCH_BUTTON,
             JUNGLE_BUTTON,
             ACACIA_BUTTON,
-            DARK_OAK_BUTTON,
-            CRIMSON_BUTTON,
-            WARPED_BUTTON
+            DARK_OAK_BUTTON
     );
 
     public static final MultiBlockSerializer WOOD_DOOR = buildTreeSpecies(BedrockStateTags.TAG_WOOD_TYPE,
@@ -169,9 +153,7 @@ public class MultiBlockSerializers {
             BIRCH_DOOR,
             JUNGLE_DOOR,
             ACACIA_DOOR,
-            DARK_OAK_DOOR,
-            CRIMSON_DOOR,
-            WARPED_DOOR
+            DARK_OAK_DOOR
     );
 
     public static final MultiBlockSerializer WOOD_FENCE_GATE = buildTreeSpecies(BedrockStateTags.TAG_WOOD_TYPE,
@@ -180,9 +162,7 @@ public class MultiBlockSerializers {
             BIRCH_FENCE_GATE,
             JUNGLE_FENCE_GATE,
             ACACIA_FENCE_GATE,
-            DARK_OAK_FENCE_GATE,
-            CRIMSON_FENCE_GATE,
-            WARPED_FENCE_GATE
+            DARK_OAK_FENCE_GATE
     );
 
     public static final MultiBlockSerializer WOOD_PRESSURE_PLATE = buildTreeSpecies(BedrockStateTags.TAG_WOOD_TYPE,
@@ -191,9 +171,7 @@ public class MultiBlockSerializers {
             BIRCH_PRESSURE_PLATE,
             JUNGLE_PRESSURE_PLATE,
             ACACIA_PRESSURE_PLATE,
-            DARK_OAK_PRESSURE_PLATE,
-            CRIMSON_PRESSURE_PLATE,
-            WARPED_PRESSURE_PLATE
+            DARK_OAK_PRESSURE_PLATE
     );
 
     public static final MultiBlockSerializer WOOD_STANDING_SIGN = buildTreeSpecies(BedrockStateTags.TAG_WOOD_TYPE,
@@ -202,9 +180,7 @@ public class MultiBlockSerializers {
             BIRCH_STANDING_SIGN,
             JUNGLE_STANDING_SIGN,
             ACACIA_STANDING_SIGN,
-            DARK_OAK_STANDING_SIGN,
-            CRIMSON_STANDING_SIGN,
-            WARPED_STANDING_SIGN
+            DARK_OAK_STANDING_SIGN
     );
 
     public static final MultiBlockSerializer WOOD_TRAPDOOR = buildTreeSpecies(BedrockStateTags.TAG_WOOD_TYPE,
@@ -213,9 +189,7 @@ public class MultiBlockSerializers {
             BIRCH_TRAPDOOR,
             JUNGLE_TRAPDOOR,
             ACACIA_TRAPDOOR,
-            DARK_OAK_TRAPDOOR,
-            CRIMSON_TRAPDOOR,
-            WARPED_TRAPDOOR
+            DARK_OAK_TRAPDOOR
     );
 
     public static final MultiBlockSerializer WOOD_WALL_SIGN = buildTreeSpecies(BedrockStateTags.TAG_WOOD_TYPE,
@@ -224,57 +198,21 @@ public class MultiBlockSerializers {
             BIRCH_WALL_SIGN,
             JUNGLE_WALL_SIGN,
             ACACIA_WALL_SIGN,
-            DARK_OAK_WALL_SIGN,
-            CRIMSON_WALL_SIGN,
-            WARPED_WALL_SIGN
+            DARK_OAK_WALL_SIGN
     );
 
     public static final MultiBlockSerializer WOOD_FENCE = builder()
-            .add(BedrockStateTags.TAG_WOOD_TYPE, TreeSpecies.WARPED.name().toLowerCase(), WARPED_FENCE, true)
-            .add(BedrockStateTags.TAG_WOOD_TYPE, TreeSpecies.CRIMSON.name().toLowerCase(), CRIMSON_FENCE, true)
             .defaultId(BlockIds.FENCE)
             .buildSerializer();
 
     public static final MultiBlockSerializer WOOD = builder()
-            .add(
-                    WARPED_HYPHAE,
-                    Builder.combine(BedrockStateTags.TAG_WOOD_TYPE, TreeSpecies.WARPED.name().toLowerCase(), true),
-                    Builder.combine(BedrockStateTags.TAG_STRIPPED_BIT, false, true)
-            )
-            .add(
-                    CRIMSON_HYPHAE,
-                    Builder.combine(BedrockStateTags.TAG_WOOD_TYPE, TreeSpecies.CRIMSON.name().toLowerCase(), true),
-                    Builder.combine(BedrockStateTags.TAG_STRIPPED_BIT, false, true)
-            )
-            .add(
-                    STRIPPED_CRIMSON_HYPHAE,
-                    Builder.combine(BedrockStateTags.TAG_WOOD_TYPE, TreeSpecies.CRIMSON.name().toLowerCase(), true),
-                    Builder.combine(BedrockStateTags.TAG_STRIPPED_BIT, true, true)
-            )
-            .add(
-                    STRIPPED_WARPED_HYPHAE,
-                    Builder.combine(BedrockStateTags.TAG_WOOD_TYPE, TreeSpecies.WARPED.name().toLowerCase(), true),
-                    Builder.combine(BedrockStateTags.TAG_STRIPPED_BIT, true, true)
-            )
             .defaultId(BlockIds.WOOD)
             .baseSerializer(DeprecatedSerializer.INSTANCE)
             .buildSerializer();
 
     public static final MultiBlockSerializer WOODEN_SLAB = builder()
             .removeTrait("slab_slot")
-            .add(BedrockStateTags.TAG_WOOD_TYPE, TreeSpecies.WARPED.name().toLowerCase(), WARPED_SLAB, true)
-            .add(BedrockStateTags.TAG_WOOD_TYPE, TreeSpecies.CRIMSON.name().toLowerCase(), CRIMSON_SLAB, true)
             .add(DOUBLE_WOODEN_SLAB, Builder.combine("slab_slot"))
-            .add(
-                    CRIMSON_DOUBLE_SLAB,
-                    Builder.combine(BedrockStateTags.TAG_WOOD_TYPE, TreeSpecies.CRIMSON.name().toLowerCase(), true),
-                    Builder.combine("slab_slot")
-            )
-            .add(
-                    WARPED_DOUBLE_SLAB,
-                    Builder.combine(BedrockStateTags.TAG_WOOD_TYPE, TreeSpecies.WARPED.name().toLowerCase(), true),
-                    Builder.combine("slab_slot")
-            )
             .baseSerializer(NoopBlockSerializer.INSTANCE)
             .defaultId(BlockIds.WOODEN_SLAB)
             .buildSerializer();
@@ -413,25 +351,9 @@ public class MultiBlockSerializers {
             .add("element_type", ElementType.class, (e) -> Identifier.fromString(e.name().toLowerCase()), true)
             .buildSerializer();
 
-    public static final MultiBlockSerializer NYLIUM = buildTrait("wood_type", BlockTraits.TREE_SPECIES_NETHER,
-            CRIMSON_NYLIUM,
-            WARPED_NYLIUM
-    );
-
-    public static final MultiBlockSerializer WART_BLOCK = buildTrait("wood_type", BlockTraits.TREE_SPECIES_NETHER,
-            NETHER_WART_BLOCK,
-            WARPED_WART_BLOCK
-    );
-
-    public static final MultiBlockSerializer ROOTS = buildTrait("wood_type", BlockTraits.TREE_SPECIES_NETHER,
-            CRIMSON_ROOTS,
-            WARPED_ROOTS
-    );
-
-    public static final MultiBlockSerializer FUNGUS = buildTrait("wood_type", BlockTraits.TREE_SPECIES_NETHER,
-            CRIMSON_FUNGUS,
-            WARPED_FUNGUS
-    );
+    //public static final MultiBlockSerializer WART_BLOCK = buildTrait("wood_type", BlockTraits.TREE_SPECIES_NETHER,
+    //        NETHER_WART_BLOCK
+    //);
 
 
     public static MultiBlockSerializer buildTreeSpecies(String traitName, Identifier... ids) {

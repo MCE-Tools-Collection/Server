@@ -102,6 +102,11 @@ public class BlockPalette {
         sortedPalette.forEach((id, states) -> {
             for (BlockState state : states) {
                 int runtimeId = runtimeIdAllocator.getAndIncrement();
+
+                /*
+                MC:Earths' switch-case of shame
+                needed to successfully initialize runtime id palette since they leave some gaps
+                 */
                 switch (runtimeId) {
                     case 126:
                         runtimeIdAllocator.addAndGet(10);
@@ -111,23 +116,41 @@ public class BlockPalette {
 
                     case 213: // Bamboo
                     case 229: // Bamboo Sapling
-                    //case 245: // Barrel
-                    //case 443: // Terracotta
+                    case 245: // Barrel
+                    case 443: // Bone Block
+                    case 583:
+                    case 1060: // Dispenser, FACING_DIRECTION
                         runtimeIdAllocator.addAndGet(3);
                         runtimeId = runtimeIdAllocator.getAndIncrement();
                         break;
 
-                    //case 405: // Birch Wall Sign/Black Terracotta
-                    //case 417: // Blast Furnace
-                    //    runtimeIdAllocator.addAndGet(1);
-                    //    runtimeId = runtimeIdAllocator.getAndIncrement();
-                    //    break;
+                    case 405: // Birch Wall Sign/Black Terracotta
+                    case 417: // Blast Furnace
+                    case 269: // Beetroot/Bedrock
+                    case 466: // Stairs -> Terracotta
+                    case 610: // Chest, FACING_DIRECTION
+                    case 1034: // DIamond Block/Detector Rail
+                        runtimeIdAllocator.addAndGet(1);
+                        runtimeId = runtimeIdAllocator.getAndIncrement();
+                        break;
+
+                    case 693: // Command Block/Composter, thought also FACING_DIRECTION but a +18 jump?
+                        runtimeIdAllocator.addAndGet(18);
+                        runtimeId = runtimeIdAllocator.getAndIncrement();
+                        break;
+
+                    case 842: // Coral Fan Hang
+                        runtimeIdAllocator.addAndGet(16);
+                        runtimeId = runtimeIdAllocator.getAndIncrement();
+                        break;
 
 
                     default:
                         break;
                 }
+
                 log.debug("RuntimeID: " + runtimeId + " BlockState: " + state);
+
                 this.runtimeStateMap.put(runtimeId, state);
                 this.stateRuntimeMap.put(state, runtimeId);
             }

@@ -409,7 +409,7 @@ public class BlockRegistry implements Registry {
         this.registerVanilla(WATERLILY, new BlockBehaviorWaterLily()); //111
         this.registerVanilla(NETHER_BRICK, new BlockBehaviorBricksNether(), MultiBlockSerializers.NETHER_BRICKS, BlockTraits.NETHER_BRICK_TYPE); //112
         this.registerVanilla(NETHER_BRICK_FENCE, new BlockBehaviorFenceNetherBrick()); //113
-        this.registerVanilla(NETHER_WART, new BlockBehaviorNetherWart(), BlockTraits.WART_GROWTH); //115
+        this.registerVanilla(NETHER_WART, new BlockBehaviorNetherWart(), BlockTraits.WART_GROWTH); //115 TODO: Possibly add again, but currently broken and should be unused.
         this.registerVanilla(ENCHANTING_TABLE, new BlockBehaviorEnchantingTable()); //116
         this.registerVanilla(BREWING_STAND, new BlockBehaviorBrewingStand(), BlockTraits.IS_BREWING_C, BlockTraits.IS_BREWING_A, BlockTraits.IS_BREWING_B); //117
         this.registerVanilla(CAULDRON, new BlockBehaviorCauldron(), MultiBlockSerializers.CAULDRON, BlockTraits.FILL_LEVEL, BlockTraits.FLUID_TYPE, BlockTraits.CAULDRON_TYPE); //118
@@ -428,7 +428,8 @@ public class BlockRegistry implements Registry {
         this.registerVanilla(EMERALD_BLOCK, new BlockBehaviorEmerald()); //133
         this.registerVanilla(COMMAND_BLOCK, NoopBlockBehavior.INSTANCE, BlockTraits.IS_CONDITIONAL, BlockTraits.FACING_DIRECTION);
         this.registerVanilla(BEACON, new BlockBehaviorBeacon()); //138
-        this.registerVanilla(STONE_WALL, new BlockBehaviorWall(), MultiBlockSerializers.WALL, BlockTraits.WALL_CONNECTION_EAST, BlockTraits.HAS_POST, BlockTraits.WALL_CONNECTION_SOUTH, BlockTraits.WALL_CONNECTION_WEST, BlockTraits.WALL_CONNECTION_NORTH, BlockTraits.WALL_BLOCK_TYPE); //139
+        //this.registerVanilla(STONE_WALL, new BlockBehaviorWall(), MultiBlockSerializers.WALL, BlockTraits.WALL_CONNECTION_EAST, BlockTraits.HAS_POST, BlockTraits.WALL_CONNECTION_SOUTH, BlockTraits.WALL_CONNECTION_WEST, BlockTraits.WALL_CONNECTION_NORTH, BlockTraits.WALL_BLOCK_TYPE); //139
+        this.registerVanilla(STONE_WALL, new BlockBehaviorWall(), MultiBlockSerializers.WALL, BlockTraits.WALL_CONNECTION_EAST, BlockTraits.WALL_CONNECTION_NORTH,BlockTraits.WALL_CONNECTION_SOUTH,BlockTraits.WALL_CONNECTION_WEST, BlockTraits.WALL_BLOCK_TYPE);
         this.registerVanilla(FLOWER_POT, new BlockBehaviorFlowerPot(), BlockTraits.HAS_UPDATE); //140
         this.registerVanilla(CARROTS, new BlockBehaviorCarrot(), BlockTraits.GROWTH); //141
         this.registerVanilla(POTATOES, new BlockBehaviorPotato(), BlockTraits.GROWTH); //142
@@ -479,10 +480,10 @@ public class BlockRegistry implements Registry {
         this.registerVanilla(END_ROD, new BlockBehaviorEndRod(), BlockTraits.FACING_DIRECTION); //208
         this.registerVanilla(END_GATEWAY, new BlockBehaviorEndGateway()); //209
         //this.registerVanilla(ALLOW, NoopBlockBehavior.INSTANCE); //210
-        this.registerVanilla(DENY, NoopBlockBehavior.INSTANCE);
+        //this.registerVanilla(DENY, NoopBlockBehavior.INSTANCE);
         //this.registerVanilla(BORDER_BLOCK, NoopBlockBehavior.INSTANCE, BlockTraits.WALL_CONNECTION_EAST, BlockTraits.HAS_POST, BlockTraits.WALL_CONNECTION_SOUTH, BlockTraits.WALL_CONNECTION_WEST, BlockTraits.WALL_CONNECTION_NORTH);
         this.registerVanilla(MAGMA, new BlockBehaviorMagma()); //213
-        this.registerVanilla(NETHER_WART_BLOCK, new BlockNetherWartBlockBehavior(), MultiBlockSerializers.WART_BLOCK, BlockTraits.TREE_SPECIES_NETHER); //214
+        //this.registerVanilla(NETHER_WART_BLOCK, new BlockNetherWartBlockBehavior(), MultiBlockSerializers.WART_BLOCK, BlockTraits.TREE_SPECIES_NETHER); //214
         this.registerVanilla(BONE_BLOCK, new BlockBehaviorBone(), BlockTraits.DEPRECATED, BlockTraits.AXIS); //216
         this.registerVanilla(STRUCTURE_VOID, NoopBlockBehavior.INSTANCE, BlockTraits.STRUCTURE_VOID_TYPE);
         this.registerVanilla(SHULKER_BOX, new BlockBehaviorShulkerBox(), BlockTraits.COLOR); //218
@@ -495,7 +496,7 @@ public class BlockRegistry implements Registry {
         this.registerVanilla(STAINED_GLASS, new BlockBehaviorGlassStained(), BlockTraits.COLOR); //241
         this.registerVanilla(CAMERA, NoopBlockBehavior.INSTANCE);
         this.registerVanilla(PODZOL, new BlockBehaviorPodzol()); //243
-        this.registerVanilla(BEETROOT, new BlockBehaviorBeetroot(), BlockTraits.GROWTH); //244
+        this.registerVanilla(BEETROOT, new BlockBehaviorBeetroot(), BlockTraits.BEETROOT_GROWTH); //244
         this.registerVanilla(STONECUTTER); //245
         this.registerVanilla(GLOWING_OBSIDIAN, new BlockBehaviorObsidianGlowing()); //246
         this.registerVanilla(NETHER_REACTOR, NoopBlockBehavior.INSTANCE);
@@ -554,7 +555,7 @@ public class BlockRegistry implements Registry {
         //this.registerVanilla(NETHER_FUNGUS, NoopBlockBehavior.INSTANCE, MultiBlockSerializers.FUNGUS, BlockTraits.TREE_SPECIES_NETHER);//482
         this.registerVanilla(SHROOMLIGHT, NoopBlockBehavior.INSTANCE);//484
         this.registerVanilla(WEEPING_VINES, NoopBlockBehavior.INSTANCE, BlockTraits.WEEPING_VINES_AGE);//485
-        this.registerVanilla(NETHER_NYLIUM, NoopBlockBehavior.INSTANCE, MultiBlockSerializers.NYLIUM, BlockTraits.TREE_SPECIES_NETHER);//486
+        //this.registerVanilla(NETHER_NYLIUM, NoopBlockBehavior.INSTANCE, MultiBlockSerializers.NYLIUM, BlockTraits.TREE_SPECIES_NETHER);//486
         //this.registerVanilla(BASALT, NoopBlockBehavior.INSTANCE, BlockTraits.AXIS);//490
         //this.registerVanilla(POLISHED_BASALT, NoopBlockBehavior.INSTANCE, BlockTraits.AXIS);//590
         //this.registerVanilla(SOUL_SOIL, NoopBlockBehavior.INSTANCE);//491

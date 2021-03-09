@@ -9,9 +9,9 @@ import org.cloudburstmc.server.utils.Identifier;
 @Getter
 public enum NetherBrickType {
     DEFAULT(BlockIds.NETHER_BRICK),
-    RED(BlockIds.RED_NETHER_BRICK),
-    CHISELED(BlockIds.CHISELED_NETHER_BRICKS),
-    CRACKED(BlockIds.CRACKED_NETHER_BRICKS);
+    RED(BlockIds.RED_NETHER_BRICK);
+    //CHISELED(BlockIds.CHISELED_NETHER_BRICKS),
+    //CRACKED(BlockIds.CRACKED_NETHER_BRICKS);
 
     private final Identifier id;
 }

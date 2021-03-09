@@ -9,6 +9,6 @@ public enum TreeSpecies implements NonSerializable {
     JUNGLE,
     ACACIA,
     DARK_OAK,
-    CRIMSON,
-    WARPED
+    //CRIMSON,
+    //WARPED
 }
