@@ -3,23 +3,24 @@ package org.cloudburstmc.server.item.behavior;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.server.CloudServer;
+import lombok.val;
 import org.cloudburstmc.server.entity.EntityTypes;
 import org.cloudburstmc.server.entity.impl.projectile.EntityProjectile;
 import org.cloudburstmc.server.entity.projectile.ThrownTrident;
 import org.cloudburstmc.server.event.entity.EntityShootBowEvent;
 import org.cloudburstmc.server.event.entity.ProjectileLaunchEvent;
+import org.cloudburstmc.server.item.ItemStack;
 import org.cloudburstmc.server.level.Location;
 import org.cloudburstmc.server.player.Player;
 import org.cloudburstmc.server.registry.EntityRegistry;
-import org.cloudburstmc.server.utils.Identifier;
 
 /**
  * Created by PetteriM1
  */
-public class ItemTrident extends ItemTool {
+public class ItemTridentBehavior extends ItemToolBehavior {
 
-    public ItemTrident(Identifier id) {
-        super(id);
+    public ItemTridentBehavior() {
+        super(null, null);
     }
 
     @Override
@@ -33,18 +34,18 @@ public class ItemTrident extends ItemTool {
     }
 
     @Override
-    public int getAttackDamage() {
+    public int getAttackDamage(ItemStack item) {
         return 9;
     }
 
     @Override
-    public boolean onClickAir(Player player, Vector3f directionVector) {
+    public boolean onClickAir(ItemStack item, Vector3f directionVector, Player player) {
         return true;
     }
 
     @Override
-    public boolean onRelease(Player player, int ticksUsed) {
-        this.useOn(player);
+    public ItemStack onRelease(ItemStack item, int ticksUsed, Player player) {
+        val r = this.useOn(item, player);
 
         Vector3f motion = Vector3f.from(
                 -Math.sin(player.getYaw() / 180 * Math.PI) * Math.cos(player.getPitch() / 180 * Math.PI),
@@ -61,9 +62,9 @@ public class ItemTrident extends ItemTool {
         trident.setShooter(player);
         trident.setCritical(f == 2);
         trident.setMotion(motion);
-        trident.setTrident(this);
+        trident.setTrident(item);
 
-        EntityShootBowEvent entityShootBowEvent = new EntityShootBowEvent(player, this, trident, f);
+        EntityShootBowEvent entityShootBowEvent = new EntityShootBowEvent(player, item, trident, f);
 
         if (f < 0.1 || ticksUsed < 5) {
             entityShootBowEvent.setCancelled();
@@ -83,13 +84,12 @@ public class ItemTrident extends ItemTool {
                     entityShootBowEvent.getProjectile().spawnToAll();
                     player.getLevel().addLevelSoundEvent(player.getPosition(), SoundEvent.ITEM_TRIDENT_THROW);
                     if (!player.isCreative()) {
-                        this.decrementCount();
-                        player.getInventory().setItemInHand(this);
+                        player.getInventory().decrementHandCount();
                     }
                 }
             }
         }
 
-        return true;
+        return r;
     }
 }

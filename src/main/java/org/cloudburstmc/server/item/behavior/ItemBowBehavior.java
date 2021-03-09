@@ -3,30 +3,33 @@ package org.cloudburstmc.server.item.behavior;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.server.CloudServer;
+import lombok.val;
+import org.cloudburstmc.server.enchantment.EnchantmentInstance;
+import org.cloudburstmc.server.enchantment.EnchantmentTypes;
 import org.cloudburstmc.server.entity.Entity;
 import org.cloudburstmc.server.entity.EntityTypes;
 import org.cloudburstmc.server.entity.impl.projectile.EntityArrow;
 import org.cloudburstmc.server.entity.projectile.Arrow;
 import org.cloudburstmc.server.event.entity.EntityShootBowEvent;
 import org.cloudburstmc.server.event.entity.ProjectileLaunchEvent;
-import org.cloudburstmc.server.item.enchantment.Enchantment;
+import org.cloudburstmc.server.item.ItemStack;
+import org.cloudburstmc.server.item.data.Damageable;
 import org.cloudburstmc.server.level.Location;
 import org.cloudburstmc.server.player.Player;
 import org.cloudburstmc.server.registry.EntityRegistry;
-import org.cloudburstmc.server.utils.Identifier;
 
 import java.util.Random;
 
-import static org.cloudburstmc.server.item.behavior.ItemIds.ARROW;
+import static org.cloudburstmc.server.item.ItemTypes.ARROW;
 
 /**
  * author: MagicDroidX
  * Nukkit Project
  */
-public class ItemBow extends ItemTool {
+public class ItemBowBehavior extends ItemToolBehavior {
 
-    public ItemBow(Identifier id) {
-        super(id);
+    public ItemBowBehavior() {
+        super(null, null);
     }
 
     @Override
@@ -35,32 +38,32 @@ public class ItemBow extends ItemTool {
     }
 
     @Override
-    public int getEnchantAbility() {
+    public int getEnchantAbility(ItemStack item) {
         return 1;
     }
 
     @Override
-    public boolean onClickAir(Player player, Vector3f directionVector) {
-        return player.getInventory().contains(Item.get(ARROW)) || player.isCreative();
+    public boolean onClickAir(ItemStack item, Vector3f directionVector, Player player) {
+        return player.getInventory().contains(ItemStack.get(ARROW)) || player.isCreative();
     }
 
     @Override
-    public boolean onRelease(Player player, int ticksUsed) {
-        Item itemArrow = Item.get(ARROW, 0, 1);
+    public ItemStack onRelease(ItemStack item, int ticksUsed, Player player) {
+        ItemStack itemArrow = ItemStack.get(ARROW);
 
-        if (player.isSurvival() && !player.getInventory().contains(itemArrow)) {
+        if ((player.isAdventure() || player.isSurvival()) && !player.getInventory().contains(itemArrow)) {
             player.getInventory().sendContents(player);
-            return false;
+            return null;
         }
 
         float damage = 2;
 
-        Enchantment bowDamage = this.getEnchantment(Enchantment.ID_BOW_POWER);
+        EnchantmentInstance bowDamage = item.getEnchantment(EnchantmentTypes.BOW_POWER);
         if (bowDamage != null && bowDamage.getLevel() > 0) {
             damage += 0.25f * (bowDamage.getLevel() + 1);
         }
 
-        Enchantment flameEnchant = this.getEnchantment(Enchantment.ID_BOW_FLAME);
+        EnchantmentInstance flameEnchant = item.getEnchantment(EnchantmentTypes.BOW_FLAME);
         boolean flame = flameEnchant != null && flameEnchant.getLevel() > 0;
 
         Vector3f position = Vector3f.from(player.getX(), player.getY() + player.getEyeHeight(), player.getZ());
@@ -83,7 +86,7 @@ public class ItemBow extends ItemTool {
         arrow.setCritical(f == 2);
         arrow.setOwner(player);
 
-        EntityShootBowEvent entityShootBowEvent = new EntityShootBowEvent(player, this, arrow, f);
+        EntityShootBowEvent entityShootBowEvent = new EntityShootBowEvent(player, item, arrow, f);
 
         if (f < 0.1 || ticksUsed < 3) {
             entityShootBowEvent.setCancelled();
@@ -95,24 +98,28 @@ public class ItemBow extends ItemTool {
             player.getInventory().sendContents(player);
         } else {
             entityShootBowEvent.getProjectile().setMotion(entityShootBowEvent.getProjectile().getMotion().mul(entityShootBowEvent.getForce()));
-            Enchantment infinityEnchant = this.getEnchantment(Enchantment.ID_BOW_INFINITY);
+            EnchantmentInstance infinityEnchant = item.getEnchantment(EnchantmentTypes.BOW_INFINITY);
             boolean infinity = infinityEnchant != null && infinityEnchant.getLevel() > 0;
             Entity projectile;
             if (infinity && (projectile = entityShootBowEvent.getProjectile()) instanceof Arrow) {
                 ((EntityArrow) projectile).setPickupMode(EntityArrow.PICKUP_CREATIVE);
             }
-            if (player.isSurvival()) {
+            if (player.isAdventure() || player.isSurvival()) {
                 if (!infinity) {
                     player.getInventory().removeItem(itemArrow);
                 }
-                if (!this.isUnbreakable()) {
-                    Enchantment durability = this.getEnchantment(Enchantment.ID_DURABILITY);
-                    if (!(durability != null && durability.getLevel() > 0 && (100 / (durability.getLevel() + 1)) <= new Random().nextInt(100))) {
-                        this.setMeta(this.getMeta() + 1);
-                        if (this.getMeta() >= getMaxDurability()) {
-                            this.decrementCount();
+                if (!this.isUnbreakable(item)) {
+                    val dmg = item.getMetadata(Damageable.class);
+                    if (dmg != null) {
+                        EnchantmentInstance durability = item.getEnchantment(EnchantmentTypes.DURABILITY);
+                        if (!(durability != null && durability.getLevel() > 0 && (100 / (durability.getLevel() + 1)) <= new Random().nextInt(100))) {
+                            if (dmg.getDurability() + 1 >= getMaxDurability()) {
+                                item = item.decrementAmount();
+                            } else {
+                                item = item.withData(dmg.damage());
+                            }
+                            player.getInventory().setItemInHand(item);
                         }
-                        player.getInventory().setItemInHand(this);
                     }
                 }
             }
@@ -128,6 +135,6 @@ public class ItemBow extends ItemTool {
             }
         }
 
-        return true;
+        return null;
     }
 }

@@ -1048,7 +1048,7 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
                         }
 
                         if (serverItem.getBehavior().onClickAir(serverItem, directionVector, player)) {
-                            if (player.isSurvival()) {
+                            if (player.getGamemode().isSurvival()) {
                                 player.getInventory().setItemInHand(serverItem);
                             }
 
@@ -1131,7 +1131,7 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
                         } else if (target instanceof Player) {
                             if (((Player) target).getGamemode() != GameMode.SURVIVAL) {
                                 break;
-                            } else if (!player.getServer().getPropertyBoolean("pvp")) {
+                            } else if (!player.getServer().getConfig().isPVP()) {
                                 break;
                             }
                         }
