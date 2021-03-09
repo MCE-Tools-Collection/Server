@@ -6,9 +6,27 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class BlockStates {
 
+    public static final BlockState INVISIBLE_CONSTRAINT = BlockTypes.INVISIBLE_CONSTRAINT.createBlockState();
+    public static final BlockState BLEND_CONTRAINT = BlockTypes.BLEND_CONTRAINT.createBlockState();
+    public static final BlockState BORDER_CONSTRAINT = BlockTypes.BORDER_CONSTRAINT.createBlockState();
+    public static final BlockState BUTTERCUP = BlockTypes.BUTTERCUP.createBlockState();
+    public static final BlockState ADVENTURE_CHEST_COMMON = BlockTypes.ADVENTURE_CHEST_COMMON.createBlockState();
+    public static final BlockState ADVENTURE_CHEST_UNCOMMON = BlockTypes.ADVENTURE_CHEST_UNCOMMON.createBlockState();
+    public static final BlockState ADVENTURE_CHEST_RARE = BlockTypes.ADVENTURE_CHEST_RARE.createBlockState();
+    public static final BlockState ADVENTURE_CHEST_EPIC = BlockTypes.ADVENTURE_CHEST_EPIC.createBlockState();
+    public static final BlockState ADVENTURE_CHEST_LEGENDARY = BlockTypes.ADVENTURE_CHEST_LEGENDARY.createBlockState();
+    //public static final BlockState ADVENTURE_CHEST = BlockTypes.ADVENTURE_CHEST.createBlockState();
+    // Empty because sticky piston arm is already defined
+    public static final BlockState RAINBOW_WOOL = BlockTypes.RAINBOW_WOOL.createBlockState();
+    public static final BlockState RAINBOW_CARPET = BlockTypes.RAINBOW_CARPET.createBlockState();
+    public static final BlockState RAINBOW_BED = BlockTypes.RAINBOW_BED.createBlockState();
+    public static final BlockState FLOWER_PINK_DAISY = BlockTypes.FLOWER_PINK_DAISY.createBlockState();
+    public static final BlockState FLOWING_MUD = BlockTypes.FLOWING_MUD.createBlockState();
+    public static final BlockState MUD = BlockTypes.STATIONARY_MUD.createBlockState();
+
     public static final BlockState ACTIVATOR_RAIL = BlockTypes.ACTIVATOR_RAIL.createBlockState();
     public static final BlockState AIR = BlockTypes.AIR.createBlockState();
-    public static final BlockState ALLOW = BlockTypes.ALLOW.createBlockState();
+    //public static final BlockState ALLOW = BlockTypes.ALLOW.createBlockState();
     public static final BlockState ANCIENT_DEBRIS = BlockTypes.ANCIENT_DEBRIS.createBlockState();
     public static final BlockState ANVIL = BlockTypes.ANVIL.createBlockState();
     public static final BlockState BAMBOO = BlockTypes.BAMBOO.createBlockState();
@@ -149,7 +167,7 @@ public class BlockStates {
     public static final BlockState LEAVES = BlockTypes.LEAVES.createBlockState();
     public static final BlockState LECTERN = BlockTypes.LECTERN.createBlockState();
     public static final BlockState LEVER = BlockTypes.LEVER.createBlockState();
-    public static final BlockState LIGHT_BLOCK = BlockTypes.LIGHT_BLOCK.createBlockState();
+    //public static final BlockState LIGHT_BLOCK = BlockTypes.LIGHT_BLOCK.createBlockState();
     public static final BlockState LIGHT_WEIGHTED_PRESSURE_PLATE = BlockTypes.LIGHT_WEIGHTED_PRESSURE_PLATE.createBlockState();
     public static final BlockState LIT_PUMPKIN = BlockTypes.LIT_PUMPKIN.createBlockState();
     public static final BlockState LODESTONE = BlockTypes.LODESTONE.createBlockState();

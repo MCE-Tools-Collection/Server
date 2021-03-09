@@ -2,7 +2,7 @@ package org.cloudburstmc.server.utils.data;
 
 public enum AttachmentType {
     STANDING,
-    HANGING,
+    //HANGING,
     SIDE,
-    MULTIPLE
+    //MULTIPLE
 }

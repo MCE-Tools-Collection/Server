@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.cloudburstmc.server.utils.ServerKiller;
 
@@ -63,6 +64,7 @@ public class Bootstrap {
 
     public static void main(String[] args) {
         Locale.setDefault(Locale.ENGLISH);
+        Configurator.setAllLevels(LogManager.getRootLogger().getName(), Level.DEBUG); // To get all exceptions
         System.setProperty("log4j.skipJansi", "false");
 
         YAML_MAPPER.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)

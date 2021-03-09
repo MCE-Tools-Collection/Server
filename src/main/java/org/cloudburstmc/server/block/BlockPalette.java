@@ -102,6 +102,32 @@ public class BlockPalette {
         sortedPalette.forEach((id, states) -> {
             for (BlockState state : states) {
                 int runtimeId = runtimeIdAllocator.getAndIncrement();
+                switch (runtimeId) {
+                    case 126:
+                        runtimeIdAllocator.addAndGet(10);
+                        runtimeId = 136;
+                        break;
+
+
+                    case 213: // Bamboo
+                    case 229: // Bamboo Sapling
+                    //case 245: // Barrel
+                    //case 443: // Terracotta
+                        runtimeIdAllocator.addAndGet(3);
+                        runtimeId = runtimeIdAllocator.getAndIncrement();
+                        break;
+
+                    //case 405: // Birch Wall Sign/Black Terracotta
+                    //case 417: // Blast Furnace
+                    //    runtimeIdAllocator.addAndGet(1);
+                    //    runtimeId = runtimeIdAllocator.getAndIncrement();
+                    //    break;
+
+
+                    default:
+                        break;
+                }
+                log.debug("RuntimeID: " + runtimeId + " BlockState: " + state);
                 this.runtimeStateMap.put(runtimeId, state);
                 this.stateRuntimeMap.put(state, runtimeId);
             }

@@ -53,7 +53,7 @@ public class MultiBlockSerializers {
                     Builder.combine(BedrockStateTags.TAG_STONE_SLAB_TYPE_4),
                     Builder.combine("slab_slot")
             )
-            .add(BedrockStateTags.TAG_STONE_SLAB_TYPE, StoneSlabType.BLACKSTONE.name().toLowerCase(), BLACKSTONE_SLAB, true)
+            /*.add(BedrockStateTags.TAG_STONE_SLAB_TYPE, StoneSlabType.BLACKSTONE.name().toLowerCase(), BLACKSTONE_SLAB, true)
             .add(BedrockStateTags.TAG_STONE_SLAB_TYPE, StoneSlabType.POLISHED_BLACKSTONE.name().toLowerCase(), POLISHED_BLACKSTONE_SLAB, true)
             .add(BedrockStateTags.TAG_STONE_SLAB_TYPE, StoneSlabType.POLISHED_BLACKSTONE_BRICK.name().toLowerCase(), POLISHED_BLACKSTONE_BRICK_SLAB, true)
             .add(
@@ -70,7 +70,7 @@ public class MultiBlockSerializers {
                     POLISHED_BLACKSTONE_BRICK_DOUBLE_SLAB,
                     Builder.combine(BedrockStateTags.TAG_STONE_SLAB_TYPE, StoneSlabType.POLISHED_BLACKSTONE_BRICK.name().toLowerCase(), true),
                     Builder.combine("slab_slot")
-            )
+            )*/
             .baseSerializer(NoopBlockSerializer.INSTANCE)
             .buildSerializer();
 
@@ -363,13 +363,13 @@ public class MultiBlockSerializers {
 
     public static final MultiBlockSerializer STONE_BUTTON = builder()
             .removeTrait(BedrockStateTags.TAG_STONE_TYPE)
-            .add(BedrockStateTags.TAG_STONE_TYPE, StoneSlabType.POLISHED_BLACKSTONE.name().toLowerCase(), POLISHED_BLACKSTONE_BUTTON)
+            //.add(BedrockStateTags.TAG_STONE_TYPE, StoneSlabType.POLISHED_BLACKSTONE.name().toLowerCase(), POLISHED_BLACKSTONE_BUTTON)
             .defaultId(BlockIds.STONE_BUTTON)
             .buildSerializer();
 
     public static final MultiBlockSerializer STONE_PRESSURE_PLATE = builder()
             .removeTrait(BedrockStateTags.TAG_STONE_TYPE)
-            .add(BedrockStateTags.TAG_STONE_TYPE, StoneSlabType.POLISHED_BLACKSTONE.name().toLowerCase(), POLISHED_BLACKSTONE_PRESSURE_PLATE)
+            //.add(BedrockStateTags.TAG_STONE_TYPE, StoneSlabType.POLISHED_BLACKSTONE.name().toLowerCase(), POLISHED_BLACKSTONE_PRESSURE_PLATE)
             .defaultId(BlockIds.STONE_PRESSURE_PLATE)
             .buildSerializer();
 
@@ -385,9 +385,9 @@ public class MultiBlockSerializers {
             .buildSerializer();
 
     public static final MultiBlockSerializer WALL = builder()
-            .add(BedrockStateTags.TAG_WALL_BLOCK_TYPE, WallBlockType.BLACKSTONE.name().toLowerCase(), BLACKSTONE_WALL, true)
+            /*.add(BedrockStateTags.TAG_WALL_BLOCK_TYPE, WallBlockType.BLACKSTONE.name().toLowerCase(), BLACKSTONE_WALL, true)
             .add(BedrockStateTags.TAG_WALL_BLOCK_TYPE, WallBlockType.POLISHED_BLACKSTONE.name().toLowerCase(), POLISHED_BLACKSTONE_WALL, true)
-            .add(BedrockStateTags.TAG_WALL_BLOCK_TYPE, WallBlockType.POLISHED_BLACKSTONE_BRICK.name().toLowerCase(), POLISHED_BLACKSTONE_BRICK_WALL, true)
+            .add(BedrockStateTags.TAG_WALL_BLOCK_TYPE, WallBlockType.POLISHED_BLACKSTONE_BRICK.name().toLowerCase(), POLISHED_BLACKSTONE_BRICK_WALL, true)*/
             .defaultId(COBBLESTONE_WALL)
             .buildSerializer();
 

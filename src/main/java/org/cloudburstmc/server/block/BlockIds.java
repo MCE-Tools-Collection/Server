@@ -6,6 +6,23 @@ import org.cloudburstmc.server.utils.Identifier;
 @SuppressWarnings("RedundantModifiersUtilityClassLombok")
 @UtilityClass
 public final class BlockIds {
+    public static final Identifier INVISIBLE_CONSTRAINT = Identifier.fromString("invisible_constraint");
+    public static final Identifier BLEND_CONTRAINT = Identifier.fromString("blend_constraint");
+    public static final Identifier BORDER_CONSTRAINT = Identifier.fromString("border_constraint");
+    public static final Identifier BUTTERCUP = Identifier.fromString("buttercup");
+    public static final Identifier ADVENTURE_CHEST_COMMON = Identifier.fromString("adventure_chest_common");
+    public static final Identifier ADVENTURE_CHEST_UNCOMMON = Identifier.fromString("adventure_chest_uncommon");
+    public static final Identifier ADVENTURE_CHEST_RARE = Identifier.fromString("adventure_chest_rare");
+    public static final Identifier ADVENTURE_CHEST_EPIC = Identifier.fromString("adventure_chest_epic");
+    public static final Identifier ADVENTURE_CHEST_LEGENDARY = Identifier.fromString("adventure_chest_legendary");
+    //public static final Identifier ADVENTURE_CHEST = Identifier.fromString("adventure_chest");
+    // Empty because sticky piston arm is already defined
+    public static final Identifier RAINBOW_WOOL = Identifier.fromString("rainbow_wool");
+    public static final Identifier RAINBOW_CARPET = Identifier.fromString("rainbow_carpet");
+    public static final Identifier RAINBOW_BED = Identifier.fromString("rainbow_bed");
+    public static final Identifier FLOWER_PINK_DAISY = Identifier.fromString("flower_pink_daisy");
+    public static final Identifier FLOWING_MUD = Identifier.fromString("flowing_mud");
+    public static final Identifier MUD = Identifier.fromString("mud");
 
     public static final Identifier ACACIA_BUTTON = Identifier.fromString("acacia_button");
     public static final Identifier ACACIA_DOOR = Identifier.fromString("acacia_door");

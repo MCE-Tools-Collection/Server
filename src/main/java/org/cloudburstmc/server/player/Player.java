@@ -772,7 +772,7 @@ public class Player extends Human implements CommandSender, InventoryHolder, Chu
         this.noDamageTicks = 60;
 
         this.getServer().sendRecipeList(this);
-        getInventory().sendCreativeContents();
+        //getInventory().sendCreativeContents(); Causes a crash when Earth is connecting
 
         this.getChunkManager().getLoadedChunks().forEach((LongConsumer) chunkKey -> {
             int chunkX = Chunk.fromKeyX(chunkKey);
@@ -1185,7 +1185,8 @@ public class Player extends Human implements CommandSender, InventoryHolder, Chu
         float distanceSquared = newPosition.distanceSquared(currentPos);
 
         boolean revert = false;
-        if ((distanceSquared / ((float) (tickDiff * tickDiff))) > 100 && (newPosition.getY() - currentPos.getY()) > -5) {
+        //if ((distanceSquared / ((float) (tickDiff * tickDiff))) > 100 && (newPosition.getY() - currentPos.getY()) > -5) {
+        if (false) {
             log.debug("{} moved too fast!", this.getName());
             revert = true;
         } else {

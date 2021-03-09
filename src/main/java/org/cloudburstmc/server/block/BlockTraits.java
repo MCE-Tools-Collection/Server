@@ -80,8 +80,8 @@ public class BlockTraits {
     public static final EnumBlockTrait<StoneBrickType> STONE_BRICK_TYPE = EnumBlockTrait.of("stone_brick_type", StoneBrickType.class);
     public static final EnumBlockTrait<StoneSlabType> STONE_SLAB_TYPE = EnumBlockTrait.of("stone_slab_type", StoneSlabType.class);
     public static final EnumBlockTrait<StoneSlabType> STONE_STAIRS_TYPE = EnumBlockTrait.of("stone_slab_type", StoneSlabType.class, Utils.getEnumValues(StoneSlabType.class, StoneSlabType.WOOD, StoneSlabType.SMOOTH_STONE, StoneSlabType.CUT_SANDSTONE));
-    public static final EnumBlockTrait<StoneSlabType> STONE_BUTTON_TYPE = EnumBlockTrait.of("stone_type", StoneSlabType.class, StoneSlabType.STONE, StoneSlabType.POLISHED_BLACKSTONE);
-    public static final EnumBlockTrait<StoneSlabType> STONE_PRESSURE_PLATE_TYPE = EnumBlockTrait.of("stone_type", StoneSlabType.class, StoneSlabType.STONE, StoneSlabType.POLISHED_BLACKSTONE);
+    public static final EnumBlockTrait<StoneSlabType> STONE_BUTTON_TYPE = EnumBlockTrait.of("stone_type", StoneSlabType.class, StoneSlabType.STONE);
+    public static final EnumBlockTrait<StoneSlabType> STONE_PRESSURE_PLATE_TYPE = EnumBlockTrait.of("stone_type", StoneSlabType.class, StoneSlabType.STONE);
     public static final EnumBlockTrait<StructureBlockType> STRUCTURE_BLOCK_TYPE = EnumBlockTrait.of("structure_block_type", StructureBlockType.class);
     public static final EnumBlockTrait<StructureVoidType> STRUCTURE_VOID_TYPE = EnumBlockTrait.of("structure_void_type", StructureVoidType.class);
     public static final EnumBlockTrait<TallGrassType> TALL_GRASS_TYPE = EnumBlockTrait.of("tall_grass_type", TallGrassType.class);
@@ -102,7 +102,8 @@ public class BlockTraits {
     public static final EnumBlockTrait<Direction.Axis> PORTAL_AXIS = EnumBlockTrait.of("portal_axis", Direction.Axis.class,
             Direction.Axis.Y, //TODO: this was null
             Direction.Axis.X, Direction.Axis.Z);
-    public static final EnumBlockTrait<Direction> FACING_DIRECTION = EnumBlockTrait.of("facing_direction", Direction.class, Direction.UP, Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
+    public static final EnumBlockTrait<Direction> FACING_DIRECTION = EnumBlockTrait.of("facing_direction", Direction.class, Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
+    public static final EnumBlockTrait<CardinalDirection> ADVENTURE_DIRECTION = EnumBlockTrait.of("adventure_facing_direction", CardinalDirection.class, CardinalDirection.NORTH, CardinalDirection.NORTHEAST, CardinalDirection.EAST, CardinalDirection.SOUTHEAST, CardinalDirection.SOUTH, CardinalDirection.SOUTHWEST, CardinalDirection.WEST, CardinalDirection.NORTHWEST);
     public static final EnumBlockTrait<Direction> DIRECTION = EnumBlockTrait.of("direction", Direction.class, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
     public static final EnumBlockTrait<RailDirection> RAIL_DIRECTION = EnumBlockTrait.of("rail_direction", RailDirection.class);
     public static final EnumBlockTrait<RailDirection> SIMPLE_RAIL_DIRECTION = EnumBlockTrait.of("simple_rail_direction", "rail_direction", RailDirection.class, RailDirection.simpleValues());

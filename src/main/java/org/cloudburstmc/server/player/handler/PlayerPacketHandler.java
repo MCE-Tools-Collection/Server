@@ -11,6 +11,7 @@ import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.data.AdventureSetting;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
+import com.nukkitx.protocol.bedrock.data.PlayerActionType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
@@ -161,11 +162,11 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
             return true;
         }
 
-        if (currentPos.distance(newPos) > 50) {
-            log.debug("packet too far REVERTING");
-            player.sendPosition(currentPos, yaw, pitch, MovePlayerPacket.Mode.RESPAWN);
-            return true;
-        }
+        //if (currentPos.distance(newPos) > 50) {
+        //    log.debug("packet too far REVERTING");
+        //    player.sendPosition(currentPos, yaw, pitch, MovePlayerPacket.Mode.RESPAWN);
+        //    return true;
+        //}
 
         boolean revert = false;
         if (!player.isAlive() || !player.spawned) {
@@ -174,7 +175,8 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
         }
 
 
-        if (player.getForceMovement() != null && (newPos.distanceSquared(player.getForceMovement()) > 0.1 || revert)) {
+        //if (player.getForceMovement() != null && (newPos.distanceSquared(player.getForceMovement()) > 0.1 || revert)) {
+        if (false) {
             log.debug("packet forceMovement {} REVERTING {}", player.getForceMovement(), newPos);
             player.sendPosition(player.getForceMovement(), yaw, pitch, MovePlayerPacket.Mode.RESPAWN);
         } else {
@@ -256,8 +258,8 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
     @Override
     public boolean handle(PlayerActionPacket packet) {
         if (!player.spawned || (!player.isAlive() &&
-                packet.getAction() != PlayerActionPacket.Action.RESPAWN &&
-                packet.getAction() != PlayerActionPacket.Action.DIMENSION_CHANGE_REQUEST)) {
+                packet.getAction() != PlayerActionType.RESPAWN &&
+                packet.getAction() != PlayerActionType.DIMENSION_CHANGE_REQUEST_OR_CREATIVE_DESTROY_BLOCK)) {
             return true;
         }
 
@@ -414,7 +416,7 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
                     player.setSneaking(false);
                 }
                 break;
-            case DIMENSION_CHANGE_REQUEST:
+            case DIMENSION_CHANGE_REQUEST_OR_CREATIVE_DESTROY_BLOCK:
                 player.sendPosition(player.getPosition(), player.getYaw(), player.getPitch(), MovePlayerPacket.Mode.NORMAL);
                 break; //TODO
             case START_GLIDE:
