@@ -22,6 +22,7 @@ public class BlockTypes {
     public static final BlockType INVISIBLE_CONSTRAINT = IntBlock.builder().id(BlockIds.INVISIBLE_CONSTRAINT).maxStackSize(64).diggable(false).transparent(true).hardness(100f).build();
     public static final BlockType BLEND_CONTRAINT = IntBlock.builder().id(BlockIds.BLEND_CONTRAINT).maxStackSize(64).diggable(false).transparent(true).hardness(100f).build();
     public static final BlockType BORDER_CONSTRAINT = IntBlock.builder().id(BlockIds.BORDER_CONSTRAINT).maxStackSize(64).diggable(false).transparent(true).hardness(100f).build();
+    public static final BlockType PISTON_STICKY_ARM_COLLISION = IntBlock.builder().id(BlockIds.PISTON_ARM_COLLISION).maxStackSize(64).diggable(true).hardness(0.5f).resistance(2.5f).translucency(0.8f).filterLight(0).blockSolid(false).blockMotion(false).breakFlowing(true).waterlogSource(true).build();
     public static final BlockType BUTTERCUP = IntBlock.builder().id(BlockIds.BUTTERCUP).maxStackSize(64).diggable(true).transparent(true).hardness(100f).floodable(true).build();
     public static final BlockType ADVENTURE_CHEST_COMMON = IntBlock.builder().id(BlockIds.ADVENTURE_CHEST_COMMON).maxStackSize(0).diggable(false).transparent(true).hardness(100f).floodable(true).build();
     public static final BlockType ADVENTURE_CHEST_UNCOMMON = IntBlock.builder().id(BlockIds.ADVENTURE_CHEST_UNCOMMON).maxStackSize(0).diggable(false).transparent(true).hardness(100f).floodable(true).build();

@@ -6,6 +6,5 @@ public enum DoublePlantType {
     GRASS,
     FERN,
     ROSE,
-    PAEONIA,
-    PINK_DAISY
+    PAEONIA
 }

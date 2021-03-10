@@ -61,12 +61,12 @@ public class BlockTraits {
     public static final IntegerBlockTrait HONEY_LEVEL = IntegerBlockTrait.from("honey_level", 6);
     public static final IntegerBlockTrait HUGE_MUSHROOM_BITS = IntegerBlockTrait.from("huge_mushroom_bits", 16);
     public static final IntegerBlockTrait ICE_AGE = IntegerBlockTrait.from("ice_age", "age", 0, 3, 0);
-    public static final IntegerBlockTrait KELP_AGE = IntegerBlockTrait.from("kelp_age", 26);
+    public static final IntegerBlockTrait KELP_AGE = IntegerBlockTrait.from("kelp_age", 18);
     public static final IntegerBlockTrait LIGHT_LEVEL = IntegerBlockTrait.from("light_level", "block_light_level", 0, 15, 0);
     public static final IntegerBlockTrait MOISTURIZED_AMOUNT = IntegerBlockTrait.from("moisturized_amount", 8);
     public static final EnumBlockTrait<MonsterEggStoneType> MONSTER_EGG_STONE_TYPE = EnumBlockTrait.of("monster_egg_stone_type", MonsterEggStoneType.class);
     public static final EnumBlockTrait<NetherBrickType> NETHER_BRICK_TYPE = EnumBlockTrait.of("nether_brick_type", NetherBrickType.class);
-    public static final IntegerBlockTrait WART_GROWTH = IntegerBlockTrait.from("wart_growth", "age", 0, 3, 0);
+    public static final IntegerBlockTrait WART_GROWTH = IntegerBlockTrait.from("wart_growth", "age", 0, 4, 0);
     public static final EnumBlockTrait<PrismarineBlockType> PRISMARINE_BLOCK_TYPE = EnumBlockTrait.of("prismarine_block_type", PrismarineBlockType.class);
     public static final IntegerBlockTrait REDSTONE_SIGNAL = IntegerBlockTrait.from("redstone_signal", 16);
     public static final IntegerBlockTrait REPEATER_DELAY = IntegerBlockTrait.from("repeater_delay", 4);

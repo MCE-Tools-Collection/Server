@@ -9,6 +9,7 @@ public class BlockStates {
     public static final BlockState INVISIBLE_CONSTRAINT = BlockTypes.INVISIBLE_CONSTRAINT.createBlockState();
     public static final BlockState BLEND_CONTRAINT = BlockTypes.BLEND_CONTRAINT.createBlockState();
     public static final BlockState BORDER_CONSTRAINT = BlockTypes.BORDER_CONSTRAINT.createBlockState();
+    public static final BlockState PISTON_STICKY_ARM_COLLISION = BlockTypes.PISTON_STICKY_ARM_COLLISION.createBlockState();
     public static final BlockState BUTTERCUP = BlockTypes.BUTTERCUP.createBlockState();
     public static final BlockState ADVENTURE_CHEST_COMMON = BlockTypes.ADVENTURE_CHEST_COMMON.createBlockState();
     public static final BlockState ADVENTURE_CHEST_UNCOMMON = BlockTypes.ADVENTURE_CHEST_UNCOMMON.createBlockState();

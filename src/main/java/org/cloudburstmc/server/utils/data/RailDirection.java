@@ -102,6 +102,6 @@ public enum RailDirection {
     }
 
     public static RailDirection[] simpleValues() {
-        return new RailDirection[]{NORTH_SOUTH, EAST_WEST, ASCENDING_EAST, ASCENDING_WEST, ASCENDING_NORTH, ASCENDING_SOUTH, CURVED_NORTH_WEST};
+        return new RailDirection[]{NORTH_SOUTH, EAST_WEST, ASCENDING_EAST, ASCENDING_WEST, ASCENDING_NORTH, ASCENDING_SOUTH, CURVED_NORTH_WEST, CURVED_SOUTH_EAST};
     }
 }

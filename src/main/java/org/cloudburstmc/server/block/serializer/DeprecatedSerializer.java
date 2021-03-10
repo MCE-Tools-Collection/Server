@@ -18,12 +18,14 @@ public class DeprecatedSerializer implements BlockSerializer {
 
     @Override
     public void serialize(NbtMapBuilder builder, BlockType blockType, Map<BlockTrait<?>, Comparable<?>> traits) {
-        boolean stripped = (Boolean) traits.get(BlockTraits.IS_STRIPPED);
-        TreeSpecies type = (TreeSpecies) traits.get(BlockTraits.TREE_SPECIES);
+        if(!blockType.getId().toString().equals("minecraft:wood")) {
+            boolean stripped = (Boolean) traits.get(BlockTraits.IS_STRIPPED);
+            TreeSpecies type = (TreeSpecies) traits.get(BlockTraits.TREE_SPECIES);
 
-        if (!stripped) {
-            traits = new HashMap<>(traits);
-            traits.remove(BlockTraits.DEPRECATED);
+            if (true) {
+                traits = new HashMap<>(traits);
+                traits.remove(BlockTraits.DEPRECATED);
+            }
         }
 
         DefaultBlockSerializer.INSTANCE.serialize(builder, blockType, traits);

@@ -502,7 +502,7 @@ public final class BlockIds {
     public static final Identifier STAINED_HARDENED_CLAY = Identifier.fromString("stained_hardened_clay");
     public static final Identifier STANDING_BANNER = Identifier.fromString("standing_banner");
     public static final Identifier OAK_STANDING_SIGN = Identifier.fromString("standing_sign");
-    public static final Identifier STICKY_PISTON_ARM_COLLISION = Identifier.fromString("stickypistonarmcollision");
+    public static final Identifier STICKY_PISTON_ARM_COLLISION = Identifier.fromString("pistonarmcollisionsticky");
     public static final Identifier STICKY_PISTON = Identifier.fromString("sticky_piston");
     public static final Identifier STONE = Identifier.fromString("stone");
     public static final Identifier STONEBRICK = Identifier.fromString("stonebrick");
