@@ -169,7 +169,7 @@ public class Bootstrap {
             }
         }
 
-        ServerKiller killer = new ServerKiller(8);
+        ServerKiller killer = new ServerKiller(10);
         killer.start();
 
         if (TITLE) {

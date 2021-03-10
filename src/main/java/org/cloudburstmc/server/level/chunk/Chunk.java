@@ -606,7 +606,12 @@ public final class Chunk implements IChunk, Closeable {
 
                 this.cached = new SoftReference<>(packet);
 
+                if (this.getX() > -1 && this.getX() < 1 && this.getZ() > -1 && this.getZ() < 1) // Earth doesnt like too much going on
                 return packet;
+                else {
+                    packet.setData(new byte[0]);
+                    return packet;
+                }
             } catch (IOException e) {
                 log.error("Error whilst encoding chunk", e);
                 this.cached = null;
