@@ -109,101 +109,111 @@ public class BlockPalette {
                  */
                 switch (runtimeId) {
 
+                    // case 1987: // Magenta Terracotta
+                    //case 2101: // Pink Terracotta
+                    //case 2108: // The list lists packed_ice, but we already have it at 2100
 
-                    case 1368: // Fence Gate/Fire
-                    case 1927: // Lit Pumpkin
-                    case 1932: // Redstone Lamp
-                    case 1987: // Magenta Terracotta
-                    case 2101: // Pink Terracotta
-                    case 2108: // The list lists packed_ice, but we already have it at 2100
-                    case 2169: // potato
+                    case 1368: // Fence Gate/Fire, Direction
+                    case 1927: // Lit Pumpkin, Direction???
+                    case 1932: // Redstone Lamp, Direction
+                    case 2169: // portal axis
                     case 2229: // Prismarine Stairs
+                    case 2456: // Repeating Command Block/Sand
                     case 2501: // Sea Lantern
                     case 2818: // Stone/Stone Stairs
                     case 2988: // Sweet Berry Bush/Tallgrass
                     case 2995: // Torch
+
+                    case 554: // Pumpkin/Cauldron, Direction NSEW
                         runtimeId = runtimeIdAllocator.getAndIncrement();
                         break;
 
-                    case 405: // Birch Wall Sign/Black Terracotta, FACING_DIRECTION
+                    //case 405: // Birch Wall Sign/Black Terracotta, FACING_DIRECTION
+                    //case 466: // Stairs -> Terracotta, FACING_DIRECTION
+                    //case 610: // Chest, FACING_DIRECTION
+                    //case 1034: // Diamond Block/Detector Rail
+                    //case 1454: // Furnace, FACING_DIRECTION
+                    //case 1489: // Gray Terracotta, FACING_DIRECTION
+                    //case 1497: // Green Terracotta, FACING_DIRECTION
+                    //case 1881: // Lever, Lever_Direction?
+                    //case 1889: // White Terracotta, FACING_DIRECTION
+                    //case 1913: // Lime Terracotta, FACING_DIRECTION
+                    //case 1940: // Smoker, FACING_DIRECTION
+                    //case 2115: // Piston, FACING_DIRECTION
+                    //case 2123: // Piston Arm Collision, FACING_DIRECTION
+                    //case 2130: // Piston Arm Collision Sticky, FACING_DIRECTION
+                    //case 2244: // Purple Terracotta, FACING_DIRECTION
+                    //case 2809: // Sticky Piston, FACING_DIRECTION
+                    //case 3024: // Trapped Chest, FACING_DIRECTION
+                    //case 3078: // Underwater Torch, TORCH_DIRECTION
+                    //case 3147: // Wall Banner
+                    //case 3183: // White Terracotta, FACING_DIRECTION
+
                     case 417: // Blast Furnace
                     case 269: // Beetroot/Bedrock
-                    case 466: // Stairs -> Terracotta, FACING_DIRECTION
-                    case 610: // Chest, FACING_DIRECTION
-                        //case 1034: // Diamond Block/Detector Rail
-                    case 1350: // Fence (Gate)
-                    case 1454: // Furnace, FACING_DIRECTION
-                    case 1489: // Gray Terracotta, FACING_DIRECTION
-                    case 1497: // Green Terracotta, FACING_DIRECTION
-                    case 1881: // Lever
-                    case 1889: // White Terracotta, FACING_DIRECTION
-                    case 1913: // Lime Terracotta, FACING_DIRECTION
-                    case 1940: // Smoker
+                    case 1350: // Fence (Gate), Tree_Species
+
                     case 2004: // Monster Egg/Mossy Cobble
-                    case 2115: // Piston, FACING_DIRECTION
-                    case 2123: // Piston Arm Collision, FACING_DIRECTION
-                    case 2130: // Piston Arm Collision Sticky, FACING_DIRECTION
                     case 2139: // Podzol/Planks, Tree_Species
-                    case 2244: // Purple Terracotta, FACING_DIRECTION
                     case 2333: // Rainbow Wool/Red Flower
                     case 2406: // Redstone Torch/Wire
                     case 2483: // Sapling, Tree_Species
-                    case 2809: // Sticky Piston, FACING_DIRECTION
-                    case 3018: // Trapdoor
-                    case 3024: // Trapped Chest, FACING_DIRECTION
-                    case 3078: // Underwater Torch, TORCH_DIRECTION
+                    case 2530: // Shulker Box/ White Terracotta
+
+                    case 3018: // Trapdoor, DIRECTION
                     case 3091: // Comparator
-                    case 3147: // Wall Banner
-                    case 3183: // White Terracotta, FACING_DIRECTION
                         runtimeIdAllocator.addAndGet(1);
                         runtimeId = runtimeIdAllocator.getAndIncrement();
                         break;
 
+                    //case 3082: // Redstone Torch, TORCH_DIRECTION
+
                     case 2288: // Quartz Stairs
-                    case 3082: // Redstone Torch, TORCH_DIRECTION
+                    case 2943: // Stonecutter/Stripped Logs, FACING_DIRECTION but still +3 remaining
                         runtimeIdAllocator.addAndGet(2);
                         runtimeId = runtimeIdAllocator.getAndIncrement();
                         break;
 
 
+                    //case 245: // Barrel
+                    // case 583:
+                    //case 1060: // Dispenser, FACING_DIRECTION
+                    //case 2453: // RepeatingCommandBlock, FACING_DIRECTION + Remove Reserved6
+                    //case 2839: // Button/Pressure Plate, FACING_DIRECTION
+
                     case 213: // Bamboo
                     case 229: // Bamboo Sapling
-                    case 245: // Barrel
                     case 443: // Bone Block
-                    case 583:
-                    case 1060: // Dispenser, FACING_DIRECTION
                     case 1076: // Double Plant/Double Stone Slabs
-                    case 1156: // Wooden Slab/Dragon Egg
-                    case 2270: // Purpur Stairs
-                    case 2453: // RepeatingCommandBlock, FACING_DIRECTION + Remove Reserved6
-                    case 2530: // Shulker Box/ White Terracotta
-                    case 2839: // Button/Pressure Plate, FACING_DIRECTION
+                    case 1156: // Wooden Slab/Dragon Egg, Tree_Species
+
+                    case 2282: // Quartz Blocks, Axis
+
                     case 3267: // Wooden Slab/Wool, Tree_Species?
                         runtimeIdAllocator.addAndGet(3);
                         runtimeId = runtimeIdAllocator.getAndIncrement();
                         break;
 
-                    case 2943: // Stonecutter/Stripped Logs, FACING_DIRECTION but still +3 remaining
+                    case 2346: // Red Flower/Red Terracotta
                         runtimeIdAllocator.addAndGet(4);
                         runtimeId = runtimeIdAllocator.getAndIncrement();
                         break;
 
                     case 1138:// Stone Slabs
-                    case 2087: // Observer/Obsidian, can possibly be reduced by FACING_DIRECTION
+
+                    //case 2087: // Observer/Obsidian, can possibly be reduced by FACING_DIRECTION
+                    //case 2560: // Skull+Smoker FACING_DIRECTION
+
                     case 2309: // Rail/Rainbow Bed
-                    case 2560: // Skull+Smoker FACING_DIRECTION
                     case 2917: // Stone Slabs/Stairs, FACING_DIRECTION
                     case 2966: // Stripped Logs, AXIS changes (include x,y,z,w?)
+                    case 3079: // Redstone Torch
                         runtimeIdAllocator.addAndGet(5);
                         runtimeId = runtimeIdAllocator.getAndIncrement();
                         break;
 
-                    case 2346: // Red Flower/Red Terracotta
-                        runtimeIdAllocator.addAndGet(6);
-                        runtimeId = runtimeIdAllocator.getAndIncrement();
-                        break;
+                    //case 1328: // Ender Chest/Farmland, might be fixed with FACING_DIRECTION though
 
-                    case 1328: // Ender Chest/Farmland, might be fixed with FACING_DIRECTION though
                     case 128: // Activator Rail/Adventure Chest
                     case 1513: // Grindstone
                     case 1596: // Ice
@@ -217,19 +227,15 @@ public class BlockPalette {
                         runtimeId = runtimeIdAllocator.getAndIncrement();
                         break;
 
-                    case 1849: // Lever/Lectern (Removed lectern)
-                    case 1965: // log/loom
+                    case 1849: // Lever/Leaves, Tree_Species
                         runtimeIdAllocator.addAndGet(15);
                         runtimeId = runtimeIdAllocator.getAndIncrement();
                         break;
 
-                    case 842: // Coral Fan Hang
-                        runtimeIdAllocator.addAndGet(16);
-                        runtimeId = runtimeIdAllocator.getAndIncrement();
-                        break;
-
-                    case 693: // Command Block/Composter, thought also FACING_DIRECTION but a +18 jump?
-                        runtimeIdAllocator.addAndGet(18);
+                    case 697: // Command Block/Composter
+                    case 842: // Coral Fan Hang, Direction
+                    case 1965: // log/loom
+                        runtimeIdAllocator.addAndGet(14);
                         runtimeId = runtimeIdAllocator.getAndIncrement();
                         break;
 

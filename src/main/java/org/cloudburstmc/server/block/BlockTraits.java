@@ -55,7 +55,7 @@ public class BlockTraits {
     public static final IntegerBlockTrait FLUID_LEVEL = IntegerBlockTrait.from("fluid_level", 8);
     public static final EnumBlockTrait<FluidType> FLUID_TYPE = EnumBlockTrait.of("fluid_type", FluidType.class);
     public static final IntegerBlockTrait FILL_LEVEL = IntegerBlockTrait.from("fill_level", 8);
-    public static final IntegerBlockTrait BEETROOT_GROWTH = IntegerBlockTrait.from("growth", 6);
+    public static final IntegerBlockTrait BEETROOT_GROWTH = IntegerBlockTrait.from("growth", 6); // Should actually be 7, but the bell has one more state than earth
     public static final IntegerBlockTrait GROWTH = IntegerBlockTrait.from("growth", 8);
     public static final IntegerBlockTrait HEIGHT = IntegerBlockTrait.from("height", 8);
     public static final IntegerBlockTrait HONEY_LEVEL = IntegerBlockTrait.from("honey_level", 6);
@@ -105,7 +105,8 @@ public class BlockTraits {
     public static final EnumBlockTrait<Direction.Axis> PORTAL_AXIS = EnumBlockTrait.of("portal_axis", Direction.Axis.class,
             Direction.Axis.Y, //TODO: this was null
             Direction.Axis.X, Direction.Axis.Z);
-    public static final EnumBlockTrait<Direction> FACING_DIRECTION = EnumBlockTrait.of("facing_direction", Direction.class, Direction.UP, Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
+    public static final EnumBlockTrait<Direction> FACING_DIRECTION = EnumBlockTrait.of("facing_direction", Direction.class, Direction.UP, Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST, Direction.LEFT, Direction.RIGHT);
+    public static final EnumBlockTrait<Direction> OLD_FACING_DIRECTION = EnumBlockTrait.of("old_facing_direction", Direction.class, Direction.UP, Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
     public static final EnumBlockTrait<CardinalDirection> ADVENTURE_DIRECTION = EnumBlockTrait.of("adventure_facing_direction", CardinalDirection.class, CardinalDirection.NORTH, CardinalDirection.NORTHEAST, CardinalDirection.EAST, CardinalDirection.SOUTHEAST, CardinalDirection.SOUTH, CardinalDirection.SOUTHWEST, CardinalDirection.WEST, CardinalDirection.NORTHWEST);
     public static final EnumBlockTrait<Direction> DIRECTION = EnumBlockTrait.of("direction", Direction.class, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
     public static final EnumBlockTrait<RailDirection> RAIL_DIRECTION = EnumBlockTrait.of("rail_direction", RailDirection.class);

@@ -443,7 +443,7 @@ public class BlockRegistry implements Registry {
         this.registerVanilla(DAYLIGHT_DETECTOR, new BlockBehaviorDaylightDetector(), BlockTraits.REDSTONE_SIGNAL); //151
         this.registerVanilla(REDSTONE_BLOCK, new BlockBehaviorRedstone()); //152
         this.registerVanilla(QUARTZ_ORE, new BlockBehaviorOreQuartz()); //153
-        this.registerVanilla(HOPPER, new BlockBehaviorHopper(), BlockTraits.FACING_DIRECTION, BlockTraits.IS_TOGGLED); //154
+        this.registerVanilla(HOPPER, new BlockBehaviorHopper(), BlockTraits.OLD_FACING_DIRECTION, BlockTraits.IS_TOGGLED); //154
         this.registerVanilla(QUARTZ_BLOCK, new BlockBehaviorQuartz(), BlockTraits.CHISEL_TYPE, BlockTraits.AXIS); //155
         this.registerVanilla(WOODEN_SLAB, new BlockBehaviorSlabWood(), SlabSerializer.INSTANCE, BlockTraits.TREE_SPECIES, BlockTraits.SLAB_SLOT); //158
         this.registerVanilla(STAINED_HARDENED_CLAY, new BlockBehaviorTerracottaStained(), BlockTraits.COLOR); //159
@@ -469,7 +469,7 @@ public class BlockRegistry implements Registry {
         this.registerVanilla(HARD_STAINED_GLASS_PANE, NoopBlockBehavior.INSTANCE, BlockTraits.COLOR);
         this.registerVanilla(CHEMICAL_HEAT, NoopBlockBehavior.INSTANCE);
         this.registerVanilla(GRASS_PATH, new BlockBehaviorGrassPath()); //198
-        this.registerVanilla(FRAME, new BlockBehaviorItemFrame(), BlockTraits.FACING_DIRECTION, BlockTraits.HAS_MAP); //199
+        this.registerVanilla(FRAME, new BlockBehaviorItemFrame(), BlockTraits.OLD_FACING_DIRECTION, BlockTraits.HAS_MAP); //199
         this.registerVanilla(CHORUS_FLOWER, new BlockBehaviorChorusFlower(), BlockTraits.CHORUS_AGE); //200
         this.registerVanilla(PURPUR_BLOCK, new BlockBehaviorPurpur(), BlockTraits.CHISEL_TYPE, BlockTraits.AXIS); //201
         this.registerVanilla(COLORED_TORCH_RG, new BlockBehaviorTorch(), BlockTraits.HAS_COLOR, BlockTraits.TORCH_DIRECTION);
@@ -507,7 +507,7 @@ public class BlockRegistry implements Registry {
         this.registerVanilla(STRUCTURE_BLOCK, NoopBlockBehavior.INSTANCE, BlockTraits.STRUCTURE_BLOCK_TYPE); //252
         this.registerVanilla(HARD_GLASS, NoopBlockBehavior.INSTANCE);
         this.registerVanilla(HARD_STAINED_GLASS, NoopBlockBehavior.INSTANCE, BlockTraits.COLOR);
-        this.registerVanilla(RESERVED6, NoopBlockBehavior.INSTANCE);
+        //this.registerVanilla(RESERVED6, NoopBlockBehavior.INSTANCE);
         //256: unknown
         this.registerVanilla(BLUE_ICE, new BlockBehaviorBlueIce()); //266
         this.registerVanilla(ELEMENT, NoopBlockBehavior.INSTANCE, MultiBlockSerializers.ELEMENT, BlockTraits.ELEMENT_TYPE);
@@ -529,17 +529,17 @@ public class BlockRegistry implements Registry {
         this.registerVanilla(SMOOTH_STONE); // 437
         //this.registerVanilla(LECTERN, new BlockBehaviorLectern(), BlockTraits.IS_POWERED, BlockTraits.DIRECTION); //448
         this.registerVanilla(GRINDSTONE, NoopBlockBehavior.INSTANCE, BlockTraits.DIRECTION, BlockTraits.ATTACHMENT);
-        this.registerVanilla(BLAST_FURNACE, new BlockBehaviorFurnace(BlockEntityTypes.BLAST_FURNACE), MultiBlockSerializers.BLAST_FURNACE, BlockTraits.FACING_DIRECTION, BlockTraits.IS_EXTINGUISHED); // 450
+        this.registerVanilla(BLAST_FURNACE, new BlockBehaviorFurnace(BlockEntityTypes.BLAST_FURNACE), MultiBlockSerializers.BLAST_FURNACE, BlockTraits.OLD_FACING_DIRECTION, BlockTraits.IS_EXTINGUISHED); // 450
         this.registerVanilla(STONECUTTER_BLOCK, NoopBlockBehavior.INSTANCE, BlockTraits.FACING_DIRECTION); // 451
         this.registerVanilla(SMOKER, new BlockBehaviorFurnace(BlockEntityTypes.FURNACE), MultiBlockSerializers.SMOKER, BlockTraits.FACING_DIRECTION, BlockTraits.IS_EXTINGUISHED); //452
-        this.registerVanilla(CARTOGRAPHY_TABLE, NoopBlockBehavior.INSTANCE); //454
+        //this.registerVanilla(CARTOGRAPHY_TABLE, NoopBlockBehavior.INSTANCE); //454
         //this.registerVanilla(FLETCHING_TABLE, NoopBlockBehavior.INSTANCE); //455
         this.registerVanilla(SMITHING_TABLE, NoopBlockBehavior.INSTANCE); //456
         this.registerVanilla(BARREL, new BlockBehaviorBarrel(), BlockTraits.FACING_DIRECTION, BlockTraits.IS_OPEN); // 457
         this.registerVanilla(LOOM, NoopBlockBehavior.INSTANCE, BlockTraits.DIRECTION);
         this.registerVanilla(BELL, NoopBlockBehavior.INSTANCE, BlockTraits.ATTACHMENT, BlockTraits.IS_TOGGLED, BlockTraits.DIRECTION);
         this.registerVanilla(SWEET_BERRY_BUSH, NoopBlockBehavior.INSTANCE, BlockTraits.GROWTH);
-        this.registerVanilla(LANTERN, NoopBlockBehavior.INSTANCE, BlockTraits.IS_HANGING);
+        //this.registerVanilla(LANTERN, NoopBlockBehavior.INSTANCE, BlockTraits.IS_HANGING);
         this.registerVanilla(CAMPFIRE, new BlockBehaviorCampfire(), BlockTraits.IS_EXTINGUISHED, BlockTraits.DIRECTION);//464
         //this.registerVanilla(JIGSAW, NoopBlockBehavior.INSTANCE, new JigsawSerializer(), BlockTraits.FACING_DIRECTION, BlockTraits.DIRECTION);//466
         this.registerVanilla(WOOD, new BlockBehaviorWood(), MultiBlockSerializers.WOOD, BlockTraits.TREE_SPECIES); //467
@@ -581,12 +581,12 @@ public class BlockRegistry implements Registry {
         this.registerVanilla(BAMBOO, NoopBlockBehavior.INSTANCE, BlockTraits.BAMBOO_LEAF_SIZE, BlockTraits.HAS_AGE, BlockTraits.BAMBOO_STALK_THICKNESS); //Why is the extra trait needed?
         this.registerVanilla(BAMBOO_SAPLING, NoopBlockBehavior.INSTANCE, BlockTraits.TREE_SPECIES_OVERWORLD, BlockTraits.HAS_AGE);// Starts at 216-228, but then has extra values until 233
 
-        this.registerVanilla(UNKNOWN, NoopBlockBehavior.INSTANCE);
+        //this.registerVanilla(UNKNOWN, NoopBlockBehavior.INSTANCE);
     }
 
     private void registerGenoaBlocks() {
         this.registerVanilla(INVISIBLE_CONSTRAINT, NoopBlockBehavior.INSTANCE, BlockTraits.IS_OPEN);
-        this.registerVanilla(BLEND_CONTRAINT, NoopBlockBehavior.INSTANCE, BlockTraits.BAMBOO_LEAF_SIZE); // TODO: Make an actual trait for these constraints
+        this.registerVanilla(BLEND_CONTRAINT, NoopBlockBehavior.INSTANCE); // TODO: Make an actual trait for these constraints
         this.registerVanilla(BORDER_CONSTRAINT, NoopBlockBehavior.INSTANCE);
 
         this.registerVanilla(BUTTERCUP, NoopBlockBehavior.INSTANCE);
