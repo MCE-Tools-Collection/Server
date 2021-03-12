@@ -59,7 +59,7 @@ public class BlockStates {
     public static final BlockState CAMPFIRE = BlockTypes.CAMPFIRE.createBlockState();
     public static final BlockState CARPET = BlockTypes.CARPET.createBlockState();
     public static final BlockState CARROTS = BlockTypes.CARROTS.createBlockState();
-    public static final BlockState CARTOGRAPHY_TABLE = BlockTypes.CARTOGRAPHY_TABLE.createBlockState();
+    //public static final BlockState CARTOGRAPHY_TABLE = BlockTypes.CARTOGRAPHY_TABLE.createBlockState();
     public static final BlockState CARVED_PUMPKIN = BlockTypes.CARVED_PUMPKIN.createBlockState();
     public static final BlockState CAULDRON = BlockTypes.CAULDRON.createBlockState();
     //public static final BlockState CHAIN = BlockTypes.CHAIN.createBlockState();
@@ -161,7 +161,7 @@ public class BlockStates {
     public static final BlockState JUKEBOX = BlockTypes.JUKEBOX.createBlockState();
     public static final BlockState KELP = BlockTypes.KELP.createBlockState();
     public static final BlockState LADDER = BlockTypes.LADDER.createBlockState();
-    public static final BlockState LANTERN = BlockTypes.LANTERN.createBlockState();
+    //public static final BlockState LANTERN = BlockTypes.LANTERN.createBlockState();
     public static final BlockState LAPIS_BLOCK = BlockTypes.LAPIS_BLOCK.createBlockState();
     public static final BlockState LAPIS_ORE = BlockTypes.LAPIS_ORE.createBlockState();
     public static final BlockState LAVA = BlockTypes.LAVA.createBlockState();
@@ -226,7 +226,7 @@ public class BlockStates {
     public static final BlockState REEDS = BlockTypes.REEDS.createBlockState();
     public static final BlockState REPEATER = BlockTypes.REPEATER.createBlockState();
     public static final BlockState REPEATING_COMMAND_BLOCK = BlockTypes.REPEATING_COMMAND_BLOCK.createBlockState();
-    public static final BlockState RESERVED6 = BlockTypes.RESERVED6.createBlockState();
+    //public static final BlockState RESERVED6 = BlockTypes.RESERVED6.createBlockState();
     //public static final BlockState RESPAWN_ANCHOR = BlockTypes.RESPAWN_ANCHOR.createBlockState();
     public static final BlockState SAND = BlockTypes.SAND.createBlockState();
     public static final BlockState SANDSTONE = BlockTypes.SANDSTONE.createBlockState();
