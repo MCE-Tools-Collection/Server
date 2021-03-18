@@ -262,4 +262,9 @@ public final class ItemIds {
     public static final Identifier SOUL_CAMPFIRE = Identifier.fromString("soul_campfire");
     public static final Identifier BOARD = Identifier.fromString("board");
     public static final Identifier PORTFOLIO = Identifier.fromString("portfolio");
+
+    public static final Identifier GENOA_PICKUP = Identifier.fromString("genoa_pickup");
+    public static final Identifier GENOA_INTERACT = Identifier.fromString("genoa_interact");
+    public static final Identifier GENOA_TEMP = Identifier.fromString("genoa_temp");
+    public static final Identifier GENOA_PUNCH = Identifier.fromString("genoa_punch");
 }

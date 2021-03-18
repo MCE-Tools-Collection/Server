@@ -240,6 +240,11 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
         }
         ItemStack clientItem = ItemUtils.fromNetwork(packet.getItem());
 
+        if (clientItem.getType().getId().getName().equals("genoa_pickup") || clientItem.getType().getId().getName().equals("genoa_interact")) {
+            log.debug("Switching game modes!");
+            return true;
+        }
+
         if (!serverItem.equals(clientItem)) {
             log.debug("Tried to equip " + clientItem + " but have " + serverItem + " in target slot");
             player.getInventory().sendContents(player);
@@ -939,7 +944,7 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
                 return true;
             case ITEM_USE:
 
-                Vector3i blockVector = packet.getBlockPosition();
+                Vector3i blockVector = packet.getBlockPosition(); // ORIG X Y-1 Z
                 Direction face = Direction.fromIndex(packet.getBlockFace());
 
                 switch (packet.getActionType()) {
@@ -954,7 +959,7 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
 
                         player.setUsingItem(false);
 
-                        if (player.canInteract(blockVector.toFloat().add(0.5, 0.5, 0.5), player.isCreative() ? 13 : 7)) {
+                        if (true) {
                             ItemStack clientHand = ItemUtils.fromNetwork(packet.getItemInHand());
                             if (player.isCreative()) {
                                 ItemStack i = player.getInventory().getItemInHand();
@@ -989,6 +994,7 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
 
                         player.getLevel().sendBlocks(new Player[]{player}, new Block[]{target, blockState}, UpdateBlockPacket.FLAG_ALL_PRIORITY);
                         return true;
+
                     case InventoryTransactionUtils.USE_ITEM_ACTION_BREAK_BLOCK:
                         if (!player.spawned || !player.isAlive()) {
                             return true;
@@ -1000,8 +1006,8 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
 
                         ItemStack oldItem = i;
 
-                        if (player.canInteract(blockVector.toFloat().add(0.5, 0.5, 0.5), player.isCreative() ? 13 : 7) &&
-                                (i = player.getLevel().useBreakOn(blockVector, face, i, player, true)) != null) {
+                        //if (player.canInteract(blockVector.toFloat().add(0.5, 0.5, 0.5), player.isCreative() ? 13 : 7) &&
+                        if ((i = player.getLevel().useBreakOn(blockVector, face, i, player, true)) != null) {
                             if (player.isSurvival()) {
                                 player.getFoodData().updateFoodExpLevel(0.025);
                                 if (!i.equals(oldItem) || i.getAmount() != oldItem.getAmount()) {

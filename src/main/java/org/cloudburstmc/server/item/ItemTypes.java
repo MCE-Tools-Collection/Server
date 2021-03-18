@@ -236,6 +236,15 @@ public class ItemTypes {
     public static final ItemType NETHERITE_LEGGINGS = IntItem.builder().id(ItemIds.NETHERITE_LEGGINGS).maxStackSize(1).data(Damageable.class).tierType(NETHERITE).build();
     public static final ItemType NETHERITE_BOOTS = IntItem.builder().id(ItemIds.NETHERITE_BOOTS).maxStackSize(1).data(Damageable.class).tierType(NETHERITE).build();
 
+    public static final ItemType GENOA_PICKUP = IntItem.builder().id(ItemIds.GENOA_PICKUP).maxStackSize(1).build();
+    public static final ItemType GENOA_INTERACT = IntItem.builder().id(ItemIds.GENOA_INTERACT).maxStackSize(1).build();
+    public static final ItemType GENOA_TEMP = IntItem.builder().id(ItemIds.GENOA_TEMP).maxStackSize(1).build();
+    public static final ItemType GENOA_PUNCH = IntItem.builder().id(ItemIds.GENOA_PUNCH).maxStackSize(1).build();
+
+    public static ItemType createDefaultItem(Identifier identifier) {
+        return IntItem.builder().id(identifier).maxStackSize(64).build();
+    }
+
     private static class IntItem implements ItemType {
         private final Identifier id;
         private final int maxStackSize;

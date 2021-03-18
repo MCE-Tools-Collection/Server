@@ -20,8 +20,8 @@ public enum Direction {
     SOUTH(2, 0, "south", AxisDirection.POSITIVE, CardinalDirection.SOUTH, Vector3i.from(0, 0, 1)),
     WEST(5, 1, "west", AxisDirection.NEGATIVE, CardinalDirection.WEST, Vector3i.from(-1, 0, 0)),
     EAST(4, 3, "east", AxisDirection.POSITIVE, CardinalDirection.EAST, Vector3i.from(1, 0, 0)),
-    LEFT(5, 1, "left", AxisDirection.NEGATIVE, CardinalDirection.WEST, Vector3i.from(-1, 0, 0)),
-    RIGHT(4, 3, "right", AxisDirection.POSITIVE, CardinalDirection.EAST, Vector3i.from(1, 0, 0));
+    LEFT(7, 1, "left", AxisDirection.NEGATIVE, null, Vector3i.from(-1, 0, 0)),
+    RIGHT(6, 3, "right", AxisDirection.POSITIVE, null, Vector3i.from(1, 0, 0));
 
     /**
      * All faces in D-U-N-S-W-E order

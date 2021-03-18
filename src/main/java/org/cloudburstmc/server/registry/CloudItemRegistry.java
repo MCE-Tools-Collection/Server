@@ -81,17 +81,17 @@ public class CloudItemRegistry implements ItemRegistry {
             throw new IllegalStateException("Unable to register vanilla items", e);
         }
 
-        // register missing vanilla items.
-//        for (ItemData item : VANILLA_ITEMS) {
-//            if (item.id < 256) {
-//                continue;
-//            }
-//            Identifier identifier = Identifier.fromString(item.name);
-//            if (!this.typeMap.containsKey(identifier)) {
-//                log.debug("Non-implemented item found {}", identifier);
-//                registerVanilla(identifier, SimpleItem::new, item.id);
-//            }
-//        }
+        /* register missing vanilla items.
+        for (ItemData item : VANILLA_ITEMS) {
+            if (item.id < 256) {
+                continue;
+            }
+            Identifier identifier = Identifier.fromString(item.name);
+            if (!this.typeMap.containsKey(identifier)) {
+                log.debug("Non-implemented item found {}", identifier);
+                registerVanilla(identifier, item.id);
+            }
+       }*/
     }
 
     public static CloudItemRegistry get() {
@@ -134,6 +134,11 @@ public class CloudItemRegistry implements ItemRegistry {
         }
 
         this.behaviorMap.put(type, behavior);
+    }
+
+    private synchronized void registerVanilla(Identifier identifier, int legacyId) {
+        ItemType defaultItem = ItemTypes.createDefaultItem(identifier);
+        registerVanilla(defaultItem, legacyId);
     }
 
     private synchronized void registerVanilla(ItemType type, int legacyId) throws RegistryException {
@@ -240,9 +245,15 @@ public class CloudItemRegistry implements ItemRegistry {
         } else {
             identifier = runtimeIdMap.get(runtimeId);
         }
-        if (identifier == null) {
-            throw new RegistryException("Runtime ID " + runtimeId + " does not exist");
-        }
+
+        /*if (identifier == null) {
+            runtimeId += 772;
+            try {
+                identifier = this.blockRegistry.getBlock(runtimeId).getId();
+            } catch (RegistryException e) {
+                throw new RegistryException("Runtime ID " + runtimeId + " does not exist");
+            }
+        }*/
         return identifier;
     }
 
@@ -536,6 +547,12 @@ public class CloudItemRegistry implements ItemRegistry {
         registerVanilla(ItemTypes.NETHERITE_CHESTPLATE, 749);
         registerVanilla(ItemTypes.NETHERITE_LEGGINGS, 750);
         registerVanilla(ItemTypes.NETHERITE_BOOTS, 751);
+
+        registerVanilla(ItemTypes.GENOA_PICKUP, 2258);
+        registerVanilla(ItemTypes.GENOA_INTERACT, 2259);
+        registerVanilla(ItemTypes.GENOA_TEMP, 2260);
+        registerVanilla(ItemTypes.GENOA_PUNCH, 2261);
+
     }
 
     private void registerType(ItemType type, Identifier id, int legacyId) {

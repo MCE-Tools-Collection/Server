@@ -15,6 +15,7 @@ import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.packet.*;
+import com.nukkitx.protocol.genoa.packet.GenoaUpdateBlockPacket;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.*;
 import it.unimi.dsi.fastutil.longs.*;
@@ -811,7 +812,7 @@ public class Level implements ChunkManager, Metadatable {
         for (Block block : blocks) {
             if (block == null) throw new NullPointerException("Null block is update array");
         }
-        UpdateBlockPacket[] packets = new UpdateBlockPacket[blocks.length * 2];
+        GenoaUpdateBlockPacket[] packets = new GenoaUpdateBlockPacket[blocks.length * 2];
         LongSet chunks = null;
         if (optimizeRebuilds) {
             chunks = new LongOpenHashSet();
@@ -831,27 +832,28 @@ public class Level implements ChunkManager, Metadatable {
                 }
             }
 
-            UpdateBlockPacket updateBlockPacket = new UpdateBlockPacket();
-            updateBlockPacket.setBlockPosition(block.getPosition());
-            updateBlockPacket.setDataLayer(0);
-            updateBlockPacket.getFlags().addAll(flags);
+            GenoaUpdateBlockPacket genoaUpdateBlockPacket = new GenoaUpdateBlockPacket();
+            genoaUpdateBlockPacket.setBlockPosition(block.getPosition());
+            genoaUpdateBlockPacket.setDataLayer(0);
+            genoaUpdateBlockPacket.getFlags().addAll(flags);
 
-            UpdateBlockPacket updateBlockPacket2 = new UpdateBlockPacket();
-            updateBlockPacket2.setBlockPosition(block.getPosition());
-            updateBlockPacket2.setDataLayer(1);
-            updateBlockPacket2.getFlags().addAll(flags);
+            GenoaUpdateBlockPacket genoaUpdateBlockPacket2 = new GenoaUpdateBlockPacket();
+            genoaUpdateBlockPacket2.setBlockPosition(block.getPosition());
+            genoaUpdateBlockPacket2.setDataLayer(1);
+            genoaUpdateBlockPacket2.getFlags().addAll(flags);
 
             try {
-                updateBlockPacket.setRuntimeId(BlockPalette.INSTANCE.getRuntimeId(block.getState())); //TODO: send layers separately
-                updateBlockPacket2.setRuntimeId(BlockPalette.INSTANCE.getRuntimeId(block.getExtra()));
+                genoaUpdateBlockPacket.setRuntimeId(BlockPalette.INSTANCE.getRuntimeId(block.getState()));
+                genoaUpdateBlockPacket2.setRuntimeId(BlockPalette.INSTANCE.getRuntimeId(block.getExtra()));
             } catch (RegistryException e) {
                 throw new IllegalStateException("Unable to create BlockUpdatePacket at " +
                         block.getPosition() + " in " + getName(), e);
             }
-            packets[i] = updateBlockPacket;
-            packets[i + 1] = updateBlockPacket2;
+                CloudServer.broadcastPacket(target, genoaUpdateBlockPacket); // TODO: Remove hardcoding
+                CloudServer.broadcastPacket(target, genoaUpdateBlockPacket2);
         }
-        CloudServer.broadcastPackets(target, packets);
+
+        //CloudServer.broadcastPackets(target, packets);
     }
 
     public boolean save() {
@@ -1618,6 +1620,7 @@ public class Level implements ChunkManager, Metadatable {
         if (player != null && player.getGamemode() == GameMode.SPECTATOR) {
             return null;
         }
+
         Block target = this.getBlock(pos);
         ItemStack[] drops;
         BlockBehavior targetBehavior = target.getState().getBehavior();
@@ -1668,7 +1671,7 @@ public class Level implements ChunkManager, Metadatable {
                 eventDrops = targetBehavior.getDrops(target, item);
             }
 
-            BlockBreakEvent ev = new BlockBreakEvent(player, target, face, item, eventDrops, dropExp, player.isCreative(),
+            BlockBreakEvent ev = new BlockBreakEvent(player, target, face, item, eventDrops, dropExp, true,
                     (player.lastBreak + breakTime * 1000) > System.currentTimeMillis());
 
             if (player.isSurvival() && !targetBehavior.isBreakable(target.getState(), item)) {
@@ -1737,7 +1740,7 @@ public class Level implements ChunkManager, Metadatable {
             if (player == null || player.isSurvival()) {
                 for (ItemStack drop : drops) {
                     if (drop.getAmount() > 0) {
-                        this.dropItem(pos.add(0.5, 0.5, 0.5), drop);
+                        player.getInventory().addItem(drop);
                     }
                 }
             }
