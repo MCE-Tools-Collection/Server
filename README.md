@@ -1,5 +1,3 @@
-![Cloudburst](.github/images/banner.png)
-
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
 [![Build Status](https://ci.nukkitx.com/job/NukkitX/job/Server/job/master/badge/icon)](https://ci.nukkitx.com/job/NukkitX/job/Server/job/master/)
 ![Tests](https://img.shields.io/jenkins/t/https/ci.nukkitx.com/job/NukkitX/job/Server/job/master.svg)
@@ -8,23 +6,23 @@
 Introduction
 -------------
 
-Cloudburst is a server software for Minecraft: Bedrock Edition.
-It has a few key advantages over other server software:
+This repo holds the code for the Project Earth server.
+It is built on Cloudburst and has a few key advantages over other server software:
 
 * Written in Java, Cloudburst is faster and more stable.
 * Having a friendly structure, it's easy to contribute to Cloudburst's development and rewrite plugins from other platforms into Cloudburst plugins.
 
-Cloudburst is **under improvement**, yet we welcome contributions. 
+Cloudburst is **under improvement**.
 
 Links
 --------------------
 
-* __[News](https://cloudburstmc.org)__
-* __[Forums](https://cloudburstmc.org/forums)__
-* __[Discord](https://discord.gg/5PzMkyK)__
-* __[Download](https://ci.nukkitx.com/job/NukkitX/job/Server/job/master/)__
-* __[Plugins](https://cloudburstmc.org/resources/categories/nukkit-plugins.1)__
-* __[Wiki](https://cloudburstmc.org/wiki/nukkit)__
+* __[News](#)__
+* __[Forums](#)__
+* __[Discord](https://discord.com/invite/bKyEhDW592)__
+* __[Download](#)__
+* __[Plugins](#)__
+* __[Wiki](#)__
 
 Build JAR file
 -------------
