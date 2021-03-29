@@ -55,7 +55,7 @@ public class BlockStates {
     public static final BlockState BUBBLE_COLUMN = BlockTypes.BUBBLE_COLUMN.createBlockState();
     public static final BlockState CACTUS = BlockTypes.CACTUS.createBlockState();
     public static final BlockState CAKE = BlockTypes.CAKE.createBlockState();
-    public static final BlockState CAMERA = BlockTypes.CAMERA.createBlockState();
+    //buipublic static final BlockState CAMERA = BlockTypes.CAMERA.createBlockState();
     public static final BlockState CAMPFIRE = BlockTypes.CAMPFIRE.createBlockState();
     public static final BlockState CARPET = BlockTypes.CARPET.createBlockState();
     public static final BlockState CARROTS = BlockTypes.CARROTS.createBlockState();

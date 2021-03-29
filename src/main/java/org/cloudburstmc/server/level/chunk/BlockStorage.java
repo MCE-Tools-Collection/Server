@@ -31,7 +31,7 @@ public class BlockStorage {
     private BitArray bitArray;
 
     public BlockStorage() {
-        this(BitArrayVersion.V8);
+        this(BitArrayVersion.V1);
     }
 
     public BlockStorage(BitArrayVersion version) {

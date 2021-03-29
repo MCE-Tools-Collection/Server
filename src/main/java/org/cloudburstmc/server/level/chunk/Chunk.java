@@ -48,8 +48,7 @@ public final class Chunk implements IChunk, Closeable {
 
     static final int ARRAY_SIZE = 256;
 
-    private static final ChunkSection EMPTY = new ChunkSection(new BlockStorage[]{new BlockStorage(BitArrayVersion.V1),
-            new BlockStorage(BitArrayVersion.V1)});
+    private static final ChunkSection EMPTY = new ChunkSection(new BlockStorage[]{new BlockStorage(BitArrayVersion.V1)});
 
     private final Lock readLock; //avoid pointer chasing and an additional interface method call
     private final Lock writeLock;
@@ -568,13 +567,22 @@ public final class Chunk implements IChunk, Closeable {
                 }
             }
 
-            packet.setSubChunksLength(subChunkCount);
+            //packet.setSubChunksLength(subChunkCount);
 
             ByteBuf buffer = Unpooled.buffer();
+
+            buffer.writeByte(subChunkCount);
+
+
             try {
                 for (int i = 0; i < subChunkCount; i++) {
                     networkSections[i].writeToNetwork(buffer);
                 }
+
+                //for (int height: unsafe.getHeightMapArray()) {
+                //    buffer.writeByte(height);
+                //}
+                //buffer.writeBytes(new byte[256]);
 
                 buffer.writeBytes(unsafe.getBiomeArray()); // Biomes - 256 bytes
                 buffer.writeByte(0); // Border blocks size - Education Edition only
