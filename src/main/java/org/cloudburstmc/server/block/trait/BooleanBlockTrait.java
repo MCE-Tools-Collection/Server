@@ -9,12 +9,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 @ParametersAreNonnullByDefault
 public class BooleanBlockTrait extends BlockTrait<Boolean> {
-    private static final ImmutableList<Boolean> VALUES = ImmutableList.of(Boolean.TRUE, Boolean.FALSE);
+    private static final ImmutableList<Boolean> VALUES = ImmutableList.of(Boolean.FALSE, Boolean.TRUE);
 
     private final boolean defaultValue;
 
-    private BooleanBlockTrait(String name, @Nullable String vanillaName, boolean defaultValue) {
-        super(name, vanillaName, Boolean.class, VALUES);
+    private BooleanBlockTrait(String name, @Nullable String vanillaName, boolean defaultValue, boolean onlySerialize) {
+        super(name, vanillaName, Boolean.class, VALUES, onlySerialize);
         this.defaultValue = defaultValue;
     }
 
@@ -31,8 +31,12 @@ public class BooleanBlockTrait extends BlockTrait<Boolean> {
     }
 
     public static BooleanBlockTrait of(String name, @Nullable String vanillaName, boolean defaultValue) {
+        return of(name, vanillaName, defaultValue, false);
+    }
+
+    public static BooleanBlockTrait of(String name, @Nullable String vanillaName, boolean defaultValue, boolean onlySerialize) {
         checkNotNull(name, "name");
-        return new BooleanBlockTrait(name, vanillaName, defaultValue);
+        return new BooleanBlockTrait(name, vanillaName, defaultValue, onlySerialize);
     }
 
     @Override

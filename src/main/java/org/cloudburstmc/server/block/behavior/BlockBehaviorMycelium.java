@@ -2,44 +2,29 @@ package org.cloudburstmc.server.block.behavior;
 
 import com.nukkitx.math.vector.Vector3i;
 import lombok.val;
-import org.cloudburstmc.server.Server;
+import org.cloudburstmc.server.CloudServer;
 import org.cloudburstmc.server.block.Block;
 import org.cloudburstmc.server.block.BlockCategory;
 import org.cloudburstmc.server.block.BlockState;
 import org.cloudburstmc.server.block.BlockTraits;
 import org.cloudburstmc.server.event.block.BlockSpreadEvent;
-import org.cloudburstmc.server.item.behavior.Item;
-import org.cloudburstmc.server.item.behavior.ItemTool;
+import org.cloudburstmc.server.item.ItemStack;
 import org.cloudburstmc.server.level.Level;
 import org.cloudburstmc.server.utils.BlockColor;
 import org.cloudburstmc.server.utils.data.DirtType;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static org.cloudburstmc.server.block.BlockIds.DIRT;
-import static org.cloudburstmc.server.block.BlockIds.MYCELIUM;
+import static org.cloudburstmc.server.block.BlockTypes.DIRT;
+import static org.cloudburstmc.server.block.BlockTypes.MYCELIUM;
 
 public class BlockBehaviorMycelium extends BlockBehaviorSolid {
 
-    @Override
-    public int getToolType() {
-        return ItemTool.TYPE_SHOVEL;
-    }
 
     @Override
-    public float getHardness() {
-        return 0.6f;
-    }
-
-    @Override
-    public float getResistance() {
-        return 2.5f;
-    }
-
-    @Override
-    public Item[] getDrops(Block block, Item hand) {
-        return new Item[]{
-                Item.get(DIRT)
+    public ItemStack[] getDrops(Block block, ItemStack hand) {
+        return new ItemStack[]{
+                ItemStack.get(DIRT)
         };
     }
 
@@ -57,7 +42,7 @@ public class BlockBehaviorMycelium extends BlockBehaviorSolid {
             if (state.getType() == DIRT && state.ensureTrait(BlockTraits.DIRT_TYPE) == DirtType.NORMAL) {
                 if (b.up().getState().inCategory(BlockCategory.TRANSPARENT)) {
                     BlockSpreadEvent ev = new BlockSpreadEvent(b, block, BlockState.get(MYCELIUM));
-                    Server.getInstance().getEventManager().fire(ev);
+                    CloudServer.getInstance().getEventManager().fire(ev);
                     if (!ev.isCancelled()) {
                         b.set(ev.getNewState());
                     }
@@ -72,8 +57,5 @@ public class BlockBehaviorMycelium extends BlockBehaviorSolid {
         return BlockColor.PURPLE_BLOCK_COLOR;
     }
 
-    @Override
-    public boolean canSilkTouch() {
-        return true;
-    }
+
 }

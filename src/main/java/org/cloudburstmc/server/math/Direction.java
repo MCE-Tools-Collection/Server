@@ -19,12 +19,14 @@ public enum Direction {
     NORTH(3, 2, "north", AxisDirection.NEGATIVE, CardinalDirection.NORTH, Vector3i.from(0, 0, -1)),
     SOUTH(2, 0, "south", AxisDirection.POSITIVE, CardinalDirection.SOUTH, Vector3i.from(0, 0, 1)),
     WEST(5, 1, "west", AxisDirection.NEGATIVE, CardinalDirection.WEST, Vector3i.from(-1, 0, 0)),
-    EAST(4, 3, "east", AxisDirection.POSITIVE, CardinalDirection.EAST, Vector3i.from(1, 0, 0));
+    EAST(4, 3, "east", AxisDirection.POSITIVE, CardinalDirection.EAST, Vector3i.from(1, 0, 0)),
+    LEFT(7, 1, "left", AxisDirection.NEGATIVE, null, Vector3i.from(-1, 0, 0)),
+    RIGHT(6, 3, "right", AxisDirection.POSITIVE, null, Vector3i.from(1, 0, 0));
 
     /**
      * All faces in D-U-N-S-W-E order
      */
-    private static final Direction[] VALUES = new Direction[6];
+    private static final Direction[] VALUES = new Direction[8];
 
     /**
      * All faces with horizontal axis in order S-W-N-E
@@ -39,6 +41,8 @@ public enum Direction {
         SOUTH.axis = Axis.Z;
         WEST.axis = Axis.X;
         EAST.axis = Axis.X;
+        LEFT.axis = Axis.X;
+        RIGHT.axis = Axis.X;
 
         for (Direction face : values()) {
             VALUES[face.ordinal()] = face;

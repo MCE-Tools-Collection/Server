@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.cloudburstmc.server.utils.ServerKiller;
 
@@ -40,7 +41,7 @@ import java.util.Properties;
  */
 
 /**
- * The entry point of Cloudburst Server.
+ * The entry point of Cloudburst CloudServer.
  */
 @Log4j2
 public class Bootstrap {
@@ -63,6 +64,7 @@ public class Bootstrap {
 
     public static void main(String[] args) {
         Locale.setDefault(Locale.ENGLISH);
+        Configurator.setAllLevels(LogManager.getRootLogger().getName(), Level.DEBUG); // To get all exceptions
         System.setProperty("log4j.skipJansi", "false");
 
         YAML_MAPPER.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
@@ -141,7 +143,7 @@ public class Bootstrap {
 
         String language = options.valueOf(languageSpec);
 
-        Server server = new Server(dataPath, pluginPath, levelPath, language);
+        CloudServer server = new CloudServer(dataPath, pluginPath, levelPath, language);
 
         try {
             if (TITLE) {
@@ -153,7 +155,7 @@ public class Bootstrap {
         }
 
         if (TITLE) {
-            System.out.print((char) 0x1b + "]0;Stopping Server..." + (char) 0x07);
+            System.out.print((char) 0x1b + "]0;Stopping CloudServer..." + (char) 0x07);
         }
         log.info("Stopping other threads");
 
@@ -167,7 +169,7 @@ public class Bootstrap {
             }
         }
 
-        ServerKiller killer = new ServerKiller(8);
+        ServerKiller killer = new ServerKiller(10);
         killer.start();
 
         if (TITLE) {

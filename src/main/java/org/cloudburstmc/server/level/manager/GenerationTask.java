@@ -1,5 +1,6 @@
 package org.cloudburstmc.server.level.manager;
 
+import com.nukkitx.protocol.bedrock.BedrockRakNetSessionListener;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -32,6 +33,7 @@ public final class GenerationTask implements Function<Chunk, Chunk> {
 
         lockable.lock();
         try {
+            System.out.println("Generating chunk!");
             chunk.getLevel().getGenerator().generate(random, lockable, chunk.getX(), chunk.getZ());
             chunk.setState(IChunk.STATE_GENERATED);
             chunk.setDirty();

@@ -15,6 +15,9 @@ import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.packet.AddPlayerPacket;
 import com.nukkitx.protocol.bedrock.packet.RemoveEntityPacket;
 import com.nukkitx.protocol.bedrock.packet.SetEntityLinkPacket;
+import lombok.val;
+import org.cloudburstmc.server.enchantment.EnchantmentInstance;
+import org.cloudburstmc.server.enchantment.EnchantmentTypes;
 import org.cloudburstmc.server.entity.Entity;
 import org.cloudburstmc.server.entity.EntityType;
 import org.cloudburstmc.server.event.entity.EntityDamageByEntityEvent;
@@ -22,9 +25,11 @@ import org.cloudburstmc.server.event.entity.EntityDamageEvent;
 import org.cloudburstmc.server.inventory.InventoryHolder;
 import org.cloudburstmc.server.inventory.PlayerEnderChestInventory;
 import org.cloudburstmc.server.inventory.PlayerInventory;
+import org.cloudburstmc.server.item.CloudItemStack;
+import org.cloudburstmc.server.item.ItemStack;
+import org.cloudburstmc.server.item.ItemStacks;
 import org.cloudburstmc.server.item.ItemUtils;
-import org.cloudburstmc.server.item.behavior.Item;
-import org.cloudburstmc.server.item.enchantment.Enchantment;
+import org.cloudburstmc.server.item.data.Damageable;
 import org.cloudburstmc.server.level.Location;
 import org.cloudburstmc.server.math.NukkitMath;
 import org.cloudburstmc.server.player.Player;
@@ -38,7 +43,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.nukkitx.protocol.bedrock.data.entity.EntityFlag.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.cloudburstmc.server.block.BlockIds.AIR;
 
 /**
  * author: MagicDroidX
@@ -204,14 +208,14 @@ public class Human extends EntityCreature implements InventoryHolder {
         List<NbtMap> inventoryItems = new ArrayList<>();
         int slotCount = PlayerInventory.SURVIVAL_SLOTS + 9;
         for (int slot = 9; slot < slotCount; ++slot) {
-            Item item = this.inventory.getItem(slot - 9);
+            ItemStack item = this.inventory.getItem(slot - 9);
             if (!item.isNull()) {
                 inventoryItems.add(ItemUtils.serializeItem(item, slot));
             }
         }
 
         for (int slot = 100; slot < 105; ++slot) {
-            Item item = this.inventory.getItem(this.inventory.getSize() + slot - 100);
+            ItemStack item = this.inventory.getItem(this.inventory.getSize() + slot - 100);
             if (!item.isNull()) {
                 inventoryItems.add(ItemUtils.serializeItem(item, slot));
             }
@@ -221,7 +225,7 @@ public class Human extends EntityCreature implements InventoryHolder {
 
         List<NbtMap> enderItems = new ArrayList<>();
         for (int slot = 0; slot < 27; ++slot) {
-            Item item = this.enderChestInventory.getItem(slot);
+            ItemStack item = this.enderChestInventory.getItem(slot);
             if (item != null && !item.isNull()) {
                 enderItems.add(ItemUtils.serializeItem(item, slot));
             }
@@ -309,7 +313,7 @@ public class Human extends EntityCreature implements InventoryHolder {
         packet.setPosition(this.getPosition());
         packet.setMotion(this.getMotion());
         packet.setRotation(Vector3f.from(this.getPitch(), this.getYaw(), this.getYaw()));
-        packet.setHand(this.getInventory().getItemInHand().toNetwork());
+        packet.setHand(((CloudItemStack) this.getInventory().getItemInHand()).getNetworkData());
         packet.setPlatformChatId("");
         packet.setDeviceId("");
         packet.getAdventureSettings().setCommandPermission(CommandPermission.NORMAL);
@@ -352,8 +356,8 @@ public class Human extends EntityCreature implements InventoryHolder {
             int epf = 0;
             int toughness = 0;
 
-            for (Item armor : inventory.getArmorContents()) {
-                armorPoints += armor.getArmorPoints();
+            for (ItemStack armor : inventory.getArmorContents()) {
+                armorPoints += armor.getBehavior().getArmorPoints(armor);
                 epf += calculateEnchantmentProtectionFactor(armor, source);
                 //toughness += armor.getToughness();
             }
@@ -376,30 +380,34 @@ public class Human extends EntityCreature implements InventoryHolder {
             }
 
             for (int slot = 0; slot < 4; slot++) {
-                Item armor = this.inventory.getArmorItem(slot);
+                ItemStack armor = this.inventory.getArmorItem(slot);
 
                 if (armor.hasEnchantments()) {
                     if (damager != null) {
-                        for (Enchantment enchantment : armor.getEnchantments()) {
-                            enchantment.doPostAttack(damager, this);
+                        for (EnchantmentInstance enchantment : armor.getEnchantments().values()) {
+                            enchantment.getBehavior().doPostAttack(enchantment, damager, this);
                         }
                     }
 
-                    Enchantment durability = armor.getEnchantment(Enchantment.ID_DURABILITY);
+                    EnchantmentInstance durability = armor.getEnchantment(EnchantmentTypes.DURABILITY);
                     if (durability != null && durability.getLevel() > 0 && (100 / (durability.getLevel() + 1)) <= new Random().nextInt(100))
                         continue;
                 }
 
-                if (armor.isUnbreakable()) {
-                    continue;
-                }
+                val damageable = armor.getMetadata(Damageable.class);
 
-                armor.setMeta(armor.getMeta() + 1);
+                if (damageable != null) {
+                    if (damageable.isUnbreakable()) {
+                        continue;
+                    }
 
-                if (armor.getMeta() >= armor.getMaxDurability()) {
-                    inventory.setArmorItem(slot, Item.get(AIR, 0, 0));
-                } else {
-                    inventory.setArmorItem(slot, armor, true);
+                    armor = armor.withData(damageable.damage());
+
+                    if (damageable.getDurability() + 1 >= armor.getBehavior().getMaxDurability()) {
+                        inventory.setArmorItem(slot, ItemStacks.AIR);
+                    } else {
+                        inventory.setArmorItem(slot, armor, true);
+                    }
                 }
             }
 
@@ -409,15 +417,15 @@ public class Human extends EntityCreature implements InventoryHolder {
         }
     }
 
-    protected double calculateEnchantmentProtectionFactor(Item item, EntityDamageEvent source) {
+    protected double calculateEnchantmentProtectionFactor(ItemStack item, EntityDamageEvent source) {
         if (!item.hasEnchantments()) {
             return 0;
         }
 
         double epf = 0;
 
-        for (Enchantment ench : item.getEnchantments()) {
-            epf += ench.getProtectionFactor(source);
+        for (EnchantmentInstance ench : item.getEnchantments().values()) {
+            epf += ench.getBehavior().getProtectionFactor(ench, source);
         }
 
         return epf;
@@ -427,8 +435,8 @@ public class Human extends EntityCreature implements InventoryHolder {
     public void setOnFire(int seconds) {
         int level = 0;
 
-        for (Item armor : this.inventory.getArmorContents()) {
-            Enchantment fireProtection = armor.getEnchantment(Enchantment.ID_PROTECTION_FIRE);
+        for (ItemStack armor : this.inventory.getArmorContents()) {
+            EnchantmentInstance fireProtection = armor.getEnchantment(EnchantmentTypes.FIRE_PROTECTION);
 
             if (fireProtection != null && fireProtection.getLevel() > 0) {
                 level = Math.max(level, fireProtection.getLevel());
@@ -441,11 +449,11 @@ public class Human extends EntityCreature implements InventoryHolder {
     }
 
     @Override
-    public Item[] getDrops() {
+    public ItemStack[] getDrops() {
         if (this.inventory != null) {
-            return this.inventory.getContents().values().toArray(new Item[0]);
+            return this.inventory.getContents().values().toArray(new ItemStack[0]);
         }
-        return new Item[0];
+        return new ItemStack[0];
     }
 
     public boolean isSneaking() {

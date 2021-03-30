@@ -9,7 +9,7 @@ import static com.google.common.base.Preconditions.checkElementIndex;
 
 public class ChunkSection {
 
-    public static final int CHUNK_SECTION_VERSION = 8;
+    public static final int CHUNK_SECTION_VERSION = 8; // 1 works, 7/8 a little buggy (needs testing)
     public static final int SIZE = 4096;
 
     private final BlockStorage[] storage;

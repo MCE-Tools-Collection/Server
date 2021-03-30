@@ -4,16 +4,16 @@ import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtMapBuilder;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.packet.AddPaintingPacket;
+import org.cloudburstmc.api.level.gamerule.GameRules;
 import org.cloudburstmc.server.entity.Entity;
 import org.cloudburstmc.server.entity.EntityType;
 import org.cloudburstmc.server.entity.impl.HangingEntity;
 import org.cloudburstmc.server.entity.misc.Painting;
 import org.cloudburstmc.server.event.entity.EntityDamageByEntityEvent;
 import org.cloudburstmc.server.event.entity.EntityDamageEvent;
-import org.cloudburstmc.server.item.behavior.Item;
-import org.cloudburstmc.server.item.behavior.ItemIds;
+import org.cloudburstmc.server.item.ItemStack;
+import org.cloudburstmc.server.item.ItemTypes;
 import org.cloudburstmc.server.level.Location;
-import org.cloudburstmc.server.level.gamerule.GameRules;
 import org.cloudburstmc.server.player.Player;
 
 /**
@@ -69,7 +69,7 @@ public class EntityPainting extends HangingEntity implements Painting {
             if (source instanceof EntityDamageByEntityEvent) {
                 Entity damager = ((EntityDamageByEntityEvent) source).getDamager();
                 if (damager instanceof Player && ((Player) damager).isSurvival() && this.level.getGameRules().get(GameRules.DO_ENTITY_DROPS)) {
-                    this.level.dropItem(this.getPosition(), Item.get(ItemIds.PAINTING));
+                    this.level.dropItem(this.getPosition(), ItemStack.get(ItemTypes.PAINTING));
                 }
             }
             this.close();

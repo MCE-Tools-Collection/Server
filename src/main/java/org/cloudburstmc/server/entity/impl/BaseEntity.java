@@ -21,14 +21,15 @@ import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 import lombok.extern.log4j.Log4j2;
 import lombok.val;
-import org.cloudburstmc.server.Server;
+import org.cloudburstmc.api.level.gamerule.GameRules;
+import org.cloudburstmc.api.plugin.PluginContainer;
+import org.cloudburstmc.server.CloudServer;
 import org.cloudburstmc.server.block.Block;
 import org.cloudburstmc.server.block.BlockCategory;
-import org.cloudburstmc.server.block.BlockIds;
 import org.cloudburstmc.server.block.BlockState;
+import org.cloudburstmc.server.block.BlockTypes;
 import org.cloudburstmc.server.block.behavior.BlockBehaviorLiquid;
 import org.cloudburstmc.server.block.behavior.BlockBehaviorNetherPortal;
-import org.cloudburstmc.server.block.behavior.BlockBehaviorWater;
 import org.cloudburstmc.server.entity.Attribute;
 import org.cloudburstmc.server.entity.Entity;
 import org.cloudburstmc.server.entity.EntityType;
@@ -39,22 +40,19 @@ import org.cloudburstmc.server.event.Event;
 import org.cloudburstmc.server.event.entity.*;
 import org.cloudburstmc.server.event.player.PlayerInteractEvent;
 import org.cloudburstmc.server.event.player.PlayerTeleportEvent;
-import org.cloudburstmc.server.item.behavior.Item;
+import org.cloudburstmc.server.item.ItemStack;
 import org.cloudburstmc.server.level.EnumLevel;
 import org.cloudburstmc.server.level.Level;
 import org.cloudburstmc.server.level.Location;
 import org.cloudburstmc.server.level.chunk.Chunk;
-import org.cloudburstmc.server.level.gamerule.GameRules;
 import org.cloudburstmc.server.math.*;
 import org.cloudburstmc.server.metadata.MetadataValue;
 import org.cloudburstmc.server.metadata.Metadatable;
 import org.cloudburstmc.server.player.GameMode;
 import org.cloudburstmc.server.player.Player;
-import org.cloudburstmc.server.plugin.PluginContainer;
 import org.cloudburstmc.server.potion.Effect;
 import org.cloudburstmc.server.registry.BlockRegistry;
 import org.cloudburstmc.server.registry.EntityRegistry;
-import org.cloudburstmc.server.utils.Identifier;
 import org.cloudburstmc.server.utils.data.CardinalDirection;
 
 import javax.annotation.Nullable;
@@ -66,7 +64,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.nukkitx.protocol.bedrock.data.entity.EntityData.*;
 import static com.nukkitx.protocol.bedrock.data.entity.EntityFlag.*;
-import static org.cloudburstmc.server.block.BlockIds.*;
+import static org.cloudburstmc.server.block.BlockTypes.*;
 
 /**
  * @author MagicDroidX
@@ -128,7 +126,7 @@ public abstract class BaseEntity implements Entity, Metadatable {
     protected float absorption = 0;
     protected float ySize = 0;
     protected boolean isStatic = false;
-    protected Server server;
+    protected CloudServer server;
     protected Timing timing;
     protected boolean isPlayer = false;
     private int maxHealth = 20;
@@ -663,7 +661,7 @@ public abstract class BaseEntity implements Entity, Metadatable {
         packet.setRuntimeEntityId(this.getRuntimeId());
         packet.getMetadata().putAll(map);
 
-        Server.broadcastPacket(this.getViewers(), packet);
+        CloudServer.broadcastPacket(this.getViewers(), packet);
     }
 
     public void sendData(Player player, EntityData... data) {
@@ -1013,7 +1011,7 @@ public abstract class BaseEntity implements Entity, Metadatable {
         packet.setRuntimeEntityId(this.getRuntimeId());
         packet.setMotion(motion);
 
-        Server.broadcastPacket(this.hasSpawned, packet);
+        CloudServer.broadcastPacket(this.hasSpawned, packet);
     }
 
     public Vector3f getDirectionVector() {
@@ -1147,7 +1145,7 @@ public abstract class BaseEntity implements Entity, Metadatable {
         SetEntityLinkPacket packet = new SetEntityLinkPacket();
         packet.setEntityLink(new EntityLinkData(getUniqueId(), vehicle.getUniqueId(), type, false, false));
 
-        Server.broadcastPacket(vehicle.getViewers(), packet);
+        CloudServer.broadcastPacket(vehicle.getViewers(), packet);
     }
 
     public void updatePassengers() {
@@ -1271,8 +1269,12 @@ public abstract class BaseEntity implements Entity, Metadatable {
 
             if (fallDistance > 0) {
                 // check if we fell into at least 1 block of water
-                if (this instanceof EntityLiving && !(this.level.getBlock(this.position) instanceof BlockBehaviorWater)) {
-                    this.fall(fallDistance);
+                if (this instanceof EntityLiving) {
+                    val liquid = this.level.getBlock(this.position.toInt()).getLiquid().getType();
+
+                    if (liquid != WATER && liquid != FLOWING_WATER) {
+                        this.fall(fallDistance);
+                    }
                 }
                 this.resetFallDistance();
             }
@@ -1310,7 +1312,7 @@ public abstract class BaseEntity implements Entity, Metadatable {
                 if (ev.isCancelled()) {
                     return;
                 }
-                this.level.setBlock(down.getPosition(), BlockState.get(BlockIds.DIRT), false, true);
+                this.level.setBlock(down.getPosition(), BlockState.get(BlockTypes.DIRT), false, true);
             }
         }
     }
@@ -1361,11 +1363,11 @@ public abstract class BaseEntity implements Entity, Metadatable {
         }
     }
 
-    public boolean onInteract(Player player, Item item, Vector3f clickedPos) {
+    public boolean onInteract(Player player, ItemStack item, Vector3f clickedPos) {
         return onInteract(player, item);
     }
 
-    public boolean onInteract(Player player, Item item) {
+    public boolean onInteract(Player player, ItemStack item) {
         return false;
     }
 
@@ -1411,7 +1413,7 @@ public abstract class BaseEntity implements Entity, Metadatable {
         }
 
         BlockState state = block.getLiquid();
-        Identifier blockType = state.getType();
+        val blockType = state.getType();
 
         float percent;
 
@@ -1434,7 +1436,7 @@ public abstract class BaseEntity implements Entity, Metadatable {
             return true;
         }
 
-        AxisAlignedBB bb = state.getBehavior().getBoundingBox(pos);
+        AxisAlignedBB bb = state.getBehavior().getBoundingBox(pos, state);
 
         return bb != null && state.inCategory(BlockCategory.SOLID) && !state.inCategory(BlockCategory.TRANSPARENT) && bb.intersectsWith(this.getBoundingBox());
 
@@ -1929,7 +1931,7 @@ public abstract class BaseEntity implements Entity, Metadatable {
         this.server.getEntityMetadata().removeMetadata(this, metadataKey, owningPlugin);
     }
 
-    public Server getServer() {
+    public CloudServer getServer() {
         return server;
     }
 
