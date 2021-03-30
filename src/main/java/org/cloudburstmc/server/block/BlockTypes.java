@@ -19,9 +19,12 @@ public class BlockTypes {
 
     private static final Reference2ReferenceMap<Identifier, BlockType> BY_ID = new Reference2ReferenceOpenHashMap<>();
 
-    public static final BlockType INVISIBLE_CONSTRAINT = IntBlock.builder().id(BlockIds.INVISIBLE_CONSTRAINT).maxStackSize(64).diggable(false).transparent(true).hardness(100f).build();
-    public static final BlockType BLEND_CONTRAINT = IntBlock.builder().id(BlockIds.BLEND_CONTRAINT).maxStackSize(64).diggable(false).transparent(true).hardness(100f).build();
-    public static final BlockType BORDER_CONSTRAINT = IntBlock.builder().id(BlockIds.BORDER_CONSTRAINT).maxStackSize(64).diggable(false).transparent(true).hardness(100f).build();
+
+    /* Constraints */
+    public static final BlockType INVISIBLE_CONSTRAINT = IntBlock.builder().id(BlockIds.INVISIBLE_CONSTRAINT).maxStackSize(0).diggable(false).transparent(false).hardness(100f).build();
+    public static final BlockType BLEND_CONSTRAINT = IntBlock.builder().id(BlockIds.BLEND_CONSTRAINT).maxStackSize(0).diggable(false).transparent(false).hardness(100f).build();
+    public static final BlockType BORDER_CONSTRAINT = IntBlock.builder().id(BlockIds.BORDER_CONSTRAINT).maxStackSize(0).diggable(false).transparent(false).hardness(100f).build();
+
     public static final BlockType PISTON_STICKY_ARM_COLLISION = IntBlock.builder().id(BlockIds.PISTON_ARM_COLLISION).maxStackSize(64).diggable(true).hardness(0.5f).resistance(2.5f).translucency(0.8f).filterLight(0).blockSolid(false).blockMotion(false).breakFlowing(true).waterlogSource(true).build();
     public static final BlockType BUTTERCUP = IntBlock.builder().id(BlockIds.BUTTERCUP).maxStackSize(64).diggable(true).transparent(true).hardness(100f).floodable(true).build();
     public static final BlockType ADVENTURE_CHEST_COMMON = IntBlock.builder().id(BlockIds.ADVENTURE_CHEST_COMMON).maxStackSize(0).diggable(false).transparent(true).hardness(100f).floodable(true).build();
@@ -35,8 +38,8 @@ public class BlockTypes {
     public static final BlockType RAINBOW_CARPET = IntBlock.builder().id(BlockIds.RAINBOW_CARPET).maxStackSize(64).diggable(true).transparent(true).hardness(100f).floodable(true).build();
     public static final BlockType RAINBOW_BED = IntBlock.builder().id(BlockIds.RAINBOW_BED).maxStackSize(1).diggable(true).transparent(true).solid(true).hardness(0.2f).floodable(true).build();
     public static final BlockType FLOWER_PINK_DAISY = IntBlock.builder().id(BlockIds.FLOWER_PINK_DAISY).maxStackSize(64).diggable(true).transparent(true).solid(true).hardness(0f).floodable(true).build();
-    public static final BlockType FLOWING_MUD =IntBlock.builder().id(BlockIds.FLOWING_MUD).maxStackSize(0).transparent(true).solid(true).filterLight(2).hardness(100f).build();;
-    public static final BlockType STATIONARY_MUD = IntBlock.builder().id(BlockIds.MUD).maxStackSize(0).transparent(true).solid(true).filterLight(2).hardness(100f).build();
+    public static final BlockType FLOWING_MUD = IntBlock.builder().id(BlockIds.FLOWING_MUD).maxStackSize(0).filterLight(2).hardness(100).replaceable(true).resistance(500).translucency(1).diggable(true).breakFalling(true).blockWater(false).blockSolid(false).blockMotion(false).breakFlowing(true).build();;
+    public static final BlockType STATIONARY_MUD = IntBlock.builder().id(BlockIds.MUD).maxStackSize(0).filterLight(2).hardness(100).replaceable(true).resistance(500).translucency(1).diggable(true).breakFalling(true).blockWater(false).blockSolid(false).blockMotion(false).breakFlowing(true).build();
 
     public static final BlockType UNKNOWN = IntBlock.builder().id(BlockIds.UNKNOWN).build();
     public static final BlockType AIR = IntBlock.builder().id(BlockIds.AIR).maxStackSize(0).floodable(true).friction(0.9f).hardness(-1).replaceable(true).translucency(1).aabb(null).build();

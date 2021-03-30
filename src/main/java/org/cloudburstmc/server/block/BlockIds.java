@@ -7,7 +7,7 @@ import org.cloudburstmc.server.utils.Identifier;
 @UtilityClass
 public final class BlockIds {
     public static final Identifier INVISIBLE_CONSTRAINT = Identifier.fromString("invisible_constraint");
-    public static final Identifier BLEND_CONTRAINT = Identifier.fromString("blend_constraint");
+    public static final Identifier BLEND_CONSTRAINT = Identifier.fromString("blend_constraint");
     public static final Identifier BORDER_CONSTRAINT = Identifier.fromString("border_constraint");
     public static final Identifier BUTTERCUP = Identifier.fromString("buttercup");
     public static final Identifier ADVENTURE_CHEST_COMMON = Identifier.fromString("adventure_chest_common");

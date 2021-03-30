@@ -585,8 +585,8 @@ public class BlockRegistry implements Registry {
     }
 
     private void registerGenoaBlocks() {
-        this.registerVanilla(INVISIBLE_CONSTRAINT, NoopBlockBehavior.INSTANCE, BlockTraits.IS_OPEN);
-        this.registerVanilla(BLEND_CONTRAINT, NoopBlockBehavior.INSTANCE); // TODO: Make an actual trait for these constraints
+        this.registerVanilla(INVISIBLE_CONSTRAINT, NoopBlockBehavior.INSTANCE);
+        this.registerVanilla(BLEND_CONSTRAINT, NoopBlockBehavior.INSTANCE);
         this.registerVanilla(BORDER_CONSTRAINT, NoopBlockBehavior.INSTANCE);
 
         this.registerVanilla(BUTTERCUP, NoopBlockBehavior.INSTANCE);

@@ -125,6 +125,7 @@ public class BlockPalette {
                     case 2995: // Torch
 
                     case 554: // Pumpkin/Cauldron, Direction NSEW
+                    case 1608: // Invisible Constraint/IronBars
                         runtimeId = runtimeIdAllocator.getAndIncrement();
                         break;
 
