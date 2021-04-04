@@ -11,10 +11,12 @@ import com.nukkitx.math.vector.Vector2i;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.math.vector.Vector4i;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.packet.*;
+import com.nukkitx.protocol.genoa.packet.GenoaBlockDestroyPacket;
 import com.nukkitx.protocol.genoa.packet.GenoaUpdateBlockPacket;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.*;
@@ -25,6 +27,7 @@ import it.unimi.dsi.fastutil.shorts.ShortSet;
 import lombok.Synchronized;
 import lombok.extern.log4j.Log4j2;
 import lombok.val;
+import org.cloudburstmc.api.level.gamerule.BooleanGameRule;
 import org.cloudburstmc.api.level.gamerule.GameRules;
 import org.cloudburstmc.api.plugin.PluginContainer;
 import org.cloudburstmc.api.registry.RegistryException;
@@ -52,9 +55,7 @@ import org.cloudburstmc.server.event.entity.ItemSpawnEvent;
 import org.cloudburstmc.server.event.level.*;
 import org.cloudburstmc.server.event.player.PlayerInteractEvent;
 import org.cloudburstmc.server.event.weather.LightningStrikeEvent;
-import org.cloudburstmc.server.item.ItemStack;
-import org.cloudburstmc.server.item.ItemStacks;
-import org.cloudburstmc.server.item.ItemTypes;
+import org.cloudburstmc.server.item.*;
 import org.cloudburstmc.server.item.data.Bucket;
 import org.cloudburstmc.server.item.data.Damageable;
 import org.cloudburstmc.server.level.chunk.Chunk;
@@ -836,6 +837,8 @@ public class Level implements ChunkManager, Metadatable {
             genoaUpdateBlockPacket.setBlockPosition(block.getPosition());
             genoaUpdateBlockPacket.setDataLayer(0);
             genoaUpdateBlockPacket.getFlags().addAll(flags);
+            genoaUpdateBlockPacket.setCheckForFloat(true);
+            genoaUpdateBlockPacket.setFloat1(0.0f);
 
             GenoaUpdateBlockPacket genoaUpdateBlockPacket2 = new GenoaUpdateBlockPacket();
             genoaUpdateBlockPacket2.setBlockPosition(block.getPosition());
@@ -845,12 +848,19 @@ public class Level implements ChunkManager, Metadatable {
             try {
                 genoaUpdateBlockPacket.setRuntimeId(BlockPalette.INSTANCE.getRuntimeId(block.getState()));
                 genoaUpdateBlockPacket2.setRuntimeId(BlockPalette.INSTANCE.getRuntimeId(block.getExtra()));
+
+                /*if (BlockPalette.INSTANCE.getRuntimeId(block.getState()) == 176) {
+                    GenoaBlockDestroyPacket packet = new GenoaBlockDestroyPacket();
+                    packet.setUnsignedVarLong(target[0].getRuntimeId());
+                    packet.setUuid(UUID.fromString("39529999-1856-ea49-6942-aabe9e6a8fdb"));
+                    CloudServer.broadcastPacket(target, packet);
+                }*/
             } catch (RegistryException e) {
                 throw new IllegalStateException("Unable to create BlockUpdatePacket at " +
                         block.getPosition() + " in " + getName(), e);
             }
                 CloudServer.broadcastPacket(target, genoaUpdateBlockPacket); // TODO: Remove hardcoding
-                CloudServer.broadcastPacket(target, genoaUpdateBlockPacket2);
+               // CloudServer.broadcastPacket(target, genoaUpdateBlockPacket2);
         }
 
         //CloudServer.broadcastPackets(target, packets);
@@ -1642,9 +1652,7 @@ public class Level implements ChunkManager, Metadatable {
             // block
             // class
 
-            if (player.isCreative() && breakTime > 0.15) {
-                breakTime = 0.15;
-            }
+            breakTime = 0.15;
 
             if (player.hasEffect(Effect.HASTE)) {
                 breakTime *= 1 - (0.2 * (player.getEffect(Effect.HASTE).getAmplifier() + 1));
@@ -1663,9 +1671,7 @@ public class Level implements ChunkManager, Metadatable {
             breakTime -= 0.15;
 
             ItemStack[] eventDrops;
-            if (!player.isSurvival()) {
-                eventDrops = new ItemStack[0];
-            } else if (isSilkTouch && targetBehavior.canSilkTouch(target.getState())) {
+            if (targetBehavior.canSilkTouch(target.getState())) {
                 eventDrops = new ItemStack[]{targetBehavior.toItem(target)};
             } else {
                 eventDrops = targetBehavior.getDrops(target, item);
@@ -1695,7 +1701,7 @@ public class Level implements ChunkManager, Metadatable {
             dropExp = ev.getDropExp();
         } else if (!targetBehavior.isBreakable(target.getState(), item)) {
             return null;
-        } else if (item.getEnchantment(EnchantmentTypes.SILK_TOUCH) != null) {
+        } else if (this.getGameRules().get(BooleanGameRule.of("alwayssilktouch"))) {
             drops = new ItemStack[]{targetBehavior.toItem(target)};
         } else {
             drops = targetBehavior.getDrops(target, item);
@@ -1737,10 +1743,19 @@ public class Level implements ChunkManager, Metadatable {
                 this.dropExpOrb(pos, dropExp);
             }
 
-            if (player == null || player.isSurvival()) {
+            if (player != null) {
                 for (ItemStack drop : drops) {
                     if (drop.getAmount() > 0) {
-                        player.getInventory().addItem(drop);
+                        short damage = ((CloudItemStack) drop).getNbt().getShort("Damage");
+                        if (damage == -1) damage = 0;
+                        NbtMap nbt = NbtMap.builder()
+                                .putString("Name", drop.getType().getId().toString())
+                                .putByte("Count", (byte) drop.getAmount())
+                                .putShort("Damage", damage)
+                                .build();
+                        CloudItemStack itemStack = (CloudItemStack) ItemUtils.deserializeItem(nbt);
+                        player.getInventory().addItem(itemStack);
+                        //this.dropItem(pos.add(0.5, 0.5, 0.5), drop);
                     }
                 }
             }

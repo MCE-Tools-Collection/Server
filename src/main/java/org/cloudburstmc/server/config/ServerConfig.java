@@ -183,6 +183,9 @@ public class ServerConfig {
         @Builder.Default
         private boolean upnp = false;
 
+        @Builder.Default
+        private String earthApi = "http://192.168.2.100/1";
+
     }
 
     @Data

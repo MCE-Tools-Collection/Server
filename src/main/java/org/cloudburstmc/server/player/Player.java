@@ -25,6 +25,7 @@ import com.nukkitx.protocol.bedrock.data.inventory.ContainerId;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.handler.BatchHandler;
 import com.nukkitx.protocol.bedrock.packet.*;
+import com.nukkitx.protocol.genoa.packet.GenoaGameplaySettings;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.bytes.ByteOpenHashSet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
@@ -1067,7 +1068,7 @@ public class Player extends Human implements CommandSender, InventoryHolder, Chu
         this.getInventory().sendOffHandContents(this);
         this.getInventory().sendOffHandContents(this.getViewers());
 
-        this.getInventory().sendCreativeContents();
+        //this.getInventory().sendCreativeContents();
         return true;
     }
 
@@ -1538,6 +1539,10 @@ public class Player extends Human implements CommandSender, InventoryHolder, Chu
         AvailableEntityIdentifiersPacket availableEntityIdentifiersPacket = new AvailableEntityIdentifiersPacket();
         availableEntityIdentifiersPacket.setIdentifiers(EntityRegistry.get().getEntityIdentifiersPalette());
         this.sendPacket(availableEntityIdentifiersPacket);
+
+        GenoaGameplaySettings gameplaySettings = new GenoaGameplaySettings();
+        gameplaySettings.setMultiplePlayersOnline(false);
+        this.sendPacket(gameplaySettings);
 
 //        UpdateBlockPropertiesPacket updateBlockPropertiesPacket = new UpdateBlockPropertiesPacket();
 //        updateBlockPropertiesPacket.setProperties(BlockRegistry.get().getPropertiesTag());

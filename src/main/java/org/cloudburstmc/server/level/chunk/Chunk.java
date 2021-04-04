@@ -573,16 +573,14 @@ public final class Chunk implements IChunk, Closeable {
 
             buffer.writeByte(subChunkCount);
 
-
             try {
                 for (int i = 0; i < subChunkCount; i++) {
                     networkSections[i].writeToNetwork(buffer);
                 }
 
-                //for (int height: unsafe.getHeightMapArray()) {
-                //    buffer.writeByte(height);
-                //}
-                //buffer.writeBytes(new byte[256]);
+               //for (int height: unsafe.getHeightMapArray()) {
+               //    buffer.writeByte(height);
+               //}
 
                 buffer.writeBytes(unsafe.getBiomeArray()); // Biomes - 256 bytes
                 buffer.writeByte(0); // Border blocks size - Education Edition only
@@ -610,16 +608,13 @@ public final class Chunk implements IChunk, Closeable {
                 byte[] data = new byte[buffer.readableBytes()];
                 buffer.readBytes(data);
 
-                packet.setData(data);
+                if (this.getX() > -2 && this.getX() < 2 && this.getZ() > -2 && this.getZ() < 2) packet.setData(data);
+                // Earth doesnt like too much going on
+                else packet.setData(new byte[0]);
 
                 this.cached = new SoftReference<>(packet);
-
-                if (this.getX() > -2 && this.getX() < 2 && this.getZ() > -2 && this.getZ() < 2) // Earth doesnt like too much going on
                 return packet;
-                else {
-                    packet.setData(new byte[0]);
-                    return packet;
-                }
+
             } catch (IOException e) {
                 log.error("Error whilst encoding chunk", e);
                 this.cached = null;

@@ -16,6 +16,7 @@ import org.cloudburstmc.server.item.CloudItemStack;
 import org.cloudburstmc.server.item.ItemStack;
 import org.cloudburstmc.server.item.ItemStacks;
 import org.cloudburstmc.server.player.Player;
+import org.cloudburstmc.server.utils.genoa.GenoaUtils;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -343,6 +344,10 @@ public abstract class BaseInventory implements Inventory {
                     amount = Math.min(amount, this.getMaxStackSize());
                     if (amount > 0) {
                         slot = slot.decrementAmount(amount);
+
+                        if (this.getHolder().getInventory().getType() == InventoryType.PLAYER)
+                            GenoaUtils.NotifyInventoryUpdate(item, i, ((PlayerInventory) (this.getHolder().getInventory())).getHolder().getServerId(), false);
+
                         this.setItem(i, item.incrementAmount(amount));
 
                         if (slot.getAmount() <= 0) {
@@ -367,6 +372,10 @@ public abstract class BaseInventory implements Inventory {
                     amount = Math.min(amount, this.getMaxStackSize());
 
                     ItemStack item = slot.withAmount(amount);
+
+                    if (this.getHolder().getInventory().getType() == InventoryType.PLAYER)
+                        GenoaUtils.NotifyInventoryUpdate(item, slotIndex, ((PlayerInventory) (this.getHolder().getInventory())).getHolder().getServerId(), false);
+
                     this.setItem(slotIndex, item);
 
                     slot = slot.decrementAmount(amount);
@@ -438,6 +447,11 @@ public abstract class BaseInventory implements Inventory {
                     int amount = Math.min(item.getAmount(), slot.getAmount());
                     slot = slot.decrementAmount(amount);
                     item = item.decrementAmount(amount);
+
+                    // TODO: Implement this properly
+                    //if (this.getHolder().getInventory().getType() == InventoryType.PLAYER)
+                    //    GenoaUtils.NotifyInventoryUpdate(item, ((PlayerInventory) (this.getHolder().getInventory())).getHolder().getServerId(), true);
+
                     this.setItem(i, item);
                     if (slot.getAmount() <= 0) {
                         itemSlots.remove(slot);

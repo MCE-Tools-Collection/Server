@@ -4,9 +4,11 @@ import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
+import com.nukkitx.math.vector.Vector4i;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.data.AdventureSetting;
@@ -20,6 +22,8 @@ import com.nukkitx.protocol.bedrock.data.inventory.InventoryActionData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.packet.*;
+import com.nukkitx.protocol.genoa.packet.GenoaInventoryDataPacket;
+import com.nukkitx.protocol.genoa.packet.GenoaOpenInventoryPacket;
 import lombok.extern.log4j.Log4j2;
 import lombok.val;
 import org.cloudburstmc.api.level.gamerule.GameRules;
@@ -54,10 +58,7 @@ import org.cloudburstmc.server.form.Form;
 import org.cloudburstmc.server.inventory.transaction.CraftingTransaction;
 import org.cloudburstmc.server.inventory.transaction.InventoryTransaction;
 import org.cloudburstmc.server.inventory.transaction.action.InventoryAction;
-import org.cloudburstmc.server.item.ItemStack;
-import org.cloudburstmc.server.item.ItemStacks;
-import org.cloudburstmc.server.item.ItemTypes;
-import org.cloudburstmc.server.item.ItemUtils;
+import org.cloudburstmc.server.item.*;
 import org.cloudburstmc.server.item.data.Damageable;
 import org.cloudburstmc.server.item.data.MapItem;
 import org.cloudburstmc.server.level.Location;
@@ -68,7 +69,11 @@ import org.cloudburstmc.server.math.Direction;
 import org.cloudburstmc.server.network.protocol.types.InventoryTransactionUtils;
 import org.cloudburstmc.server.player.GameMode;
 import org.cloudburstmc.server.player.Player;
+import org.cloudburstmc.server.utils.Identifier;
 import org.cloudburstmc.server.utils.TextFormat;
+import org.cloudburstmc.server.utils.genoa.GenoaServerCommand;
+import org.cloudburstmc.server.utils.genoa.GenoaUtils;
+import org.cloudburstmc.server.utils.genoa.HotbarTranslation;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -88,6 +93,8 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
     protected double lastRightClickTime = 0.0;
 
     private Vector3i lastBreakPosition = Vector3i.ZERO;
+
+    private ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public PlayerPacketHandler(Player player) {
         this.player = player;
@@ -110,6 +117,55 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
             }
 
             return packet.handle(this);
+        }
+    }
+
+    @Override
+    public boolean handle(GenoaOpenInventoryPacket packet) {
+        // Earth player opened their inv, we need to query the main api for it
+
+        String response = GenoaUtils.SendApiCommand(GenoaServerCommand.GetInventory, UUID.randomUUID());
+
+        GenoaInventoryDataPacket invDataPacket = new GenoaInventoryDataPacket();
+        invDataPacket.setJson(response);
+        player.sendPacket(invDataPacket);
+
+        return true;
+    }
+
+    @Override
+    public boolean handle(GenoaInventoryDataPacket packet) {
+        // Earth has sent its hotbar, so we need to change it on the server as well
+        try {
+            String response = GenoaUtils.SendApiCommand(GenoaServerCommand.EditHotbar, UUID.randomUUID(), packet.getJson());
+
+            HotbarTranslation[] hotbarTranslations = OBJECT_MAPPER.readValue(response, HotbarTranslation[].class);
+            if (!response.equals("null")) {
+                for (HotbarTranslation translation : hotbarTranslations) {
+                    //BlockState state = BlockStateMetaMappings.getStateFromMeta(Identifier.from("minecraft", translation.getIdentifier()), translation.getMeta());
+
+                    if (translation.getIdentifier().equals("air"))
+                        player.getInventory().clear(translation.getSlotId(), false);
+                    else {
+                        NbtMap nbt = NbtMap.builder()
+                                .putString("Name", Identifier.from("minecraft", translation.getIdentifier()).toString())
+                                .putByte("Count", (byte) translation.getCount())
+                                .putByte("Damage", (byte) translation.getMeta())
+                                .build();
+                        CloudItemStack itemStack = (CloudItemStack) ItemUtils.deserializeItem(nbt);
+                        player.getInventory().setItem(translation.getSlotId(), itemStack, false);
+                    }
+                }
+            }
+
+            player.getInventory().sendContents(player);
+
+            return true;
+
+        } catch (Exception e) {
+            log.debug("Something went wrong while applying the new hotbar.");
+            e.printStackTrace();
+            return true;
         }
     }
 
@@ -1011,7 +1067,11 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
                             if (player.isSurvival()) {
                                 player.getFoodData().updateFoodExpLevel(0.025);
                                 if (!i.equals(oldItem) || i.getAmount() != oldItem.getAmount()) {
-                                    player.getInventory().setItemInHand(i);
+                                    //player.getInventory().setItemInHand(i);
+                                    player.getInventory().sendContents(player);
+                                    player.getInventory().sendArmorContents(player);
+                                    player.getInventory().sendOffHandContents(player);
+
                                     player.getInventory().sendHeldItem(player.getViewers());
                                 }
                             }

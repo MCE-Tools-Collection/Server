@@ -3,6 +3,7 @@
 # %header.3
 
 settings:
+  core-api: "https://p.projectearth.dev/1/api
   # %settings.language
   language: "%language"
   # %settings.force-language

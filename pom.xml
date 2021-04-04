@@ -29,6 +29,10 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+            <repository>
+                <id>jitpack.io</id>
+                <url>https://jitpack.io</url>
+            </repository>
         <repository>
             <id>opencollab-repo-snapshot</id>
             <url>https://repo.opencollab.dev/maven-snapshots/</url>
@@ -252,10 +256,21 @@
         </dependency>
 
         <!-- Miscellaneous -->
-        <dependency>
-            <groupId>com.nukkitx.protocol</groupId>
+        <!--  <dependency>
+           <groupId>com.nukkitx.protocol</groupId>
             <artifactId>genoa-v425</artifactId>
             <version>2.6.2-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.nukkitx</groupId>
+                    <artifactId>nbt</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency> -->
+        <dependency>
+            <groupId>com.github.Project-Earth-Team.Protocol</groupId>
+            <artifactId>genoa-v425</artifactId>
+            <version>93fcdbff7d</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.nukkitx</groupId>
