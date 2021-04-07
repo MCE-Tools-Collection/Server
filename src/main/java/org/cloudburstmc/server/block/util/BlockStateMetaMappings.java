@@ -2,7 +2,10 @@ package org.cloudburstmc.server.block.util;
 
 import com.nukkitx.blockstateupdater.BlockStateUpdaterBase;
 import com.nukkitx.blockstateupdater.BlockStateUpdaters;
+import com.nukkitx.blockstateupdater.util.tagupdater.CompoundTagUpdater;
+import com.nukkitx.blockstateupdater.util.tagupdater.CompoundTagUpdaterContext;
 import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtMapBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ReferenceMap;
 import it.unimi.dsi.fastutil.ints.Int2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
@@ -18,6 +21,8 @@ import org.cloudburstmc.server.block.BlockState;
 import org.cloudburstmc.server.item.CloudItemStack;
 import org.cloudburstmc.server.item.ItemStack;
 import org.cloudburstmc.server.utils.Identifier;
+
+import java.util.Map;
 
 @UtilityClass
 @Log4j2
@@ -39,17 +44,36 @@ public class BlockStateMetaMappings {
             Int2ReferenceMap<BlockState> mapping = new Int2ReferenceOpenHashMap<>();
 
             for (int i = 0; i < states.length; i++) {
-                NbtMap map = BlockStateUpdaters.updateBlockState(NbtMap.builder()
+
+                // Fixes items having a meta value not represented in earth
+
+                //NbtMap map = BlockStateUpdaters.updateBlockState(NbtMap.builder()
+                //        .putString("name", name)
+                //        .putShort("val", (short) i)
+                //        .build(), 0);
+
+                Map<String, Object>[] statesArray = BlockStateUpdaterBase.LEGACY_BLOCK_DATA_MAP.get(name);
+                NbtMapBuilder statesArrBuilder = NbtMap.builder();
+                statesArrBuilder.putAll(statesArray[i]);
+                NbtMap statesArr = statesArrBuilder.build();
+
+                NbtMap map = NbtMap.builder()
                         .putString("name", name)
-                        .putShort("val", (short) i)
-                        .build(), 0);
+                        //.putShort("val", (short) i)
+                        .putInt("version", 17825808)
+                        .putCompound("states", statesArr)
+                        .build();
+
+
 
                 BlockState state = BlockPalette.INSTANCE.getBlockState(map);
-                if (state == null) state = mapping.get(0);
-                if (state == null) continue;
+                if (!state2meta.containsKey(state)) {
+                    if (state == null) state = mapping.get(0);
+                    if (state == null) continue;
 
-                state2meta.put(state, i);
-                mapping.put(i, state);
+                    state2meta.put(state, i);
+                    mapping.put(i, state);
+                }
             }
 
             if (!mapping.isEmpty()) {
@@ -63,7 +87,7 @@ public class BlockStateMetaMappings {
     }
 
     public int getMetaFromState(BlockState state) {
-        return state2meta.getOrDefault(state, -1);
+        return state2meta.getOrDefault(state, 0);
     }
 
     public BlockState getStateFromMeta(ItemStack item) {

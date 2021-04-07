@@ -2,17 +2,24 @@ package org.cloudburstmc.server.utils.genoa;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.genoa.packet.GenoaInventoryDataPacket;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.cloudburstmc.server.CloudServer;
 import org.cloudburstmc.server.item.CloudItemStack;
 import org.cloudburstmc.server.item.ItemStack;
+import org.cloudburstmc.server.item.ItemUtils;
+import org.cloudburstmc.server.player.Player;
+import org.cloudburstmc.server.utils.Identifier;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
 import java.util.UUID;
 
 @Log4j2
@@ -20,7 +27,10 @@ public class GenoaUtils {
 
     private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    public static String SendApiCommand(GenoaServerCommand commandType, UUID playerId, String extraData) {
+    @Setter
+    private static UUID serverApiKey;
+
+    public static String SendApiCommand(GenoaServerCommand commandType, Player player, String extraData) {
         try {
             final URL url = new URL(CloudServer.getInstance().getConfig().getSettings().getEarthApi() + "/v1.1/private/server/command");
             final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -30,10 +40,19 @@ public class GenoaUtils {
             connection.setDoOutput(true);
 
             ServerCommandRequest command = new ServerCommandRequest();
-            command.setApiKey(UUID.randomUUID());// TODO: Need to get this from the allocator
             command.setCommand(commandType);
-            command.setPlayerId("InputOwnUserId"); // TODO: Need to get this from the allocator (Edit your own for testing)
-            command.setServerId(UUID.randomUUID());// TODO: Need to get this from the allocator
+            command.setServerId(CloudServer.getInstance().getServerUniqueId());
+
+            if (player != null) {
+                final String playerId = player.getSkin().getSkinId().split("-")[5].toUpperCase(); // Since playfab id isnt set normally, we can use this
+                command.setPlayerId(playerId);
+            }
+
+            if (commandType == GenoaServerCommand.RegisterServer) {
+                UUID tempKey = UUID.randomUUID();
+                command.setApiKey(tempKey);
+            }
+            else command.setApiKey(serverApiKey);
 
             if (!extraData.equals("none")) command.setRequestData(extraData);
 
@@ -63,11 +82,11 @@ public class GenoaUtils {
         }
     }
 
-    public static String SendApiCommand(GenoaServerCommand commandType, UUID playerId) {
-        return SendApiCommand(commandType, playerId, "none");
+    public static String SendApiCommand(GenoaServerCommand commandType, Player player) {
+        return SendApiCommand(commandType, player, "none");
     }
 
-    public static void NotifyInventoryUpdate(ItemStack newItem,int slotIndex, UUID playerId, boolean removalRequest) {
+    public static void NotifyInventoryUpdate(ItemStack newItem, int slotIndex, Player player, boolean removalRequest) {
         try {
 
         EditInventoryRequest request = new EditInventoryRequest();
@@ -79,12 +98,42 @@ public class GenoaUtils {
         request.setHealth(0.0f);
 
         String jsonData = OBJECT_MAPPER.writeValueAsString(request);
-        SendApiCommand(GenoaServerCommand.EditInventory, playerId, jsonData);
+        SendApiCommand(GenoaServerCommand.EditInventory, player, jsonData);
 
         log.debug("Notified api of inventory update! slotIndex: " + slotIndex);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void ApplyHotbarUpdates(Player player, String hotbarTranslations) {
+
+        try {
+            HotbarTranslation[] translations = OBJECT_MAPPER.readValue(hotbarTranslations, HotbarTranslation[].class);
+            for (HotbarTranslation translation : translations) {
+
+                if (translation.getIdentifier().equals("air"))
+                    player.getInventory().clear(translation.getSlotId(), false);
+                else {
+                    NbtMap nbt = NbtMap.builder()
+                            .putString("Name", Identifier.from("minecraft", translation.getIdentifier()).toString())
+                            .putByte("Count", (byte) translation.getCount())
+                            .putByte("Damage", (byte) translation.getMeta())
+                            .build();
+
+                    CloudItemStack itemStack = (CloudItemStack) ItemUtils.deserializeItem(nbt);
+                    player.getInventory().setItem(translation.getSlotId(), itemStack, false);
+                }
+            }
+        } catch (Exception e) {
+            log.debug("Something went wrong while applying the hotbar updates.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void GetHotbarOnJoin(Player player) {
+        String response = SendApiCommand(GenoaServerCommand.GetInventory, player);
+        ApplyHotbarUpdates(player, response);
     }
 }

@@ -473,6 +473,8 @@ public class CloudServer implements Server {
             throw new RuntimeException(e);
         }
 
+        this.serverID = UUID.randomUUID(); // Moved because we need the id to register the server at runtime
+
         this.commandRegistry.registerVanilla();
 
         this.convertLegacyPlayerData();
@@ -539,7 +541,6 @@ public class CloudServer implements Server {
         //TODO: event
 
         log.info(this.getLanguage().translate("cloudburst.server.networkStart", this.getIp().equals("") ? "*" : this.getIp(), this.getPort()));
-        this.serverID = UUID.randomUUID();
 
         this.network = new Network(this);
         this.network.setName(this.getMotd());

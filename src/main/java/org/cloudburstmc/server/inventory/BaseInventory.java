@@ -346,7 +346,7 @@ public abstract class BaseInventory implements Inventory {
                         slot = slot.decrementAmount(amount);
 
                         if (this.getHolder().getInventory().getType() == InventoryType.PLAYER)
-                            GenoaUtils.NotifyInventoryUpdate(item, i, ((PlayerInventory) (this.getHolder().getInventory())).getHolder().getServerId(), false);
+                            GenoaUtils.NotifyInventoryUpdate(item, i, (Player) this.getHolder(), false);
 
                         this.setItem(i, item.incrementAmount(amount));
 
@@ -374,7 +374,7 @@ public abstract class BaseInventory implements Inventory {
                     ItemStack item = slot.withAmount(amount);
 
                     if (this.getHolder().getInventory().getType() == InventoryType.PLAYER)
-                        GenoaUtils.NotifyInventoryUpdate(item, slotIndex, ((PlayerInventory) (this.getHolder().getInventory())).getHolder().getServerId(), false);
+                        GenoaUtils.NotifyInventoryUpdate(item, slotIndex, (Player) this.getHolder(), false);
 
                     this.setItem(slotIndex, item);
 
@@ -448,9 +448,8 @@ public abstract class BaseInventory implements Inventory {
                     slot = slot.decrementAmount(amount);
                     item = item.decrementAmount(amount);
 
-                    // TODO: Implement this properly
-                    //if (this.getHolder().getInventory().getType() == InventoryType.PLAYER)
-                    //    GenoaUtils.NotifyInventoryUpdate(item, ((PlayerInventory) (this.getHolder().getInventory())).getHolder().getServerId(), true);
+                    if (this.getHolder().getInventory().getType() == InventoryType.PLAYER)
+                        GenoaUtils.NotifyInventoryUpdate(item, i, (Player) this.getHolder(), true);
 
                     this.setItem(i, item);
                     if (slot.getAmount() <= 0) {

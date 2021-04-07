@@ -124,7 +124,7 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
     public boolean handle(GenoaOpenInventoryPacket packet) {
         // Earth player opened their inv, we need to query the main api for it
 
-        String response = GenoaUtils.SendApiCommand(GenoaServerCommand.GetInventory, UUID.randomUUID());
+        String response = GenoaUtils.SendApiCommand(GenoaServerCommand.GetInventoryForClient, player);
 
         GenoaInventoryDataPacket invDataPacket = new GenoaInventoryDataPacket();
         invDataPacket.setJson(response);
@@ -136,37 +136,15 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
     @Override
     public boolean handle(GenoaInventoryDataPacket packet) {
         // Earth has sent its hotbar, so we need to change it on the server as well
-        try {
-            String response = GenoaUtils.SendApiCommand(GenoaServerCommand.EditHotbar, UUID.randomUUID(), packet.getJson());
+        String response = GenoaUtils.SendApiCommand(GenoaServerCommand.EditHotbar, player, packet.getJson());
 
-            HotbarTranslation[] hotbarTranslations = OBJECT_MAPPER.readValue(response, HotbarTranslation[].class);
-            if (!response.equals("null")) {
-                for (HotbarTranslation translation : hotbarTranslations) {
-                    //BlockState state = BlockStateMetaMappings.getStateFromMeta(Identifier.from("minecraft", translation.getIdentifier()), translation.getMeta());
-
-                    if (translation.getIdentifier().equals("air"))
-                        player.getInventory().clear(translation.getSlotId(), false);
-                    else {
-                        NbtMap nbt = NbtMap.builder()
-                                .putString("Name", Identifier.from("minecraft", translation.getIdentifier()).toString())
-                                .putByte("Count", (byte) translation.getCount())
-                                .putByte("Damage", (byte) translation.getMeta())
-                                .build();
-                        CloudItemStack itemStack = (CloudItemStack) ItemUtils.deserializeItem(nbt);
-                        player.getInventory().setItem(translation.getSlotId(), itemStack, false);
-                    }
-                }
-            }
-
-            player.getInventory().sendContents(player);
-
-            return true;
-
-        } catch (Exception e) {
-            log.debug("Something went wrong while applying the new hotbar.");
-            e.printStackTrace();
-            return true;
+        if (!response.equals("null")) {
+            GenoaUtils.ApplyHotbarUpdates(player, response);
         }
+
+        player.getInventory().sendContents(player);
+
+        return true;
     }
 
     @Override
@@ -1381,6 +1359,11 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
         if (playerJoinEvent.getJoinMessage().toString().trim().length() > 0) {
             player.getServer().broadcastMessage(playerJoinEvent.getJoinMessage());
         }
+
+        GenoaUtils.GetHotbarOnJoin(player);
+
+        player.getInventory().sendContents(player);
+
         return true;
     }
 }

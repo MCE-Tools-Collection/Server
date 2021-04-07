@@ -36,6 +36,7 @@ import org.cloudburstmc.server.block.*;
 import org.cloudburstmc.server.block.behavior.BlockBehavior;
 import org.cloudburstmc.server.block.behavior.BlockBehaviorLiquid;
 import org.cloudburstmc.server.block.behavior.BlockBehaviorRedstoneDiode;
+import org.cloudburstmc.server.block.util.BlockStateMetaMappings;
 import org.cloudburstmc.server.block.util.BlockUtils;
 import org.cloudburstmc.server.blockentity.BlockEntity;
 import org.cloudburstmc.server.enchantment.EnchantmentInstance;
@@ -1672,7 +1673,11 @@ public class Level implements ChunkManager, Metadatable {
 
             ItemStack[] eventDrops;
             if (targetBehavior.canSilkTouch(target.getState())) {
-                eventDrops = new ItemStack[]{targetBehavior.toItem(target)};
+                //eventDrops = new ItemStack[]{targetBehavior.toItem(target)};
+                //eventDrops = new ItemStack[]{ItemStack.get(target.getState())};
+                int meta = BlockStateMetaMappings.getMetaFromState(target.getState());
+                ItemStack droppedItem = ItemUtils.deserializeItem(target.getState().getId(), (short) meta, 1, NbtMap.EMPTY);
+                eventDrops = new ItemStack[]{droppedItem};
             } else {
                 eventDrops = targetBehavior.getDrops(target, item);
             }
@@ -1699,10 +1704,12 @@ public class Level implements ChunkManager, Metadatable {
 
             drops = ev.getDrops();
             dropExp = ev.getDropExp();
+
         } else if (!targetBehavior.isBreakable(target.getState(), item)) {
             return null;
         } else if (this.getGameRules().get(BooleanGameRule.of("alwayssilktouch"))) {
-            drops = new ItemStack[]{targetBehavior.toItem(target)};
+            //drops = new ItemStack[]{targetBehavior.toItem(target)};
+            drops = new ItemStack[]{ItemStack.get(target.getState())};
         } else {
             drops = targetBehavior.getDrops(target, item);
         }
