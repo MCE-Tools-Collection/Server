@@ -28,11 +28,11 @@ public class GenoaUtils {
     private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Setter
-    private static UUID serverApiKey;
+    private static String serverApiKey;
 
     public static String SendApiCommand(GenoaServerCommand commandType, Player player, String extraData) {
         try {
-            final URL url = new URL(CloudServer.getInstance().getConfig().getSettings().getEarthApi() + "/v1.1/private/server/command");
+            final URL url = new URL("http://" + CloudServer.getInstance().getConfig().getSettings().getEarthApi() + "/v1.1/private/server/command");
             final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("POST");
@@ -48,11 +48,7 @@ public class GenoaUtils {
                 command.setPlayerId(playerId);
             }
 
-            if (commandType == GenoaServerCommand.RegisterServer) {
-                UUID tempKey = UUID.randomUUID();
-                command.setApiKey(tempKey);
-            }
-            else command.setApiKey(serverApiKey);
+            command.setApiKey(serverApiKey);
 
             if (!extraData.equals("none")) command.setRequestData(extraData);
 

@@ -7,6 +7,5 @@ public enum GenoaServerCommand {
     EditHotbar,
     GetBuildplate,
     EditBuildplate,
-    MarkServerAsReady,
-    RegisterServer
+    MarkServerAsReady
 }

@@ -8,7 +8,7 @@ import java.util.UUID;
 public class ServerCommandRequest {
     private GenoaServerCommand command;
     private String playerId;
-    private UUID apiKey;
+    private String apiKey;
     private UUID serverId;
     private String requestData;
 
