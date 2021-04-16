@@ -32,7 +32,15 @@ public class GenoaUtils {
 
     public static String SendApiCommand(GenoaServerCommand commandType, Player player, String extraData) {
         try {
-            final URL url = new URL("http://" + CloudServer.getInstance().getConfig().getSettings().getEarthApi() + "/v1.1/private/server/command");
+            final String coreUrl = CloudServer.getInstance().getConfig().getSettings().getEarthApi() + "/v1.1/private/server/command";
+            final URL url;
+
+            if (CloudServer.getInstance().getConfig().getSettings().isEnableSecureApiConnections()) {
+                url = new URL("https://" + coreUrl);
+            } else {
+                url = new URL("http://" + coreUrl);
+            }
+
             final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("POST");

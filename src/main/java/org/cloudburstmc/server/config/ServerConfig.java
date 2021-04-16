@@ -186,6 +186,9 @@ public class ServerConfig {
         @Builder.Default
         private String earthApi = "http://192.168.2.100/1";
 
+        @Builder.Default
+        private boolean enableSecureApiConnections = false;
+
     }
 
     @Data

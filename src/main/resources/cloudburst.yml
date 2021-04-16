@@ -3,7 +3,8 @@
 # %header.3
 
 settings:
-  core-api: "https://p.projectearth.dev/1/api
+  earth-api: "p.projectearth.dev/1/api"
+  enable-secure-api-connections: false
   # %settings.language
   language: "%language"
   # %settings.force-language

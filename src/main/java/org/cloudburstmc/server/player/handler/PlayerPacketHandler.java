@@ -22,6 +22,8 @@ import com.nukkitx.protocol.bedrock.data.inventory.InventoryActionData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.packet.*;
+import com.nukkitx.protocol.genoa.packet.GenoaDisconnectRequest;
+import com.nukkitx.protocol.genoa.packet.GenoaDisconnectStart;
 import com.nukkitx.protocol.genoa.packet.GenoaInventoryDataPacket;
 import com.nukkitx.protocol.genoa.packet.GenoaOpenInventoryPacket;
 import lombok.extern.log4j.Log4j2;
@@ -118,6 +120,17 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
 
             return packet.handle(this);
         }
+    }
+
+    @Override
+    public boolean handle(GenoaDisconnectRequest packet) {
+        GenoaDisconnectStart disconnectPacket = new GenoaDisconnectStart();
+        disconnectPacket.setByte1((byte) 1);
+        player.sendPacket(disconnectPacket);
+        player.kick();
+        PlayerQuitEvent ev = new PlayerQuitEvent(player, "");
+        CloudServer.getInstance().getEventManager().fire(ev);
+        return true;
     }
 
     @Override

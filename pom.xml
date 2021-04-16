@@ -270,7 +270,7 @@
         <dependency>
             <groupId>com.github.Project-Earth-Team.Protocol</groupId>
             <artifactId>genoa-v425</artifactId>
-            <version>93fcdbff7d</version>
+            <version>a8ff4ca745</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.nukkitx</groupId>
