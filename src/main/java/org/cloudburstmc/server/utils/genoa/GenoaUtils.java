@@ -123,7 +123,7 @@ public class GenoaUtils {
                     NbtMap nbt = NbtMap.builder()
                             .putString("Name", Identifier.from("minecraft", translation.getIdentifier()).toString())
                             .putByte("Count", (byte) translation.getCount())
-                            .putByte("Damage", (byte) translation.getMeta())
+                            .putShort("Damage", translation.getMeta())
                             .build();
 
                     CloudItemStack itemStack = (CloudItemStack) ItemUtils.deserializeItem(nbt);

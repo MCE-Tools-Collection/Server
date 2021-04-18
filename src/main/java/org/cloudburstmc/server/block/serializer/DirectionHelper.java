@@ -25,6 +25,8 @@ public class DirectionHelper {
     private final Map<BlockType, SeqType> mapping = new HashMap<>();
 
     public void init() {
+        register(TYPE_0, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
+
         register(TYPE_1, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST);
         register(TYPE_2, Direction.SOUTH, Direction.WEST, Direction.NORTH, Direction.EAST);
         register(TYPE_3, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH);
@@ -45,6 +47,12 @@ public class DirectionHelper {
     }
 
     private void registerDefaultMappings() {
+
+        register(TYPE_0,
+                WOODEN_STAIRS,
+                STONE_STAIRS
+        );
+
         register(TYPE_1,
                 END_PORTAL_FRAME,
                 //TODO: check below
@@ -78,8 +86,6 @@ public class DirectionHelper {
         );
 
         register(TYPE_4,
-                WOODEN_STAIRS,
-                STONE_STAIRS,
                 WOODEN_TRAPDOOR,
                 IRON_TRAPDOOR
         );
@@ -179,6 +185,7 @@ public class DirectionHelper {
 
     public enum SeqType {
         //horizontal
+        TYPE_0,
         TYPE_1,
         TYPE_2,
         TYPE_3,
