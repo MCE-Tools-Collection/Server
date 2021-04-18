@@ -32,6 +32,8 @@ public class DirectionHelper {
         register(TYPE_5, Direction.SOUTH, Direction.NORTH, Direction.EAST, Direction.WEST);
         register(TYPE_6, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
 
+        register(TYPE_0, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
+
         register(TYPE_7, Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST, Direction.LEFT, Direction.RIGHT);
         register(TYPE_8, Direction.DOWN, Direction.UP, Direction.SOUTH, Direction.NORTH, Direction.EAST, Direction.WEST, Direction.LEFT, Direction.RIGHT);
         register(TYPE_9, Direction.DOWN, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH, Direction.UP, Direction.LEFT, Direction.RIGHT);
@@ -45,6 +47,12 @@ public class DirectionHelper {
     }
 
     private void registerDefaultMappings() {
+
+        register(TYPE_0,
+                WOODEN_STAIRS,
+                STONE_STAIRS
+        );
+
         register(TYPE_1,
                 END_PORTAL_FRAME,
                 //TODO: check below
@@ -78,8 +86,6 @@ public class DirectionHelper {
         );
 
         register(TYPE_4,
-                WOODEN_STAIRS,
-                STONE_STAIRS,
                 WOODEN_TRAPDOOR,
                 IRON_TRAPDOOR
         );
@@ -179,6 +185,7 @@ public class DirectionHelper {
 
     public enum SeqType {
         //horizontal
+        TYPE_0,
         TYPE_1,
         TYPE_2,
         TYPE_3,

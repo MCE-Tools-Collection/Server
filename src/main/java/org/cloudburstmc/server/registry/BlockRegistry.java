@@ -532,7 +532,7 @@ public class BlockRegistry implements Registry {
         this.registerVanilla(BLAST_FURNACE, new BlockBehaviorFurnace(BlockEntityTypes.BLAST_FURNACE), MultiBlockSerializers.BLAST_FURNACE, BlockTraits.OLD_FACING_DIRECTION, BlockTraits.IS_EXTINGUISHED); // 450
         this.registerVanilla(STONECUTTER_BLOCK, NoopBlockBehavior.INSTANCE, BlockTraits.FACING_DIRECTION); // 451
         this.registerVanilla(SMOKER, new BlockBehaviorFurnace(BlockEntityTypes.FURNACE), MultiBlockSerializers.SMOKER, BlockTraits.FACING_DIRECTION, BlockTraits.IS_EXTINGUISHED); //452
-        this.registerVanilla(CARTOGRAPHY_TABLE, NoopBlockBehavior.INSTANCE); //454
+        //this.registerVanilla(CARTOGRAPHY_TABLE, NoopBlockBehavior.INSTANCE); //454
         //this.registerVanilla(FLETCHING_TABLE, NoopBlockBehavior.INSTANCE); //455
         this.registerVanilla(SMITHING_TABLE, NoopBlockBehavior.INSTANCE); //456
         this.registerVanilla(BARREL, new BlockBehaviorBarrel(), BlockTraits.FACING_DIRECTION, BlockTraits.IS_OPEN); // 457

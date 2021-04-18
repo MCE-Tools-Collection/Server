@@ -42,7 +42,7 @@ public class ItemStacks {
     public static final ItemStack CAMPFIRE = BlockTypes.CAMPFIRE.createItem();
     public static final ItemStack CARPET = BlockTypes.CARPET.createItem();
     public static final ItemStack CARROTS = BlockTypes.CARROTS.createItem();
-    public static final ItemStack CARTOGRAPHY_TABLE = BlockTypes.CARTOGRAPHY_TABLE.createItem();
+    //public static final ItemStack CARTOGRAPHY_TABLE = BlockTypes.CARTOGRAPHY_TABLE.createItem();
     public static final ItemStack CARVED_PUMPKIN = BlockTypes.CARVED_PUMPKIN.createItem();
     public static final ItemStack CAULDRON = BlockTypes.CAULDRON.createItem();
     public static final ItemStack CHAIN = BlockTypes.CHAIN.createItem();
