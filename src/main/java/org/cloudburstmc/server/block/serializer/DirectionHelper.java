@@ -25,7 +25,7 @@ public class DirectionHelper {
     private final Map<BlockType, SeqType> mapping = new HashMap<>();
 
     public void init() {
-        register(TYPE_0, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
+        register(TYPE_0, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST); // Unique to earth, may be renamed later
 
         register(TYPE_1, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST);
         register(TYPE_2, Direction.SOUTH, Direction.WEST, Direction.NORTH, Direction.EAST);
@@ -33,6 +33,8 @@ public class DirectionHelper {
         register(TYPE_4, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH);
         register(TYPE_5, Direction.SOUTH, Direction.NORTH, Direction.EAST, Direction.WEST);
         register(TYPE_6, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
+
+        register(TYPE_0, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
 
         register(TYPE_7, Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST, Direction.LEFT, Direction.RIGHT);
         register(TYPE_8, Direction.DOWN, Direction.UP, Direction.SOUTH, Direction.NORTH, Direction.EAST, Direction.WEST, Direction.LEFT, Direction.RIGHT);
