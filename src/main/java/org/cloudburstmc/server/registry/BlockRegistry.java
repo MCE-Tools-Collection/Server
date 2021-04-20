@@ -170,8 +170,13 @@ public class BlockRegistry implements Registry {
                 .build();
 
         tag = BlockStateUpdaters.updateBlockState(tag, 0);
+        BlockState state = palette.getBlockState(tag);
 
-        return palette.getRuntimeId(palette.getBlockState(tag));
+        if (state == null || !state.getId().equals(identifier)) {
+            state = BlockStateMetaMappings.getStateFromMeta(identifier, meta);
+        }
+
+        return palette.getRuntimeId(state);
     }
 
     public int getRuntimeId(int id, int meta) {
@@ -332,8 +337,8 @@ public class BlockRegistry implements Registry {
         this.registerVanilla(SANDSTONE, new BlockBehaviorSandstone(), BlockTraits.SAND_STONE_TYPE); //24
         this.registerVanilla(NOTEBLOCK, new BlockBehaviorNoteblock()); //25
         this.registerVanilla(BED, new BlockBehaviorBed(), BlockTraits.IS_HEAD_PIECE, BlockTraits.IS_OCCUPIED, BlockTraits.DIRECTION); //26
-        this.registerVanilla(GOLDEN_RAIL, new BlockBehaviorRailPowered(), BlockTraits.SIMPLE_RAIL_DIRECTION, BlockTraits.IS_POWERED); //27
-        this.registerVanilla(DETECTOR_RAIL, new BlockBehaviorRailDetector(), BlockTraits.SIMPLE_RAIL_DIRECTION, BlockTraits.IS_TRIGGERED); //28
+        this.registerVanilla(GOLDEN_RAIL, new BlockBehaviorRailPowered(),BlockTraits.IS_POWERED, BlockTraits.SIMPLE_RAIL_DIRECTION); //27
+        this.registerVanilla(DETECTOR_RAIL, new BlockBehaviorRailDetector(), BlockTraits.IS_TRIGGERED, BlockTraits.SIMPLE_RAIL_DIRECTION); //28
         this.registerVanilla(WEB, new BlockBehaviorCobweb()); //30
         this.registerVanilla(TALL_GRASS, new BlockBehaviorTallGrass(), BlockTraits.TALL_GRASS_TYPE); //31
         this.registerVanilla(DEADBUSH, new BlockBehaviorDeadBush()); //32
@@ -429,7 +434,7 @@ public class BlockRegistry implements Registry {
         this.registerVanilla(COMMAND_BLOCK, NoopBlockBehavior.INSTANCE, BlockTraits.IS_CONDITIONAL, BlockTraits.FACING_DIRECTION);
         this.registerVanilla(BEACON, new BlockBehaviorBeacon()); //138
         //this.registerVanilla(STONE_WALL, new BlockBehaviorWall(), MultiBlockSerializers.WALL, BlockTraits.WALL_CONNECTION_EAST, BlockTraits.HAS_POST, BlockTraits.WALL_CONNECTION_SOUTH, BlockTraits.WALL_CONNECTION_WEST, BlockTraits.WALL_CONNECTION_NORTH, BlockTraits.WALL_BLOCK_TYPE); //139
-        this.registerVanilla(STONE_WALL, new BlockBehaviorWall(), MultiBlockSerializers.WALL, BlockTraits.WALL_CONNECTION_EAST, BlockTraits.WALL_CONNECTION_NORTH,BlockTraits.WALL_CONNECTION_SOUTH,BlockTraits.WALL_CONNECTION_WEST, BlockTraits.WALL_BLOCK_TYPE);
+        this.registerVanilla(STONE_WALL, new BlockBehaviorWall(), MultiBlockSerializers.WALL, BlockTraits.WALL_BLOCK_TYPE);
         this.registerVanilla(FLOWER_POT, new BlockBehaviorFlowerPot(), BlockTraits.HAS_UPDATE); //140
         this.registerVanilla(CARROTS, new BlockBehaviorCarrot(), BlockTraits.GROWTH); //141
         this.registerVanilla(POTATOES, new BlockBehaviorPotato(), BlockTraits.GROWTH); //142

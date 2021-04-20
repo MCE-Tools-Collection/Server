@@ -88,9 +88,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.cloudburstmc</groupId>
-            <artifactId>cloudburst-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>com.github.Project-Earth-Team</groupId>
+            <artifactId>CloudburstAPI</artifactId>
+            <version>fef5ff0b75</version>
         </dependency>
 
         <!-- Terminal -->
